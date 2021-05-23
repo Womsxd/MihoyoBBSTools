@@ -1,0 +1,17 @@
+{
+    "mihoyobbs_Login_ticket": "", 
+    "mihoyobbs_Stuid": "", 
+    "mihoyobbs_Stoken": "", 
+    "mihoyobbs_Cookies": "", 
+    "mihoyobbs": {
+        "bbs_Gobal": true, 
+        "bbs_Singin": true, 
+        "bbs_Singin_multi": true, 
+        "bbs_Singin_multi_list": [2, 5], 
+        "bbs_Read_posts": true, 
+        "bbs_Like_posts": true, 
+        "bbs_Unlike": true, 
+        "bbs_Share": true
+    }, 
+    "genshin_AutoSingin": false
+}
