@@ -42,15 +42,20 @@ class genshin:
             exit()
         return (data["data"]["awards"])
     #判断签到
-    def Is_sing(self, region:str, uid:str) -> list:
+    def Is_sing(self, region:str, uid:str):
         req = httpx.get(setting.genshin_Is_singurl.format(setting.genshin_Act_id, region, uid), headers=self.headers)
         data = req.json()
         if (data["retcode"] != 0):
             tools.log.warn("获取账号签到信息失败！")
             print (req.text)
             exit()
-        return (data[data])
+        return (data["data"])
     #签到
+    def Get_item(self, raw_data:dict) ->str:
+        temp_Name = raw_data["name"]
+        temp_Cnt = raw_data["cnt"]
+        return (f"{temp_Name}x{temp_Cnt}")
+
     def Sing_acc(self):
         for i in self.acc_List:
             is_data = self.Is_sing(region = i[2], uid = i[1])
@@ -58,15 +63,16 @@ class genshin:
                 tools.log.warn(f"旅行者{i[0]}是第一次绑定米游社，请先手动签到一次")
             else:
                 sing_Days = is_data["total_sign_day"]
-                if (is_data["is_sing"] == True):
-                    tools.log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{self.sing_Give[sing_Days]}")
-                req = httpx.post(url=setting.genshin_Singurl, headers=self.headers,
-                        json={'act_id': setting.genshin_Act_id, 'region': i[2], 'uid': i[1]})
-                data = req.json()
-                if (data["retcode"] == 0):
-                    tools.log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是{self.sing_Give[sing_Days + 1]}")
-                elif (data["retcode"] == -5003):
-                    tools.log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{self.sing_Give[sing_Days]}")
+                if (is_data["is_sign"] == True):
+                    tools.log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days])}")
                 else:
-                    tools.log.warn("账号签到失败！")
-                    print (req.text)
+                    req = httpx.post(url=setting.genshin_Singurl, headers=self.headers,
+                            json={'act_id': setting.genshin_Act_id, 'region': i[2], 'uid': i[1]})
+                    data = req.json()
+                    if (data["retcode"] == 0):
+                        tools.log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days + 1])}")
+                    elif (data["retcode"] == -5003):
+                        tools.log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days])}")
+                    else:
+                        tools.log.warn("账号签到失败！")
+                        print (req.text)
