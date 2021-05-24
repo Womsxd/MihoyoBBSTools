@@ -1,12 +1,12 @@
 import os
 import json
-from tools import log
+import tools
 
 #这里的内容会自动获取
 mihoyobbs_Login_ticket = ""
 mihoyobbs_Stuid = ""
 mihoyobbs_Stoken = ""
-#这里填入你的米游社Cookie
+#这里是米游社的cookie
 mihoyobbs_Cookies = ""
 #这个dist里面的内容和米游社有关
 mihoyobbs = {
@@ -30,7 +30,7 @@ mihoyobbs = {
 #原神自动签到
 genshin_AutoSingin = True
 
-path = os.path.dirname(os.path.realpath(__file__))
+path = os.path.dirname(os.path.realpath(__file__)) + "/config"
 
 def Load_config():
     with open(f"{path}/config.json", "r") as f:
@@ -54,7 +54,7 @@ def Load_config():
             mihoyobbs["bbs_Share"] = data["mihoyobbs"]["bbs_Share"]
             genshin_AutoSingin = data["genshin_AutoSingin"]
             f.close()
-            log.info("Config加载完毕")
+            tools.log.info("Config加载完毕")
 
 def Save_config():
     with open(f"{path}/config.json","r+") as f:
@@ -68,7 +68,7 @@ def Save_config():
         f.write(temp_Text)
         f.flush()
         f.close()
-        log.info("Config保存完毕")
+        tools.log.info("Config保存完毕")
 
 def Clear_cookies():
         with open(f"{path}/config.json","r+") as f:
@@ -83,4 +83,4 @@ def Clear_cookies():
             f.write(temp_Text)
             f.flush()
             f.close()
-            log.info("Cookie删除完毕")
+            tools.log.info("Cookie删除完毕")

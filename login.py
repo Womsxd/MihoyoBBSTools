@@ -14,10 +14,10 @@ def login():
             if (i.split("=")[0] == " login_ticket"):
                 config.mihoyobbs_Login_ticket = i.split("=")[1]
                 break
-        data = request.get(url=setting.cookieUrl.format(config.mihoyobbs_Login_ticket))
+        data = request.get(url=setting.bbs_Cookieurl.format(config.mihoyobbs_Login_ticket))
         if ("成功" in data["data"]["msg"]):
             config.mihoyobbs_Stuid = str(data["data"]["cookie_info"]["account_id"])
-            data = request.get(url=setting.cookieUrl2.format(config.mihoyobbs_Login_ticket, config.mihoyobbs_Stuid))
+            data = request.get(url=setting.bbs_Cookieurl2.format(config.mihoyobbs_Login_ticket, config.mihoyobbs_Stuid))
             config.mihoyobbs_Stoken = data["data"]["list"][0]["token"]
             log.info("登录成功！")
             log.info("正在保存Config！")

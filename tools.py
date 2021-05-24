@@ -1,7 +1,9 @@
-import logging
+import uuid
 import time
+import config
 import random
 import string
+import logging
 import hashlib
 import setting
 
@@ -40,6 +42,10 @@ def Get_ds(web:bool, web_old:bool) -> str:
     r = Random_text(6)
     c = MD5("salt=" + n + "&t=" + i + "&r=" + r)
     return (i + "," + r + "," + c)
+
+def Get_driveid() -> str:
+    return (str(uuid.uuid3(uuid.NAMESPACE_URL, config.mihoyobbs_Cookies)).replace(
+                '-', '').upper())
 
 #获取明天早晨0点的时间戳
 def Nextday() -> int:

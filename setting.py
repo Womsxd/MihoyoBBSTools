@@ -40,14 +40,17 @@ mihoyobbs_List = [{
 mihoyobbs_List_Use= []
 
 #米游社的API列表
-cookieUrl = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket?login_ticket={}"
-cookieUrl2 = "https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket?login_ticket={}&token_types=3&uid={}"
-signUrl = "https://bbs-api.mihoyo.com/apihub/sapi/signIn?gids={}"  # post
-listUrl = "https://bbs-api.mihoyo.com/post/api/getForumPostList?forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1"
-detailUrl = "https://bbs-api.mihoyo.com/post/api/getPostFull?post_id={}"
-shareUrl = "https://bbs-api.mihoyo.com/apihub/api/getShareConf?entity_id={}&entity_type=1"
-likeUrl = "https://bbs-api.mihoyo.com/apihub/sapi/upvotePost"  # post json 
+bbs_Cookieurl = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket?login_ticket={}"
+bbs_Cookieurl2 = "https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket?login_ticket={}&token_types=3&uid={}"
+bbs_Signurl = "https://bbs-api.mihoyo.com/apihub/sapi/signIn?gids={}"  # post
+bbs_Listurl = "https://bbs-api.mihoyo.com/post/api/getForumPostList?forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1"
+bbs_Detailurl = "https://bbs-api.mihoyo.com/post/api/getPostFull?post_id={}"
+bbs_Shareurl = "https://bbs-api.mihoyo.com/apihub/api/getShareConf?entity_id={}&entity_type=1"
+bbs_Likeurl = "https://bbs-api.mihoyo.com/apihub/sapi/upvotePost"  # post json 
 
 #原神自动签到相关的设置
-act_ID = "e202009291139501"
-accinfo_Url = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=hk4e_cn"
+genshin_Act_id = "e202009291139501"
+genshin_Accinfo_url = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=hk4e_cn"
+genshin_Singlisturl = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/home?act_id={}"
+genshin_Is_singurl = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/info?act_id={}&region={}&uid={}"
+genshin_Singurl = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/sign"
