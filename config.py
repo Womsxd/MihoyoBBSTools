@@ -31,9 +31,10 @@ mihoyobbs = {
 genshin_AutoSingin = True
 
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
+config_Path = f"{path}/config.json"
 
 def Load_config():
-    with open(f"{path}/config.json", "r") as f:
+    with open(config_Path, "r") as f:
             data = json.load(f)
             global mihoyobbs_Login_ticket
             global mihoyobbs_Stuid
@@ -57,7 +58,7 @@ def Load_config():
             tools.log.info("Config加载完毕")
 
 def Save_config():
-    with open(f"{path}/config.json","r+") as f:
+    with open(config_Path,"r+") as f:
         data = json.load(f)
         data["mihoyobbs_Login_ticket"] = mihoyobbs_Login_ticket
         data["mihoyobbs_Stuid"] = mihoyobbs_Stuid
@@ -71,7 +72,7 @@ def Save_config():
         tools.log.info("Config保存完毕")
 
 def Clear_cookies():
-        with open(f"{path}/config.json","r+") as f:
+        with open(config_Path,"r+") as f:
             data = json.load(f)
             data["mihoyobbs_Login_ticket"] = ""
             data["mihoyobbs_Stuid"] = ""

@@ -43,7 +43,8 @@ def Get_ds(web:bool, web_old:bool) -> str:
     c = MD5("salt=" + n + "&t=" + i + "&r=" + r)
     return (i + "," + r + "," + c)
 
-def Get_driveid() -> str:
+#生成一个device id
+def Get_deviceid() -> str:
     return (str(uuid.uuid3(uuid.NAMESPACE_URL, config.mihoyobbs_Cookies)).replace(
                 '-', '').upper())
 
