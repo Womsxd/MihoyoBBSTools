@@ -2,6 +2,8 @@ import os
 import json
 import tools
 
+#是否启用config
+enable_Config = True
 #这里的内容会自动获取
 mihoyobbs_Login_ticket = ""
 mihoyobbs_Stuid = ""
@@ -36,11 +38,14 @@ config_Path = f"{path}/config.json"
 def Load_config():
     with open(config_Path, "r") as f:
             data = json.load(f)
+            global enable_Config
             global mihoyobbs_Login_ticket
             global mihoyobbs_Stuid
             global mihoyobbs_Stoken
             global mihoyobbs_Cookies
             global mihoyobbs
+            global genshin_AutoSingin
+            enable_Config = data["enable_Config"]
             mihoyobbs_Login_ticket = data["mihoyobbs_Login_ticket"]
             mihoyobbs_Stuid = data["mihoyobbs_Stuid"]
             mihoyobbs_Stoken = data["mihoyobbs_Stoken"]
@@ -74,6 +79,7 @@ def Save_config():
 def Clear_cookies():
         with open(config_Path,"r+") as f:
             data = json.load(f)
+            data["enable_Config"] = False
             data["mihoyobbs_Login_ticket"] = ""
             data["mihoyobbs_Stuid"] = ""
             data["mihoyobbs_Stoken"] = ""

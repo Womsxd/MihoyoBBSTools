@@ -3,6 +3,7 @@ import main
 import time
 import tools
 import config
+import setting
 
 #搜索配置文件
 def Fund_config() ->list:
@@ -20,6 +21,7 @@ def main_multi():
     input("请输入回车继续，需要重新搜索配置文件请Ctrl+C退出脚本")
     for i in iter(config_List):
         tools.log.info(f"正在执行{i}")
+        setting.mihoyobbs_List_Use = []
         config.config_Path= f"{config.path}/{i}"
         main.main()
         tools.log.info(f"{i}执行完毕")

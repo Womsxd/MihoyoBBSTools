@@ -35,6 +35,7 @@ class genshin:
             exit()
         for i in data["data"]["list"]:
             temp_List.append([i["nickname"], i["game_uid"], i["region"]])
+        tools.log.info(f"已获取到{len(temp_List)}个原神账号信息")
         return (temp_List)
 
     #获取已经签到奖励列表
