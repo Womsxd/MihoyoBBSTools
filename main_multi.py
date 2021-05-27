@@ -1,4 +1,5 @@
 import os
+import sys
 import main
 import time
 import tools
@@ -17,6 +18,9 @@ def main_multi():
     tools.log.info("AutoMihoyoBBS Multi User mode")
     tools.log.info("正在搜索配置文件！")
     config_List = Fund_config()
+    if (len(config_List) == 0):
+        tools.log.warn("未检测到配置文件，请确认config文件夹存在.json后缀名的配置文件！")
+        exit()
     tools.log.info(f"已搜索到{len(config_List)}个配置文件，请确认是否无多余文件！\r\n{config_List}")
     input("请输入回车继续，需要重新搜索配置文件请Ctrl+C退出脚本")
     for i in iter(config_List):
