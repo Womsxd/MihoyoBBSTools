@@ -22,10 +22,10 @@ def main_multi():
         tools.log.warn("未检测到配置文件，请确认config文件夹存在.json后缀名的配置文件！")
         exit()
     if (len(sys.argv) >= 2 and sys.argv[1] == "autorun"):
+        tools.log.info(f"已搜索到{len(config_List)}个配置文件，正在开始执行！")
+    else:
         tools.log.info(f"已搜索到{len(config_List)}个配置文件，请确认是否无多余文件！\r\n{config_List}")
         input("请输入回车继续，需要重新搜索配置文件请Ctrl+C退出脚本")
-    else:
-        tools.log.info(f"已搜索到{len(config_List)}个配置文件，正在开始执行！")
     for i in iter(config_List):
         tools.log.info(f"正在执行{i}")
         setting.mihoyobbs_List_Use = []
