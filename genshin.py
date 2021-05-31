@@ -74,7 +74,7 @@ class genshin:
             if (is_data["first_bind"] == True):
                 tools.log.warn(f"旅行者{i[0]}是第一次绑定米游社，请先手动签到一次")
             else:
-                sing_Days = is_data["total_sign_day"]
+                sing_Days = is_data["total_sign_day"] - 1
                 if (is_data["is_sign"] == True):
                     tools.log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days])}")
                 else:
@@ -83,7 +83,10 @@ class genshin:
                             json={'act_id': setting.genshin_Act_id, 'region': i[2], 'uid': i[1]})
                     data = req.json()
                     if (data["retcode"] == 0):
-                        tools.log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days + 1])}")
+                        if (sing_Days == 0):
+                            tools.log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days])}")
+                        else:
+                            tools.log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days + 1])}")
                     elif (data["retcode"] == -5003):
                         tools.log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days])}")
                     else:
