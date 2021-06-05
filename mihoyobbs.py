@@ -23,6 +23,24 @@ class mihoyobbs:
         }
         self.postsList = self.Getlist()
 
+    #获取任务列表，用来判断还有哪些漏做了
+    def Get_taskslist(self):
+        temp_List = []
+        #ToDo
+
+    #获取要帖子列表
+    def Getlist(self) -> list:
+        temp_List = []
+        tools.log.info("正在获取帖子列表......")
+        for i in setting.mihoyobbs_List_Use:
+            req = httpx.get(url=setting.bbs_Listurl.format(i["forumId"]), headers=self.headers)
+            data = req.json()
+            for n in range(6):
+                temp_List.append([data["data"]["list"][n]["post"]["post_id"], data["data"]["list"][n]["post"]["subject"]])
+            tools.log.info("已获取{}个帖子".format(len(temp_List)))
+            time.sleep(random.randint(2, 6))
+        return (temp_List)
+
     #进行签到操作
     def Singin(self):
         tools.log.info("正在签到......")
@@ -36,19 +54,6 @@ class mihoyobbs:
                 tools.log.info("签到失败，你的cookie可能已过期，请重新设置cookie。")
                 config.Clear_cookies()
                 exit()
-
-    #获取要帖子列表
-    def Getlist(self) -> list:
-        temp_List = []
-        tools.log.info("正在获取帖子列表......")
-        for i in setting.mihoyobbs_List_Use:
-            req = httpx.get(url=setting.bbs_Listurl.format(i["forumId"]), headers=self.headers)
-            data = req.json()
-            for n in range(5):
-                temp_List.append([data["data"]["list"][n]["post"]["post_id"], data["data"]["list"][n]["post"]["subject"]])
-            tools.log.info("已获取{}个帖子".format(len(temp_List)))
-            time.sleep(random.randint(2, 6))
-        return (temp_List)
 
     #看帖子
     def Readposts(self):
@@ -82,8 +87,8 @@ class mihoyobbs:
     #分享操作
     def Share(self):
         tools.log.info("正在分享......")
-        req = httpx.get(url=setting.bbs_Shareurl.format(self.postsList[0][0]), headers=self.headers)
+        req = httpx.get(url=setting.bbs_Shareurl.format(random.choice(self.postsList)[0]), headers=self.headers)
         data = req.json()
         if data["message"] == "OK":
-            tools.log.info("分享：{} 成功".format(self.postsList[0][1]))
+            tools.log.info("分享：{} 成功".format(random.choice(self.postsList)[1]))
         time.sleep(random.randint(2, 6))

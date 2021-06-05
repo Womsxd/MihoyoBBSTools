@@ -1,6 +1,6 @@
-# 米游社云签到
+# 米游社自动签到
 
-基于Python3的米游社云签到项目
+基于Python3的米游社自动签到项目
 
 本项目参考[XiaoMiku01/miyoubiAuto](https://github.com/XiaoMiku01/miyoubiAuto)进行编写
 
@@ -22,24 +22,25 @@
 
   5. 打开目录中的**config文件夹**复制`config.json.example`并改名为`config.json`，如果需要使用多用户的功能的话请改名成`xxx.json`
 
-  6. 请使用vscode/notepad++等文本编辑器打开`config.json`
+  6. 请使用vscode/notepad++等文本编辑器打开上一步复制好的配置文件
 
   7. **使用[获取Cookie](#获取米游社Cookie)里面的方法来获取米游社Cookie**
 
   8. 将复制的Cookie粘贴到`config.json`的`"mihoyobbs_Cookies":" "`中
 
-     #### 列子
+        例子
 
-     > ```json
-     > "mihoyobbs_Cookies": "你复制的cookie"
-     > ```
-     
+        > ```json
+        > "mihoyobbs_Cookies": "你复制的cookie"
+        > ```
+
   9. 在命令提示符(cmd)/powershell，输入`python main.py`来进行执行
   
   10. 多用户的请使用`python main_multi.py`，多用户在需要自动执行的情况下请使用`python main_multi.py autorun`
+
 ## 获取米游社Cookie
 
-1. 打开你的浏览器,进入无痕/隐身模式
+1. 打开你的浏览器,进入**无痕/隐身模式**
 
 2. 打开`http://bbs.mihoyo.com/ys/`并进行登入操作
 
