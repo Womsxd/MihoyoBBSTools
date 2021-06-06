@@ -19,10 +19,10 @@ def main_multi():
     tools.log.info("AutoMihoyoBBS Multi User mode")
     tools.log.info("正在搜索配置文件！")
     config_List = Fund_config()
-    if (len(config_List) == 0):
+    if len(config_List) == 0:
         tools.log.warn("未检测到配置文件，请确认config文件夹存在.json后缀名的配置文件！")
         exit()
-    if (len(sys.argv) >= 2 and sys.argv[1] == "autorun"):
+    if len(sys.argv) >= 2 and sys.argv[1] == "autorun":
         tools.log.info(f"已搜索到{len(config_List)}个配置文件，正在开始执行！")
     else:
         tools.log.info(f"已搜索到{len(config_List)}个配置文件，请确认是否无多余文件！\r\n{config_List}")

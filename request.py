@@ -4,23 +4,23 @@ import httpx
 def get(url:str, **headers:dict):
     try:
         req = httpx.get(url, headers=headers)
-        return (req.json())
+        return req.json()
     except:
         print("请求失败，网络错误！")
-        return ("")
+        return ""
 
 def post(url:str, data:dict, **headers:dict):
     try:
         req = httpx.post(url, data=data, headers=headers)
-        return (req.json())
+        return req.json()
     except:
         print("请求失败，网络错误！")
-        return ("")
+        return ""
 
 def post_json(url:str, json, **headers:dict):
     try:
         req = httpx.post(url, json=json, headers=headers)
-        return (req.json())
+        return req.json()
     except:
         print("请求失败，网络错误！")
-        return ("")
+        return ""

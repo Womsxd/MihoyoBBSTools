@@ -29,59 +29,59 @@ class honkai3rd:
         temp_List = []
         req = httpx.get(setting.honkai3rd_Account_info_url, headers=self.headers)
         data = req.json()
-        if (data["retcode"] != 0):
+        if data["retcode"] != 0:
             tools.log.warn("获取账号列表失败！")
             exit()
         for i in data["data"]["list"]:
             temp_List.append([i["nickname"], i["game_uid"], i["region"]])
         tools.log.info(f"已获取到{len(temp_List)}个崩坏3账号信息")
-        return (temp_List)
+        return temp_List
 
     #获取签到的奖励名称
     def Get_item(self, raw_data:dict) ->str:
         temp_Name = raw_data["name"]
         temp_Cnt = raw_data["cnt"]
-        return (f"{temp_Name}x{temp_Cnt}")
+        return f"{temp_Name}x{temp_Cnt}"
 
     #获取今天已经签到了的dict
     def Get_today_item(self,raw_data:list) -> dict:
         #用range进行循环，当staus等于0的时候上一个就是今天签到的dict
         for i in range(len(raw_data)):
-            if (raw_data[i]["status"] == 0):
-                return (raw_data[i-1])
-            if (raw_data[i]["status"] == 1):
-                return (raw_data[i])
-            if (i == int(len(raw_data) - 1) and raw_data[i]["status"] != 0):
-                return (raw_data[i])
+            if raw_data[i]["status"] == 0:
+                return raw_data[i-1]
+            if raw_data[i]["status"] == 1:
+                return raw_data[i]
+            if i == int(len(raw_data) - 1) and raw_data[i]["status"] != 0:
+                return raw_data[i]
 
     #判断签到
     def Is_sing(self, region:str, uid:str, nickname:str):
         req = httpx.get(setting.honkai3rd_Is_singurl.format(setting.honkai3rd_Act_id, region, uid), headers=self.headers)
         data = req.json()
-        if (data["retcode"] != 0):
+        if data["retcode"] != 0:
             tools.log.warn("获取账号签到信息失败！")
             print (req.text)
             exit()
         today_Item = self.Get_today_item(data["data"]["sign"]["list"])
-        if (today_Item["status"] == 1):
-            return (True)
+        if today_Item["status"] == 1:
+            return True
         else:
             tools.log.info(f"舰长{nickname}今天已经签到过了~\r\n今天获得的奖励是{self.Get_item(today_Item)}")
-            return (False)
+            return False
 
     #签到
     def Sing_acc(self):
-        if (len(self.acc_List) != 0):
+        if len(self.acc_List) != 0:
             for i in self.acc_List:
                 tools.log.info(f"正在为舰长{i[0]}进行签到...")
                 time.sleep(random.randint(2, 6))
                 is_data = self.Is_sing(region = i[2], uid = i[1], nickname = i[0])
-                if (is_data == True):
+                if is_data == True:
                     time.sleep(random.randint(2, 6))
                     req = httpx.post(url=setting.honkai3rd_SingUrl, headers=self.headers,
                         json={'act_id': setting.honkai3rd_Act_id, 'region': i[2], 'uid': i[1]})
                     data = req.json()
-                    if (data["retcode"] == 0):
+                    if data["retcode"] == 0:
                         today_Item = self.Get_today_item(data["data"]["list"])
                         tools.log.info(f"舰长{i[0]}签到成功~\r\n今天获得的奖励是{self.Get_item(today_Item)}")
                     elif (data["retcode"] == -5003):

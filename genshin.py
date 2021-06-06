@@ -22,7 +22,7 @@ class genshin:
                 'x-rpc-device_id': tools.Get_deviceid()
             }
         self.acc_List = self.Getacc_list()
-        if (len(self.acc_List) != 0):
+        if len(self.acc_List) != 0:
             self.sing_Give = self.Get_singgive()
 
     #获取绑定的账号列表
@@ -31,65 +31,65 @@ class genshin:
         temp_List = []
         req = httpx.get(setting.genshin_Account_info_url, headers=self.headers)
         data = req.json()
-        if (data["retcode"] != 0):
+        if data["retcode"] != 0:
             tools.log.warn("获取账号列表失败！")
             exit()
         for i in data["data"]["list"]:
             temp_List.append([i["nickname"], i["game_uid"], i["region"]])
         tools.log.info(f"已获取到{len(temp_List)}个原神账号信息")
-        return (temp_List)
+        return temp_List
 
     #获取签到的奖励名称
     def Get_item(self, raw_data:dict) ->str:
         temp_Name = raw_data["name"]
         temp_Cnt = raw_data["cnt"]
-        return (f"{temp_Name}x{temp_Cnt}")
+        return f"{temp_Name}x{temp_Cnt}"
 
     #获取已经签到奖励列表
     def Get_singgive(self) -> list:
         tools.log.info("正在获取签到奖励列表...")
         req = httpx.get(setting.genshin_Singlisturl.format(setting.genshin_Act_id),headers=self.headers)
         data = req.json()
-        if (data["retcode"] != 0):
+        if data["retcode"] != 0:
             tools.log.warn("获取签到奖励列表失败")
             print (req.text)
             exit()
-        return (data["data"]["awards"])
+        return data["data"]["awards"]
 
     #判断签到
     def Is_sing(self, region:str, uid:str):
         req = httpx.get(setting.genshin_Is_singurl.format(setting.genshin_Act_id, region, uid), headers=self.headers)
         data = req.json()
-        if (data["retcode"] != 0):
+        if data["retcode"] != 0:
             tools.log.warn("获取账号签到信息失败！")
             print (req.text)
             exit()
-        return (data["data"])
+        return data["data"]
 
     #签到
     def Sing_acc(self):
-        if (len(self.acc_List) != 0):
+        if len(self.acc_List) != 0:
             for i in self.acc_List:
                 tools.log.info(f"正在为旅行者{i[0]}进行签到...")
                 time.sleep(random.randint(2, 6))
                 is_data = self.Is_sing(region = i[2], uid = i[1])
-                if (is_data["first_bind"] == True):
+                if is_data["first_bind"] == True:
                     tools.log.warn(f"旅行者{i[0]}是第一次绑定米游社，请先手动签到一次")
                 else:
                     sing_Days = is_data["total_sign_day"] - 1
-                    if (is_data["is_sign"] == True):
+                    if is_data["is_sign"] == True:
                         tools.log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days])}")
                     else:
                         time.sleep(random.randint(2, 6))
                         req = httpx.post(url=setting.genshin_Singurl, headers=self.headers,
                                 json={'act_id': setting.genshin_Act_id, 'region': i[2], 'uid': i[1]})
                         data = req.json()
-                        if (data["retcode"] == 0):
-                            if (sing_Days == 0):
+                        if data["retcode"] == 0:
+                            if sing_Days == 0:
                                 tools.log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days])}")
                             else:
                                 tools.log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days + 1])}")
-                        elif (data["retcode"] == -5003):
+                        elif data["retcode"] == -5003:
                             tools.log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{self.Get_item(self.sing_Give[sing_Days])}")
                         else:
                             tools.log.warn("账号签到失败！")

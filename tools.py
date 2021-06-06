@@ -9,7 +9,7 @@ import hashlib
 import setting
 
 #Log输出，这里提供了自定义logging输出的机会，只需要创建一个logging.ini并且写入配置文件即可自定义输出
-if (os.path.exists(f"{config.path}/logging.ini") == True):
+if os.path.exists(f"{config.path}/logging.ini"):
     logging.config.fileConfig(f"{config.path}/logging.ini")
 else:
     logging.basicConfig(
@@ -23,20 +23,20 @@ log = logger = logging
 def MD5(text:str) -> str:
     md5 = hashlib.md5()
     md5.update(text.encode())
-    return (md5.hexdigest())
+    return md5.hexdigest()
 
 #随机文本
 def Random_text(num:int) -> str:
-    return(''.join(random.sample(string.ascii_lowercase + string.digits, num)))
+    return''.join(random.sample(string.ascii_lowercase + string.digits, num))
 
 #时间戳
 def Timestamp() -> int:
-    return(int(time.time()))
+    return int(time.time())
 
 #获取请求Header里的DS 当web为true则生成网页端的DS
 def Get_ds(web:bool, web_old:bool) -> str:
-    if(web == True):
-        if(web_old == True):
+    if web in True:
+        if web_old in True:
             n = setting.mihoyobbs_Salt_web_old
         else:
             n = setting.mihoyobbs_Salt_web
@@ -45,15 +45,15 @@ def Get_ds(web:bool, web_old:bool) -> str:
     i = str(Timestamp())
     r = Random_text(6)
     c = MD5("salt=" + n + "&t=" + i + "&r=" + r)
-    return (i + "," + r + "," + c)
+    return f"{i},{r},{c}"
 
 #生成一个device id
 def Get_deviceid() -> str:
-    return (str(uuid.uuid3(uuid.NAMESPACE_URL, config.mihoyobbs_Cookies)).replace(
-                '-', '').upper())
+    return str(uuid.uuid3(uuid.NAMESPACE_URL, config.mihoyobbs_Cookies)).replace(
+                '-', '').upper()
 
 #获取明天早晨0点的时间戳
 def Nextday() -> int:
     now_time = int(time.time())
     nextday_time = now_time - now_time % 86400 + time.timezone + 86400
-    return (nextday_time)
+    return nextday_time

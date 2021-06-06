@@ -8,14 +8,14 @@ def login():
         log.error("请填入Cookies!")
         exit()
     temp_Cookies = {}
-    if ("login_ticket" in config.mihoyobbs_Cookies):
+    if "login_ticket" in config.mihoyobbs_Cookies:
         temp_Cookies = config.mihoyobbs_Cookies.split(";")
         for i in temp_Cookies:
-            if (i.split("=")[0] == " login_ticket"):
+            if i.split("=")[0] == " login_ticket":
                 config.mihoyobbs_Login_ticket = i.split("=")[1]
                 break
         data = request.get(url=setting.bbs_Cookieurl.format(config.mihoyobbs_Login_ticket))
-        if ("成功" in data["data"]["msg"]):
+        if "成功" in data["data"]["msg"]:
             config.mihoyobbs_Stuid = str(data["data"]["cookie_info"]["account_id"])
             data = request.get(url=setting.bbs_Cookieurl2.format(config.mihoyobbs_Login_ticket, config.mihoyobbs_Stuid))
             config.mihoyobbs_Stoken = data["data"]["list"][0]["token"]
