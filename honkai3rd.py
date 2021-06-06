@@ -25,7 +25,7 @@ class honkai3rd:
 
     #获取绑定的账号列表
     def Getacc_list(self) -> list:
-        tools.log.info("正在获取米哈游账号绑定的游戏账号列表...")
+        tools.log.info("正在获取米哈游账号绑定的崩坏3账号列表...")
         temp_List = []
         req = httpx.get(setting.honkai3rd_Account_info_url, headers=self.headers)
         data = req.json()
@@ -36,12 +36,6 @@ class honkai3rd:
             temp_List.append([i["nickname"], i["game_uid"], i["region"]])
         tools.log.info(f"已获取到{len(temp_List)}个崩坏3账号信息")
         return temp_List
-
-    #获取签到的奖励名称
-    def Get_item(self, raw_data:dict) ->str:
-        temp_Name = raw_data["name"]
-        temp_Cnt = raw_data["cnt"]
-        return f"{temp_Name}x{temp_Cnt}"
 
     #获取今天已经签到了的dict
     def Get_today_item(self,raw_data:list) -> dict:
@@ -66,7 +60,7 @@ class honkai3rd:
         if today_Item["status"] == 1:
             return True
         else:
-            tools.log.info(f"舰长{nickname}今天已经签到过了~\r\n今天获得的奖励是{self.Get_item(today_Item)}")
+            tools.log.info(f"舰长{nickname}今天已经签到过了~\r\n今天获得的奖励是{tools.Get_item(today_Item)}")
             return False
 
     #签到
@@ -83,7 +77,7 @@ class honkai3rd:
                     data = req.json()
                     if data["retcode"] == 0:
                         today_Item = self.Get_today_item(data["data"]["list"])
-                        tools.log.info(f"舰长{i[0]}签到成功~\r\n今天获得的奖励是{self.Get_item(today_Item)}")
+                        tools.log.info(f"舰长{i[0]}签到成功~\r\n今天获得的奖励是{tools.Get_item(today_Item)}")
                     elif (data["retcode"] == -5003):
                         tools.log.info(f"舰长{i[0]}今天已经签到过了~")
                     else:

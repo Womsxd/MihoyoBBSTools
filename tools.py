@@ -52,6 +52,12 @@ def Get_deviceid() -> str:
     return str(uuid.uuid3(uuid.NAMESPACE_URL, config.mihoyobbs_Cookies)).replace(
                 '-', '').upper()
 
+#获取签到的奖励名称
+def Get_item(self, raw_data:dict) ->str:
+    temp_Name = raw_data["name"]
+    temp_Cnt = raw_data["cnt"]
+    return f"{temp_Name}x{temp_Cnt}"
+
 #获取明天早晨0点的时间戳
 def Nextday() -> int:
     now_time = int(time.time())
