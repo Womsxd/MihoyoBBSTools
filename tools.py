@@ -1,3 +1,4 @@
+import os
 import uuid
 import time
 import config
@@ -7,11 +8,14 @@ import logging
 import hashlib
 import setting
 
-#Log输出
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s %(levelname)s %(message)s',
-    datefmt='%Y-%m-%dT%H:%M:%S')
+#Log输出，这里提供了自定义logging输出的机会，只需要创建一个logging.ini并且写入配置文件即可自定义输出
+if (os.path.exists(f"{config.path}/logging.ini") == True):
+    logging.config.fileConfig(f"{config.path}/logging.ini")
+else:
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)s %(message)s',
+        datefmt='%Y-%m-%dT%H:%M:%S')
 
 log = logger = logging
 

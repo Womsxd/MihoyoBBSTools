@@ -4,6 +4,7 @@ import main
 import time
 import tools
 import config
+import random
 import setting
 
 #搜索配置文件
@@ -36,7 +37,7 @@ def main_multi():
         config.config_Path= f"{config.path}/{i}"
         main.main()
         tools.log.info(f"{i}执行完毕")
-        time.sleep(2)
+        time.sleep(random.randint(2, 6))
 
 if __name__ == "__main__":
     main_multi()
