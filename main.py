@@ -43,6 +43,7 @@ def main():
                 bbs.Likeposts()
             if (config.mihoyobbs["bbs_Share"] == True):
                 bbs.Share()
+            tools.log.info(f"今天还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
         else:
             tools.log.info("米游社功能未启用！")
         #原神签到

@@ -42,7 +42,7 @@ mihoyobbs_List_Use= []
 #米游社的API列表
 bbs_Cookieurl = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket?login_ticket={}"
 bbs_Cookieurl2 = "https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket?login_ticket={}&token_types=3&uid={}"
-bbs_Taskslist = "https://bbs-api.mihoyo.com/apihub/sapi/getUserMissionsState"
+bbs_Taskslist = "https://bbs-api.mihoyo.com/apihub/sapi/getUserMissionsState" #获取任务列表
 bbs_Signurl = "https://bbs-api.mihoyo.com/apihub/sapi/signIn?gids={}"  # post
 bbs_Listurl = "https://bbs-api.mihoyo.com/post/api/getForumPostList?forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1"
 bbs_Detailurl = "https://bbs-api.mihoyo.com/post/api/getPostFull?post_id={}"

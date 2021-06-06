@@ -5,6 +5,10 @@ import config
 import random
 import setting
 
+Today_getcoins = 0
+Today_have_getcoins = 0 #这个变量以后可能会用上，先留着了
+Have_coins = 0
+
 class mihoyobbs:
     def __init__(self):
         self.headers = {
@@ -36,6 +40,9 @@ class mihoyobbs:
 
     #获取任务列表，用来判断做了哪些任务
     def Get_taskslist(self):
+        global Today_getcoins
+        global Today_have_getcoins
+        global Have_coins
         tools.log.info("正在获取任务列表")
         req = httpx.get(url=setting.bbs_Taskslist, headers=self.headers)
         data = req.json()
@@ -44,17 +51,22 @@ class mihoyobbs:
             config.Clear_cookies()
             exit()
         else:
+            Have_coins = data["data"]["total_points"]
             #如果当日可获取米游币数量为0直接判断全部任务都完成了
             if (data["data"]["can_get_points"] == 0):
                 self.Task_do["bbs_Sign"] = True
                 self.Task_do["bbs_Read_posts"] = True
                 self.Task_do["bbs_Like_posts"] = True
                 self.Task_do["bbs_Share"] = True
+                Today_have_getcoins = data["data"]["already_received_points"] #账号今天获得了多少米游币
             else:
+                Today_getcoins = data["data"]["can_get_points"]
                 #如果第0个大于或等于62则直接判定任务没做
                 if (data["data"]["states"][0]["mission_id"] >= 62):
+                    tools.log.info(f"新的一天，今天可以获得{Today_getcoins}个米游币")
                     pass
                 else:
+                    tools.log.info(f"似乎还有任务没完成，今天还能获得{Today_getcoins}")
                     for i in data["data"]["states"]:
                         #58是讨论区签到
                         if (i["mission_id"] == 58):
@@ -91,6 +103,7 @@ class mihoyobbs:
     #进行签到操作
     def Singin(self):
         #签到这里暂时不设置判断，防止要签到的其他社区没有签到成功
+        #if (self.Task_do["bbs_Sign"] == False):
         tools.log.info("正在签到......")
         for i in setting.mihoyobbs_List_Use:
             req = httpx.post(url=setting.bbs_Signurl.format(i["id"]), data="" ,headers=self.headers)
