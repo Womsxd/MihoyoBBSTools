@@ -51,7 +51,13 @@ bbs_Likeurl = "https://bbs-api.mihoyo.com/apihub/sapi/upvotePost"  # post json
 
 #原神自动签到相关的设置
 genshin_Act_id = "e202009291139501"
-genshin_Accinfo_url = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=hk4e_cn"
+genshin_Account_info_url = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=hk4e_cn"
 genshin_Singlisturl = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/home?act_id={}"
 genshin_Is_singurl = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/info?act_id={}&region={}&uid={}"
 genshin_Singurl = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/sign"
+
+#崩坏3自动签到相关的设置
+honkai3rd_Act_id = "e202104072769"
+honkai3rd_Account_info_url = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=bh3_cn"
+honkai3rd_Is_singurl = "https://api-takumi.mihoyo.com/common/euthenia/index?act_id={}&region={}&uid={}"
+honkai3rd_SingUrl = "https://api-takumi.mihoyo.com/common/euthenia/sign"

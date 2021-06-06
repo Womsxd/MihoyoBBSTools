@@ -4,6 +4,7 @@ import config
 import genshin
 import setting
 import mihoyobbs
+import honkai3rd
 
 def main():
     #初始化，加载配置
@@ -36,12 +37,20 @@ def main():
                 bbs.Share()
         else:
             tools.log.info("米游社功能未启用！")
+        #原神签到
         if(config.genshin_AutoSingin == True):
             tools.log.info("正在进行原神签到")
             genshin_Help = genshin.genshin()
             genshin_Help.Sing_acc()
         else:
             tools.log.info("原神签到功能未启用！")
+        #崩坏3签到
+        if (config.honkai3rd_AutoSing == True):
+            tools.log.info("正在进行崩坏3签到")
+            honkai3rd_Help = honkai3rd.honkai3rd()
+            honkai3rd_Help.Sing_acc()
+        else:
+            tools.log.info("崩坏3签到功能未启用！")
     else:
         tools.log.warn ("Config未启用！")
 

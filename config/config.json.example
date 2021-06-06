@@ -1,6 +1,6 @@
 {
     "enable_Config": true,
-    "config_Version": 1,
+    "config_Version": 2,
     "mihoyobbs_Login_ticket": "", 
     "mihoyobbs_Stuid": "", 
     "mihoyobbs_Stoken": "", 
@@ -15,5 +15,6 @@
         "bbs_Unlike": true, 
         "bbs_Share": true
     }, 
-    "genshin_AutoSingin": true
+    "genshin_AutoSingin": true,
+    "honkai3rd_AutoSing": false
 }

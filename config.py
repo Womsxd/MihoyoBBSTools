@@ -19,6 +19,7 @@ mihoyobbs = {
         #多个讨论区签到
         "bbs_Singin_multi": True,
         #指定签到讨论区
+        #1是崩坏3 2是原神 3是崩坏2 4是未定事件簿 5是米游社
         "bbs_Singin_multi_list": [2,5],
         #浏览3个帖子
         "bbs_Read_posts": True,
@@ -31,6 +32,8 @@ mihoyobbs = {
     }
 #原神自动签到
 genshin_AutoSingin = True
+#崩坏3自动签到
+honkai3rd_AutoSing = True
 
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
 config_Path = f"{path}/config.json"
@@ -45,6 +48,7 @@ def Load_config():
             global mihoyobbs_Cookies
             global mihoyobbs
             global genshin_AutoSingin
+            global honkai3rd_AutoSing
             enable_Config = data["enable_Config"]
             mihoyobbs_Login_ticket = data["mihoyobbs_Login_ticket"]
             mihoyobbs_Stuid = data["mihoyobbs_Stuid"]
@@ -59,6 +63,7 @@ def Load_config():
             mihoyobbs["bbs_Unlike"] = data["mihoyobbs"]["bbs_Unlike"]
             mihoyobbs["bbs_Share"] = data["mihoyobbs"]["bbs_Share"]
             genshin_AutoSingin = data["genshin_AutoSingin"]
+            honkai3rd_AutoSing = data["honkai3rd_AutoSing"]
             f.close()
             tools.log.info("Config加载完毕")
 
