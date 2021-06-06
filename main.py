@@ -16,9 +16,17 @@ def main():
             login.login()
         #获取要使用的BBS列表,#判断是否开启bbs_Singin_multi
         if (config.mihoyobbs["bbs_Singin_multi"] == True):
+            #速度快，但是无法设置主社区，主社区默认为第一个
+            '''
             for i in setting.mihoyobbs_List:
                 if (int(i["id"]) in config.mihoyobbs["bbs_Singin_multi_list"]):
                     setting.mihoyobbs_List_Use.append(i)
+            '''
+            #用这里的方案可以实现当让id在第一个的时候为主社区
+            for i in config.mihoyobbs["bbs_Singin_multi_list"]:
+                for i2 in setting.mihoyobbs_List:
+                    if (i == int(i2["id"])):
+                        setting.mihoyobbs_List_Use.append(i2)
         else:
             #关闭bbs_Singin_multi后只签到大别墅
             for i in setting.mihoyobbs_List:
