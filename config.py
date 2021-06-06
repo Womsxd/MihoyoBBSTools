@@ -13,7 +13,7 @@ mihoyobbs_Cookies = ""
 #这个dist里面的内容和米游社有关
 mihoyobbs = {
     #全局开关，关闭之后下面的都不执行
-    "bbs_Gobal": True,
+    "bbs_Global": True,
     #讨论区签到
     "bbs_Singin": True,
     #多个讨论区签到
@@ -33,9 +33,9 @@ mihoyobbs = {
     "bbs_Share": True,
 }
 #原神自动签到
-genshin_AutoSingin = True
+genshin_Auto_sing = True
 #崩坏3自动签到
-honkai3rd_AutoSing = True
+honkai3rd_Auto_sing = True
 
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
 config_Path = f"{path}/config.json"
@@ -49,14 +49,14 @@ def Load_config():
         global mihoyobbs_Stoken
         global mihoyobbs_Cookies
         global mihoyobbs
-        global genshin_AutoSingin
-        global honkai3rd_AutoSing
+        global genshin_Auto_sing
+        global honkai3rd_Auto_sing
         enable_Config = data["enable_Config"]
         mihoyobbs_Login_ticket = data["mihoyobbs_Login_ticket"]
         mihoyobbs_Stuid = data["mihoyobbs_Stuid"]
         mihoyobbs_Stoken = data["mihoyobbs_Stoken"]
         mihoyobbs_Cookies = data["mihoyobbs_Cookies"]
-        mihoyobbs["bbs_Gobal"] = data["mihoyobbs"]["bbs_Gobal"]
+        mihoyobbs["bbs_Gobal"] = data["mihoyobbs"]["bbs_Global"]
         mihoyobbs["bbs_Singin"] = data["mihoyobbs"]["bbs_Singin"]
         mihoyobbs["bbs_Singin_multi"] = data["mihoyobbs"]["bbs_Singin_multi"]
         mihoyobbs["bbs_Singin_multi_list"] = data["mihoyobbs"]["bbs_Singin_multi_list"]
@@ -64,8 +64,8 @@ def Load_config():
         mihoyobbs["bbs_Like_posts"] = data["mihoyobbs"]["bbs_Like_posts"]
         mihoyobbs["bbs_Unlike"] = data["mihoyobbs"]["bbs_Unlike"]
         mihoyobbs["bbs_Share"] = data["mihoyobbs"]["bbs_Share"]
-        genshin_AutoSingin = data["genshin_AutoSingin"]
-        honkai3rd_AutoSing = data["honkai3rd_AutoSing"]
+        genshin_Auto_sing = data["genshin_Auto_sing"]
+        honkai3rd_Auto_sing = data["honkai3rd_Auto_sing"]
         f.close()
         tools.log.info("Config加载完毕")
 

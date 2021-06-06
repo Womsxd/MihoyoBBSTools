@@ -1,12 +1,12 @@
 {
     "enable_Config": true,
-    "config_Version": 2,
+    "config_Version": 3,
     "mihoyobbs_Login_ticket": "", 
     "mihoyobbs_Stuid": "", 
     "mihoyobbs_Stoken": "", 
     "mihoyobbs_Cookies": "", 
     "mihoyobbs": {
-        "bbs_Gobal": true, 
+        "bbs_Global": true, 
         "bbs_Singin": true, 
         "bbs_Singin_multi": true, 
         "bbs_Singin_multi_list": [2, 5], 
@@ -15,6 +15,6 @@
         "bbs_Unlike": true, 
         "bbs_Share": true
     }, 
-    "genshin_AutoSingin": true,
-    "honkai3rd_AutoSing": false
+    "genshin_Auto_sing": true,
+    "honkai3rd_Auto_sing": false
 }

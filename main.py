@@ -33,7 +33,7 @@ def main():
                 if int(i["id"]) == 5:
                     setting.mihoyobbs_List_Use.append(i)
         #米游社签到
-        if config.mihoyobbs["bbs_Gobal"] == True:
+        if config.mihoyobbs["bbs_Global"] == True:
             bbs = mihoyobbs.mihoyobbs()
             if config.mihoyobbs["bbs_Singin"] == True:
                 bbs.Singin()
