@@ -51,16 +51,16 @@ class mihoyobbs:
             config.Clear_cookies()
             exit()
         else:
+            Today_getcoins = data["data"]["can_get_points"]
+            Today_have_getcoins = data["data"]["already_received_points"]
             Have_coins = data["data"]["total_points"]
             #如果当日可获取米游币数量为0直接判断全部任务都完成了
-            if data["data"]["can_get_points"] == 0:
+            if Today_getcoins == 0:
                 self.Task_do["bbs_Sign"] = True
                 self.Task_do["bbs_Read_posts"] = True
                 self.Task_do["bbs_Like_posts"] = True
                 self.Task_do["bbs_Share"] = True
-                Today_have_getcoins = data["data"]["already_received_points"] #账号今天获得了多少米游币
             else:
-                Today_getcoins = data["data"]["can_get_points"]
                 #如果第0个大于或等于62则直接判定任务没做
                 if data["data"]["states"][0]["mission_id"] >= 62:
                     tools.log.info(f"新的一天，今天可以获得{Today_getcoins}个米游币")

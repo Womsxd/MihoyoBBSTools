@@ -35,8 +35,8 @@ def Timestamp() -> int:
 
 #获取请求Header里的DS 当web为true则生成网页端的DS
 def Get_ds(web:bool, web_old:bool) -> str:
-    if web in True:
-        if web_old in True:
+    if web == True:
+        if web_old == True:
             n = setting.mihoyobbs_Salt_web_old
         else:
             n = setting.mihoyobbs_Salt_web
@@ -53,7 +53,7 @@ def Get_deviceid() -> str:
                 '-', '').upper()
 
 #获取签到的奖励名称
-def Get_item(self, raw_data:dict) ->str:
+def Get_item(raw_data:dict) ->str:
     temp_Name = raw_data["name"]
     temp_Cnt = raw_data["cnt"]
     return f"{temp_Name}x{temp_Cnt}"

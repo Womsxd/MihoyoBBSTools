@@ -43,18 +43,19 @@ def main():
                 bbs.Likeposts()
             if config.mihoyobbs["bbs_Share"] == True:
                 bbs.Share()
-            tools.log.info(f"今天还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+            bbs.Get_taskslist()
+            tools.log.info(f"今天已经获得{mihoyobbs.Today_have_getcoins}，还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
         else:
             tools.log.info("米游社功能未启用！")
         #原神签到
-        if(config.genshin_AutoSingin == True):
+        if(config.genshin_Auto_sing == True):
             tools.log.info("正在进行原神签到")
             genshin_Help = genshin.genshin()
             genshin_Help.Sing_acc()
         else:
             tools.log.info("原神签到功能未启用！")
         #崩坏3签到
-        if config.honkai3rd_AutoSing == True:
+        if config.honkai3rd_Auto_sing == True:
             tools.log.info("正在进行崩坏3签到")
             honkai3rd_Help = honkai3rd.honkai3rd()
             honkai3rd_Help.Sing_acc()
