@@ -28,7 +28,6 @@ def main_multi(autorun:bool):
         tools.log.info(f"已搜索到{len(config_List)}个配置文件，请确认是否无多余文件！\r\n{config_List}")
         try:
             input("请输入回车继续，需要重新搜索配置文件请Ctrl+C退出脚本")
-            exit()
         except:
             exit()
     for i in iter(config_List):
