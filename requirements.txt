@@ -1,1 +1,2 @@
 httpx==0.18.1
+requests==2.25.1
