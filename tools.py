@@ -1,4 +1,5 @@
 import os
+import ssl
 import uuid
 import time
 import config
@@ -63,3 +64,8 @@ def Nextday() -> int:
     now_time = int(time.time())
     nextday_time = now_time - now_time % 86400 + time.timezone + 86400
     return nextday_time
+
+#获取Openssl版本
+def Get_openssl_Version() ->int:
+    temp_List = ssl.OPENSSL_VERSION_INFO
+    return int(f"{str(temp_List[0])}{str(temp_List[1])}{str(temp_List[2])}")
