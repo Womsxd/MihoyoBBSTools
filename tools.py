@@ -1,5 +1,4 @@
 import os
-import ssl
 import uuid
 import time
 import config
@@ -67,5 +66,12 @@ def Nextday() -> int:
 
 #获取Openssl版本
 def Get_openssl_Version() ->int:
+    try:
+        import ssl
+    except ImportError:
+        log.error("Openssl Lib Error !!")
+        #return -99
+        #建议直接更新Python的版本，有特殊情况请提交issues
+        exit(-1)
     temp_List = ssl.OPENSSL_VERSION_INFO
     return int(f"{str(temp_List[0])}{str(temp_List[1])}{str(temp_List[2])}")
