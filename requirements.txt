@@ -1,2 +1,2 @@
-httpx==0.18.1
+httpx==0.18.2
 requests==2.25.1
