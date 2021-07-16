@@ -49,7 +49,7 @@ class mihoyobbs:
         if "err" in data["message"]:
             tools.log.info("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
             config.Clear_cookies()
-            exit()
+            exit(1)
         else:
             Today_getcoins = data["data"]["can_get_points"]
             Today_have_getcoins = data["data"]["already_received_points"]
@@ -105,16 +105,17 @@ class mihoyobbs:
         #签到这里暂时不设置判断，防止要签到的其他社区没有签到成功
         #if self.Task_do["bbs_Sign"] == False:
         tools.log.info("正在签到......")
-        for i in setting.mihoyobbs_List_Use:
-            req = http.post(url=setting.bbs_Signurl.format(i["id"]), data="" ,headers=self.headers)
-            data = req.json()
-            if "err" not in data["message"]:
-                tools.log.info(str(i["name"]+ data["message"]))
-                time.sleep(random.randint(2, 6))
-            else:
-                tools.log.info("签到失败，你的cookie可能已过期，请重新设置cookie。")
-                config.Clear_cookies()
-                exit()
+        if self.Task_do["bbs_Sign"] == False:
+            for i in setting.mihoyobbs_List_Use:
+                req = http.post(url=setting.bbs_Signurl.format(i["id"]), data="" ,headers=self.headers)
+                data = req.json()
+                if "err" not in data["message"]:
+                    tools.log.info(str(i["name"]+ data["message"]))
+                    time.sleep(random.randint(2, 6))
+                else:
+                    tools.log.info("签到失败，你的cookie可能已过期，请重新设置cookie。")
+                    config.Clear_cookies()
+                    exit(1)
 
     #看帖子
     def Readposts(self):

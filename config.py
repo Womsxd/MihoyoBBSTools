@@ -98,3 +98,4 @@ def Clear_cookies():
         f.flush()
         f.close()
         tools.log.info("Cookie删除完毕")
+        exit(1)
