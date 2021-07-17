@@ -1,6 +1,8 @@
+import time
 import login
 import tools
 import config
+import random
 import genshin
 import setting
 import mihoyobbs
@@ -14,6 +16,7 @@ def main():
         if config.mihoyobbs_Login_ticket == "" or config.mihoyobbs_Stuid == "" or config.mihoyobbs_Stoken == "":
         #登入
             login.login()
+            time.sleep(random.randint(2,6))
         #获取要使用的BBS列表,#判断是否开启bbs_Singin_multi
         if config.mihoyobbs["bbs_Singin_multi"] == True:
             #速度快，但是无法设置主社区，主社区默认为第一个
@@ -45,6 +48,7 @@ def main():
                 bbs.Share()
             bbs.Get_taskslist()
             tools.log.info(f"今天已经获得{mihoyobbs.Today_have_getcoins}，还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+            time.sleep(random.randint(2,6))
         else:
             tools.log.info("米游社功能未启用！")
         #原神签到
@@ -52,6 +56,7 @@ def main():
             tools.log.info("正在进行原神签到")
             genshin_Help = genshin.genshin()
             genshin_Help.Sing_acc()
+            time.sleep(random.randint(2,6))
         else:
             tools.log.info("原神签到功能未启用！")
         #崩坏3签到
