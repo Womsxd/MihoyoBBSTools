@@ -130,3 +130,6 @@ dmypy.json
 
 # VSCode
 .vscode/
+
+#自己用的推送((
+push_main.py

@@ -36,7 +36,7 @@ def main_multi(autorun:bool):
         config.config_Path= f"{config.path}/{i}"
         main.main()
         tools.log.info(f"{i}执行完毕")
-        time.sleep(random.randint(5, 15))
+        time.sleep(random.randint(3, 10))
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2 and sys.argv[1] == "autorun":
