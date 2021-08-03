@@ -31,7 +31,7 @@ class honkai3rd:
         data = req.json()
         if data["retcode"] != 0:
             tools.log.warn("获取账号列表失败！")
-            exit()
+            exit(1)
         for i in data["data"]["list"]:
             temp_List.append([i["nickname"], i["game_uid"], i["region"]])
         tools.log.info(f"已获取到{len(temp_List)}个崩坏3账号信息")
@@ -55,7 +55,7 @@ class honkai3rd:
         if data["retcode"] != 0:
             tools.log.warn("获取账号签到信息失败！")
             print (req.text)
-            exit()
+            exit(1)
         today_Item = self.Get_today_item(data["data"]["sign"]["list"])
         if today_Item["status"] == 1:
             return True

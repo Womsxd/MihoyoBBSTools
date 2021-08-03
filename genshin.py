@@ -33,7 +33,7 @@ class genshin:
         data = req.json()
         if data["retcode"] != 0:
             tools.log.warn("获取账号列表失败！")
-            exit()
+            exit(1)
         for i in data["data"]["list"]:
             temp_List.append([i["nickname"], i["game_uid"], i["region"]])
         tools.log.info(f"已获取到{len(temp_List)}个原神账号信息")
@@ -47,7 +47,7 @@ class genshin:
         if data["retcode"] != 0:
             tools.log.warn("获取签到奖励列表失败")
             print (req.text)
-            exit()
+            exit(1)
         return data["data"]["awards"]
 
     #判断签到
@@ -57,7 +57,7 @@ class genshin:
         if data["retcode"] != 0:
             tools.log.warn("获取账号签到信息失败！")
             print (req.text)
-            exit()
+            exit(1)
         return data["data"]
 
     #签到
