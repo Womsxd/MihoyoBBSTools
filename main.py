@@ -17,29 +17,29 @@ def main():
         #登入
             login.login()
             time.sleep(random.randint(2,6))
-        #获取要使用的BBS列表,#判断是否开启bbs_Singin_multi
-        if config.mihoyobbs["bbs_Singin_multi"] == True:
+        #获取要使用的BBS列表,#判断是否开启bbs_Signin_multi
+        if config.mihoyobbs["bbs_Signin_multi"] == True:
             #速度快，但是无法设置主社区，主社区默认为第一个
             '''
             for i in setting.mihoyobbs_List:
-                if int(i["id"]) in config.mihoyobbs["bbs_Singin_multi_list"]:
+                if int(i["id"]) in config.mihoyobbs["bbs_Signin_multi_list"]:
                     setting.mihoyobbs_List_Use.append(i)
             '''
             #用这里的方案可以实现当让id在第一个的时候为主社区
-            for i in config.mihoyobbs["bbs_Singin_multi_list"]:
+            for i in config.mihoyobbs["bbs_Signin_multi_list"]:
                 for i2 in setting.mihoyobbs_List:
                     if i == int(i2["id"]):
                         setting.mihoyobbs_List_Use.append(i2)
         else:
-            #关闭bbs_Singin_multi后只签到大别墅
+            #关闭bbs_Signin_multi后只签到大别墅
             for i in setting.mihoyobbs_List:
                 if int(i["id"]) == 5:
                     setting.mihoyobbs_List_Use.append(i)
         #米游社签到
         if config.mihoyobbs["bbs_Global"] == True:
             bbs = mihoyobbs.mihoyobbs()
-            if config.mihoyobbs["bbs_Singin"] == True:
-                bbs.Singin()
+            if config.mihoyobbs["bbs_Signin"] == True:
+                bbs.Signin()
             if config.mihoyobbs["bbs_Read_posts"] == True:
                 bbs.Readposts()
             if config.mihoyobbs["bbs_Like_posts"] == True:
@@ -52,18 +52,18 @@ def main():
         else:
             tools.log.info("米游社功能未启用！")
         #原神签到
-        if(config.genshin_Auto_sing == True):
+        if(config.genshin_Auto_sign == True):
             tools.log.info("正在进行原神签到")
             genshin_Help = genshin.genshin()
-            genshin_Help.Sing_acc()
+            genshin_Help.Sign_acc()
             time.sleep(random.randint(2,6))
         else:
             tools.log.info("原神签到功能未启用！")
         #崩坏3签到
-        if config.honkai3rd_Auto_sing == True:
+        if config.honkai3rd_Auto_sign == True:
             tools.log.info("正在进行崩坏3签到")
             honkai3rd_Help = honkai3rd.honkai3rd()
-            honkai3rd_Help.Sing_acc()
+            honkai3rd_Help.Sign_acc()
         else:
             tools.log.info("崩坏3签到功能未启用！")
     else:

@@ -101,7 +101,7 @@ class mihoyobbs:
         return temp_List
 
     #进行签到操作
-    def Singin(self):
+    def Signin(self):
         #签到这里暂时不设置判断，防止要签到的其他社区没有签到成功
         #if self.Task_do["bbs_Sign"] == False:
         tools.log.info("正在签到......")

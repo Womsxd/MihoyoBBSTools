@@ -45,9 +45,9 @@
 ```json
 "mihoyobbs": {
     "bbs_Global": true, 
-    "bbs_Singin": true, 
-    "bbs_Singin_multi": true, 
-    "bbs_Singin_multi_list": [2, 5], 
+    "bbs_Signin": true, 
+    "bbs_Signin_multi": true, 
+    "bbs_Signin_multi_list": [2, 5], 
     "bbs_Read_posts": true, 
     "bbs_Like_posts": true, 
     "bbs_Unlike": true, 
@@ -59,11 +59,11 @@
 
 >`bbs_Global`的作用是是否启用米游币获取，`bool`类型，可设置`true`(默认)和`false`
 >
->`bbs_Singin`的作用是是否启用讨论区自动签到，`bool`类型，可设置`true`(默认)和`false`
+>`bbs_Signin`的作用是是否启用讨论区自动签到，`bool`类型，可设置`true`(默认)和`false`
 >
->`bbs_Singin_multi`的作用是是否启用多个讨论区签到(关闭的话只签到大别墅)，`bool`类型，可设置`true`(默认)和`false`
+>`bbs_Signin_multi`的作用是是否启用多个讨论区签到(关闭的话只签到大别墅)，`bool`类型，可设置`true`(默认)和`false`
 >
->`bbs_Singin_multi_list`的作用设置要签到的讨论区，`array`类型(**python**里面是`list`)，可设置内容可以设置`[1,2,3,4,5]`签到全部讨论区，默认是`[2,5]`，可以通过调整id的位置来进行设置阅读/点赞/分享指定讨论区的帖子`[2,1,5]`（签到原神，崩坏3和大别墅）[讨论区的id对应关系](## 讨论区的id对应关系)
+>`bbs_Signin_multi_list`的作用设置要签到的讨论区，`array`类型(**python**里面是`list`)，可设置内容可以设置`[1,2,3,4,5]`签到全部讨论区，默认是`[2,5]`，可以通过调整id的位置来进行设置阅读/点赞/分享指定讨论区的帖子`[2,1,5]`（签到原神，崩坏3和大别墅）[讨论区的id对应关系](## 讨论区的id对应关系)
 >
 >`bbs_Read_posts`的作用是是否启用自动阅读帖子，`bool`类型，可设置`true`(默认)和`false`
 >
@@ -74,13 +74,13 @@
 >`bbs_Share`的作用是是否启用自动分享帖子，`bool`类型，可设置`true`(默认)和`false`
 
 ```json
-"genshin_Auto_sing": true,
+"genshin_Auto_sign": true,
 ```
 
 >此字段的作用是是否启用原神自动签到，`bool`类型，可设置`true`(默认)和`false`
 
 ```json
-"honkai3rd_Auto_sing": false
+"honkai3rd_Auto_sign": false
 ```
 
 >此字段的作用是是否启用崩坏3自动签到，`bool`类型，可设置`true`和`false`(默认)

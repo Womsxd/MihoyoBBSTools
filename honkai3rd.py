@@ -49,8 +49,8 @@ class honkai3rd:
                 return raw_data[i]
 
     #判断签到
-    def Is_sing(self, region:str, uid:str, nickname:str):
-        req = http.get(setting.honkai3rd_Is_singurl.format(setting.honkai3rd_Act_id, region, uid), headers=self.headers)
+    def Is_sign(self, region:str, uid:str, nickname:str):
+        req = http.get(setting.honkai3rd_Is_signurl.format(setting.honkai3rd_Act_id, region, uid), headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
             tools.log.warn("获取账号签到信息失败！")
@@ -64,15 +64,15 @@ class honkai3rd:
             return False
 
     #签到
-    def Sing_acc(self):
+    def Sign_acc(self):
         if len(self.acc_List) != 0:
             for i in self.acc_List:
                 tools.log.info(f"正在为舰长{i[0]}进行签到...")
                 time.sleep(random.randint(2, 6))
-                is_data = self.Is_sing(region = i[2], uid = i[1], nickname = i[0])
+                is_data = self.Is_sign(region = i[2], uid = i[1], nickname = i[0])
                 if is_data == True:
                     time.sleep(random.randint(2, 6))
-                    req = http.post(url=setting.honkai3rd_SingUrl, headers=self.headers,
+                    req = http.post(url=setting.honkai3rd_SignUrl, headers=self.headers,
                         json={'act_id': setting.honkai3rd_Act_id, 'region': i[2], 'uid': i[1]})
                     data = req.json()
                     if data["retcode"] == 0:

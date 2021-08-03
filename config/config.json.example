@@ -7,14 +7,14 @@
     "mihoyobbs_Cookies": "", 
     "mihoyobbs": {
         "bbs_Global": true, 
-        "bbs_Singin": true, 
-        "bbs_Singin_multi": true, 
-        "bbs_Singin_multi_list": [2, 5], 
+        "bbs_Signin": true, 
+        "bbs_Signin_multi": true, 
+        "bbs_Signin_multi_list": [2, 5], 
         "bbs_Read_posts": true, 
         "bbs_Like_posts": true, 
         "bbs_Unlike": true, 
         "bbs_Share": true
     }, 
-    "genshin_Auto_sing": true,
-    "honkai3rd_Auto_sing": false
+    "genshin_Auto_sign": true,
+    "honkai3rd_Auto_sign": false
 }
