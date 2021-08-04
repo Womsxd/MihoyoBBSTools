@@ -6,6 +6,7 @@ import setting
 def login():
     if (config.mihoyobbs_Cookies == ''):
         log.error("请填入Cookies!")
+        config.Clear_cookies()
         exit(1)
     temp_Cookies = {}
     if "login_ticket" in config.mihoyobbs_Cookies:
@@ -24,7 +25,9 @@ def login():
             config.Save_config()
         else:
             log.error("cookie已失效,请重新登录米游社抓取cookie")
+            config.Clear_cookies()
             exit(1)
     else:
         log.error("cookie中没有'login_ticket'字段,请重新登录米游社，重新抓取cookie!")
+        config.Clear_cookies()
         exit(1)
