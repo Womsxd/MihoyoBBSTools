@@ -65,7 +65,7 @@ class genshin:
         if len(self.acc_List) != 0:
             for i in self.acc_List:
                 tools.log.info(f"正在为旅行者{i[0]}进行签到...")
-                time.sleep(random.randint(2, 6))
+                time.sleep(random.randint(2, 8))
                 is_data = self.Is_sign(region = i[2], uid = i[1])
                 if is_data["first_bind"] == True:
                     tools.log.warn(f"旅行者{i[0]}是第一次绑定米游社，请先手动签到一次")
@@ -74,7 +74,7 @@ class genshin:
                     if is_data["is_sign"] == True:
                         tools.log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.Get_item(self.sign_Give[sign_Days])}")
                     else:
-                        time.sleep(random.randint(2, 6))
+                        time.sleep(random.randint(2, 8))
                         req = http.post(url=setting.genshin_Signurl, headers=self.headers,
                                 json={'act_id': setting.genshin_Act_id, 'region': i[2], 'uid': i[1]})
                         data = req.json()

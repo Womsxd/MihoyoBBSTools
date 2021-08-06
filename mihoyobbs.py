@@ -28,12 +28,14 @@ class mihoyobbs:
         self.Task_do = {
             "bbs_Sign": False,
             "bbs_Read_posts": False,
+            "bbs_Read_posts_num": 3,
             "bbs_Like_posts": False,
+            "bbs_Like_posts_num": 5,
             "bbs_Share": False
         }
         self.Get_taskslist()
         #如果这三个任务都做了就没必要获取帖子了
-        if self.Task_do["bbs_Read_posts"] == True and self.Task_do["bbs_Like_posts"] == True and self.Task_do["bbs_Share"] == True:
+        if self.Task_do["bbs_Read_posts"] and self.Task_do["bbs_Like_posts"] and self.Task_do["bbs_Share"]:
             pass
         else:
             self.postsList = self.Getlist()
@@ -70,19 +72,23 @@ class mihoyobbs:
                     for i in data["data"]["states"]:
                         #58是讨论区签到
                         if i["mission_id"] == 58:
-                            if i["is_get_award"] == True:
+                            if i["is_get_award"]:
                                 self.Task_do["bbs_Sign"] = True
                         #59是看帖子
                         elif i["mission_id"] == 59:
-                            if i["is_get_award"] == True:
+                            if i["is_get_award"]:
                                 self.Task_do["bbs_Read_posts"] = True
+                            else:
+                                self.Task_do["bbs_Read_posts_num"] -= i["happened_times"]
                         #60是给帖子点赞
                         elif i["mission_id"] == 60:
-                            if i["is_get_award"] == True:
+                            if i["is_get_award"]:
                                 self.Task_do["bbs_Like_posts"] = True
+                            else:
+                                self.Task_do["bbs_Like_posts_num"] -= i["happened_times"]
                         #61是分享帖子
                         elif i["mission_id"] == 61:
-                            if i["is_get_award"] == True:
+                            if i["is_get_award"]:
                                 self.Task_do["bbs_Share"] = True
                                 #分享帖子，是最后一个任务，到这里了下面都是一次性任务，直接跳出循环
                                 break
@@ -91,27 +97,25 @@ class mihoyobbs:
     def Getlist(self) -> list:
         temp_List = []
         tools.log.info("正在获取帖子列表......")
-        for i in setting.mihoyobbs_List_Use:
-            req = http.get(url=setting.bbs_Listurl.format(i["forumId"]), headers=self.headers)
-            data = req.json()
-            for n in range(6):
-                temp_List.append([data["data"]["list"][n]["post"]["post_id"], data["data"]["list"][n]["post"]["subject"]])
-            tools.log.info("已获取{}个帖子".format(len(temp_List)))
-            time.sleep(random.randint(2, 6))
+        req = http.get(url=setting.bbs_Listurl.format(setting.mihoyobbs_List_Use[0]["forumId"]), headers=self.headers)
+        data = req.json()
+        for n in range(5):
+            temp_List.append([data["data"]["list"][n]["post"]["post_id"], data["data"]["list"][n]["post"]["subject"]])
+        tools.log.info("已获取{}个帖子".format(len(temp_List)))
         return temp_List
 
     #进行签到操作
     def Signin(self):
-        #签到这里暂时不设置判断，防止要签到的其他社区没有签到成功
-        #if self.Task_do["bbs_Sign"] == False:
-        tools.log.info("正在签到......")
-        if self.Task_do["bbs_Sign"] == False:
+        if self.Task_do["bbs_Sign"]:
+            tools.log.info("讨论区任务已经完成过了~")
+        else:
+            tools.log.info("正在签到......")
             for i in setting.mihoyobbs_List_Use:
                 req = http.post(url=setting.bbs_Signurl.format(i["id"]), data="" ,headers=self.headers)
                 data = req.json()
                 if "err" not in data["message"]:
                     tools.log.info(str(i["name"]+ data["message"]))
-                    time.sleep(random.randint(2, 6))
+                    time.sleep(random.randint(2, 8))
                 else:
                     tools.log.info("签到失败，你的cookie可能已过期，请重新设置cookie。")
                     config.Clear_cookies()
@@ -119,22 +123,24 @@ class mihoyobbs:
 
     #看帖子
     def Readposts(self):
-        if self.Task_do["bbs_Read_posts"] == False:
+        if self.Task_do["bbs_Read_posts"]:
+            tools.log.info("看帖任务已经完成过了~")
+        else:
             tools.log.info("正在看帖......")
-            for i in range(3):
+            for i in range(self.Task_do["bbs_Read_posts_num"]):
                 req = http.get(url=setting.bbs_Detailurl.format(self.postsList[i][0]), headers=self.headers)
                 data = req.json()
                 if data["message"] == "OK":
                     tools.log.info("看帖：{} 成功".format(self.postsList[i][1]))
-                time.sleep(random.randint(2, 6))
-        else:
-            tools.log.info("看帖任务已经完成过了~")
+                time.sleep(random.randint(2, 8))
 
     #点赞
     def Likeposts(self):
-        if self.Task_do["bbs_Like_posts"] == False:
+        if self.Task_do["bbs_Like_posts"]:
+            tools.log.info("点赞任务已经完成过了~")
+        else:
             tools.log.info("正在点赞......")
-            for i in range(5):
+            for i in range(self.Task_do["bbs_Like_posts_num"]):
                 req = http.post(url=setting.bbs_Likeurl, headers=self.headers,
                         json={"post_id": self.postsList[i][0], "is_cancel": False})
                 data = req.json()
@@ -142,24 +148,22 @@ class mihoyobbs:
                     tools.log.info("点赞：{} 成功".format(self.postsList[i][1]))
                 #判断取消点赞是否打开
                 if config.mihoyobbs["bbs_Unlike"] == True:
-                    time.sleep(random.randint(2, 6))
+                    time.sleep(random.randint(2, 8))
                     req = http.post(url=setting.bbs_Likeurl, headers=self.headers,
                         json={"post_id": self.postsList[i][0], "is_cancel": True})
                     data = req.json()
                     if data["message"] == "OK":
                         tools.log.info("取消点赞：{} 成功".format(self.postsList[i][1]))
-                time.sleep(random.randint(2, 6))
-        else:
-            tools.log.info("点赞任务已经完成过了~")
+                time.sleep(random.randint(2, 8))      
 
     #分享操作
     def Share(self):
-        if self.Task_do["bbs_Share"] == False:
+        if self.Task_do["bbs_Share"]:
+            tools.log.info("分享任务已经完成过了~")
+        else:
             tools.log.info("正在分享......")
             req = http.get(url=setting.bbs_Shareurl.format(self.postsList[0][0]), headers=self.headers)
             data = req.json()
             if data["message"] == "OK":
                 tools.log.info("分享：{} 成功".format(self.postsList[0][1]))
-            time.sleep(random.randint(2, 6))
-        else:
-            tools.log.info("分享任务已经完成过了~")
+            time.sleep(random.randint(2, 8))

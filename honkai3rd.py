@@ -68,10 +68,10 @@ class honkai3rd:
         if len(self.acc_List) != 0:
             for i in self.acc_List:
                 tools.log.info(f"正在为舰长{i[0]}进行签到...")
-                time.sleep(random.randint(2, 6))
+                time.sleep(random.randint(2, 8))
                 is_data = self.Is_sign(region = i[2], uid = i[1], nickname = i[0])
                 if is_data == True:
-                    time.sleep(random.randint(2, 6))
+                    time.sleep(random.randint(2, 8))
                     req = http.post(url=setting.honkai3rd_SignUrl, headers=self.headers,
                         json={'act_id': setting.honkai3rd_Act_id, 'region': i[2], 'uid': i[1]})
                     data = req.json()
