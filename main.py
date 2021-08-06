@@ -16,7 +16,7 @@ def main():
         if config.mihoyobbs_Login_ticket == "" or config.mihoyobbs_Stuid == "" or config.mihoyobbs_Stoken == "":
         #登入
             login.login()
-            time.sleep(random.randint(2,6))
+            time.sleep(random.randint(2, 8))
         #获取要使用的BBS列表,#判断是否开启bbs_Signin_multi
         if config.mihoyobbs["bbs_Signin_multi"] == True:
             #速度快，但是无法设置主社区，主社区默认为第一个
@@ -38,17 +38,20 @@ def main():
         #米游社签到
         if config.mihoyobbs["bbs_Global"] == True:
             bbs = mihoyobbs.mihoyobbs()
-            if config.mihoyobbs["bbs_Signin"] == True:
-                bbs.Signin()
-            if config.mihoyobbs["bbs_Read_posts"] == True:
-                bbs.Readposts()
-            if config.mihoyobbs["bbs_Like_posts"] == True:
-                bbs.Likeposts()
-            if config.mihoyobbs["bbs_Share"] == True:
-                bbs.Share()
-            bbs.Get_taskslist()
-            tools.log.info(f"今天已经获得{mihoyobbs.Today_have_getcoins}，还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
-            time.sleep(random.randint(2,6))
+            if bbs.Task_do["bbs_Sign"] and bbs.Task_do["bbs_Read_posts"] and bbs.Task_do["bbs_Like_posts"] and bbs.Task_do["bbs_Share"]:
+               tools.log.info(f"今天已经获得{mihoyobbs.Today_have_getcoins}，还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+            else: 
+                if config.mihoyobbs["bbs_Signin"] == True:
+                    bbs.Signin()
+                if config.mihoyobbs["bbs_Read_posts"] == True:
+                    bbs.Readposts()
+                if config.mihoyobbs["bbs_Like_posts"] == True:
+                    bbs.Likeposts()
+                if config.mihoyobbs["bbs_Share"] == True:
+                    bbs.Share()
+                bbs.Get_taskslist()
+                tools.log.info(f"今天已经获得{mihoyobbs.Today_have_getcoins}，还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+                time.sleep(random.randint(2, 8))
         else:
             tools.log.info("米游社功能未启用！")
         #原神签到
@@ -56,7 +59,7 @@ def main():
             tools.log.info("正在进行原神签到")
             genshin_Help = genshin.genshin()
             genshin_Help.Sign_acc()
-            time.sleep(random.randint(2,6))
+            time.sleep(random.randint(2, 8))
         else:
             tools.log.info("原神签到功能未启用！")
         #崩坏3签到
