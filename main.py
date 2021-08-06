@@ -39,7 +39,7 @@ def main():
         if config.mihoyobbs["bbs_Global"] == True:
             bbs = mihoyobbs.mihoyobbs()
             if bbs.Task_do["bbs_Sign"] and bbs.Task_do["bbs_Read_posts"] and bbs.Task_do["bbs_Like_posts"] and bbs.Task_do["bbs_Share"]:
-               tools.log.info(f"今天已经获得{mihoyobbs.Today_have_getcoins}，还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+                tools.log.info(f"今天已经全部完成了！一共获得{mihoyobbs.Today_have_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
             else: 
                 if config.mihoyobbs["bbs_Signin"] == True:
                     bbs.Signin()
@@ -50,7 +50,7 @@ def main():
                 if config.mihoyobbs["bbs_Share"] == True:
                     bbs.Share()
                 bbs.Get_taskslist()
-                tools.log.info(f"今天已经获得{mihoyobbs.Today_have_getcoins}，还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+                tools.log.info(f"今天已经获得{mihoyobbs.Today_have_getcoins}个米游币，还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
                 time.sleep(random.randint(2, 8))
         else:
             tools.log.info("米游社功能未启用！")
