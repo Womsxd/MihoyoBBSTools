@@ -56,7 +56,7 @@ def Load_config():
         mihoyobbs_Stuid = data["mihoyobbs_Stuid"]
         mihoyobbs_Stoken = data["mihoyobbs_Stoken"]
         mihoyobbs_Cookies = data["mihoyobbs_Cookies"]
-        mihoyobbs["bbs_Gobal"] = data["mihoyobbs"]["bbs_Global"]
+        mihoyobbs["bbs_Global"] = data["mihoyobbs"]["bbs_Global"]
         mihoyobbs["bbs_Signin"] = data["mihoyobbs"]["bbs_Signin"]
         mihoyobbs["bbs_Signin_multi"] = data["mihoyobbs"]["bbs_Signin_multi"]
         mihoyobbs["bbs_Signin_multi_list"] = data["mihoyobbs"]["bbs_Signin_multi_list"]
