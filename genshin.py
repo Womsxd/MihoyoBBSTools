@@ -67,11 +67,11 @@ class genshin:
                 tools.log.info(f"正在为旅行者{i[0]}进行签到...")
                 time.sleep(random.randint(2, 8))
                 is_data = self.Is_sign(region = i[2], uid = i[1])
-                if is_data["first_bind"] == True:
+                if is_data["first_bind"]:
                     tools.log.warn(f"旅行者{i[0]}是第一次绑定米游社，请先手动签到一次")
                 else:
                     sign_Days = is_data["total_sign_day"] - 1
-                    if is_data["is_sign"] == True:
+                    if is_data["is_sign"]:
                         tools.log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.Get_item(self.sign_Give[sign_Days])}")
                     else:
                         time.sleep(random.randint(2, 8))

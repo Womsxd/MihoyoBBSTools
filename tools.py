@@ -35,8 +35,8 @@ def Timestamp() -> int:
 
 #获取请求Header里的DS 当web为true则生成网页端的DS
 def Get_ds(web:bool, web_old:bool) -> str:
-    if web == True:
-        if web_old == True:
+    if web:
+        if web_old:
             n = setting.mihoyobbs_Salt_web_old
         else:
             n = setting.mihoyobbs_Salt_web
