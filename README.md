@@ -60,6 +60,12 @@
 
 7. **此时Cookie已经复制到你的粘贴板上了**
 
+## 使用的第三方库
+
+requests: [github](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/)
+
+httpx: [github](https://github.com/encode/httpx) [pypi](https://pypi.org/project/httpx/)
+
 ## License
 
 [MIT License](https://github.com/Womsxd/AutoMihoyoBBS/blob/master/LICENSE)
