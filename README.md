@@ -20,7 +20,7 @@
 
   4. [requirements.txt](https://raw.githubusercontent.com/Womsxd/AutoMihoyoBBS/master/requirements.txt) 是所需第三方模块，执行 `pip install -r requirements.txt` 安装模块
 
-  5. 打开目录中的**config文件夹**复制`config.json.example`并改名为`config.json`，如果需要使用多用户的功能的话请改名成`xxx.json`
+  5. 打开目录中的**config文件夹**复制`config.json.example`并改名为`config.json`，脚本的多用户功能靠读取不同的配置文件实现，你可以创建无数个`自定义名字.json`，脚本会扫描**config**目录下`json`为拓展名的文件，并按照名称顺序依次执行。
 
   6. 请使用vscode/notepad++等文本编辑器打开上一步复制好的配置文件
 
