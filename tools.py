@@ -10,14 +10,15 @@ import setting
 
 #Log输出，这里提供了自定义logging输出的机会，只需要创建一个logging.ini并且写入配置文件即可自定义输出
 if os.path.exists(f"{config.path}/logging.ini"):
+    import logging.config
     logging.config.fileConfig(f"{config.path}/logging.ini")
+    log = logging.getLogger("AutoMihoyoBBS")
 else:
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s %(levelname)s %(message)s',
         datefmt='%Y-%m-%dT%H:%M:%S')
-
-log = logger = logging
+    log = logger = logging
 
 #md5计算
 def MD5(text:str) -> str:
