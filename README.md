@@ -69,3 +69,7 @@ httpx: [github](https://github.com/encode/httpx) [pypi](https://pypi.org/project
 ## License
 
 [MIT License](https://github.com/Womsxd/AutoMihoyoBBS/blob/master/LICENSE)
+
+## 鸣谢
+
+[JetBrains](https://jb.gg/OpenSource)
