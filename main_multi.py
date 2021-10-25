@@ -7,15 +7,17 @@ import config
 import random
 import setting
 
-#搜索配置文件
-def Fund_config() ->list:
-    file_Name=[]
+
+# 搜索配置文件
+def Fund_config() -> list:
+    file_Name = []
     for files in os.listdir(config.path):
         if os.path.splitext(files)[1] == '.json':
             file_Name.append(files)
     return (file_Name)
 
-def main_multi(autorun:bool):
+
+def main_multi(autorun: bool):
     tools.log.info("AutoMihoyoBBS Multi User mode")
     tools.log.info("正在搜索配置文件！")
     config_List = Fund_config()
@@ -33,10 +35,11 @@ def main_multi(autorun:bool):
     for i in iter(config_List):
         tools.log.info(f"正在执行{i}")
         setting.mihoyobbs_List_Use = []
-        config.config_Path= f"{config.path}/{i}"
+        config.config_Path = f"{config.path}/{i}"
         main.main()
         tools.log.info(f"{i}执行完毕")
         time.sleep(random.randint(3, 10))
+
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2 and sys.argv[1] == "autorun":
