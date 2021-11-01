@@ -13,9 +13,12 @@ class honkai3rd:
             'DS': tools.Get_ds(web=True, web_old=True),
             'Origin': 'https://webstatic.mihoyo.com',
             'x-rpc-app_version': setting.mihoyobbs_Version_old,
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 9; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36 miHoYoBBS/2.3.0',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 9; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) '
+                          'Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36 miHoYoBBS/2.3.0',
             'x-rpc-client_type': setting.mihoyobbs_Client_type_web,
-            'Referer': 'https://webstatic.mihoyo.com/bh3/event/euthenia/index.html?bbs_presentation_style=fullscreen&bbs_game_role_required=bh3_cn&bbs_auth_required=true&act_id=e202104072769&utm_source=bbs&utm_medium=mys&utm_campaign=icon',
+            'Referer': f'https://webstatic.mihoyo.com/bh3/event/euthenia/index.html?bbs_presentation_style=fullscreen'
+                       f'&bbs_game_role_required=bh3_cn&bbs_auth_required=t'
+                       f'rue&act_id={setting.honkai3rd_Act_id}&utm_source=bbs&utm_medium=mys&utm_campaign=icon',
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,en-US;q=0.8',
             'X-Requested-With': 'com.mihoyo.hyperion',
@@ -40,7 +43,7 @@ class honkai3rd:
 
     # 获取今天已经签到了的dict
     def Get_today_item(self, raw_data: list) -> dict:
-        # 用range进行循环，当staus等于0的时候上一个就是今天签到的dict
+        # 用range进行循环，当status等于0的时候上一个就是今天签到的dict
         for i in range(len(raw_data)):
             if raw_data[i]["status"] == 0:
                 return raw_data[i - 1]
