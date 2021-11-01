@@ -62,7 +62,7 @@ genshin_Is_signurl = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/info?a
 genshin_Signurl = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/sign"
 
 # 崩坏3自动签到相关的设置
-honkai3rd_Act_id = "e202104072769"
+honkai3rd_Act_id = "ea20211026151532"
 honkai3rd_Account_info_url = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=bh3_cn"
-honkai3rd_Is_signurl = "https://api-takumi.mihoyo.com/common/euthenia/index?act_id={}&region={}&uid={}"
-honkai3rd_SignUrl = "https://api-takumi.mihoyo.com/common/euthenia/sign"
+honkai3rd_Is_signurl = "https://api-takumi.mihoyo.com/common/eutheniav2/index?act_id={}&region={}&uid={}"
+honkai3rd_SignUrl = "https://api-takumi.mihoyo.com/common/eutheniav2/sign"
