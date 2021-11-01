@@ -42,7 +42,7 @@ class honkai3rd:
         return temp_List
 
     # 获取今天已经签到了的dict
-    def Get_today_item(raw_data: list) -> dict:
+    def Get_today_item(self, raw_data: list) -> dict:
         # 用range进行循环，当status等于0的时候上一个就是今天签到的dict
         for i in range(len(raw_data)):
             if raw_data[i]["status"] == 0:
