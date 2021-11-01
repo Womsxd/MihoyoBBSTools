@@ -112,7 +112,7 @@ class mihoyobbs:
         else:
             tools.log.info("正在签到......")
             for i in setting.mihoyobbs_List_Use:
-                req = http.post(url=setting.bbs_Signurl.format(i["id"]), data="", headers=self.headers)
+                req = http.post(url=setting.bbs_Signurl.format(i["id"]), data={}, headers=self.headers)
                 data = req.json()
                 if "err" not in data["message"]:
                     tools.log.info(str(i["name"] + data["message"]))

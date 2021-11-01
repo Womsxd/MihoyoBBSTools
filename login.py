@@ -5,11 +5,10 @@ import setting
 
 
 def login():
-    if (config.mihoyobbs_Cookies == ''):
+    if config.mihoyobbs_Cookies == '':
         log.error("请填入Cookies!")
         config.Clear_cookies()
         exit(1)
-    temp_Cookies = {}
     # 判断Cookie里面是否有login_ticket 没有的话直接退了
     if "login_ticket" in config.mihoyobbs_Cookies:
         temp_Cookies = config.mihoyobbs_Cookies.split(";")

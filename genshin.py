@@ -33,7 +33,7 @@ class genshin:
         req = http.get(setting.genshin_Account_info_url, headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
-            tools.log.warn("获取账号列表失败！")
+            tools.log.warning("获取账号列表失败！")
             exit(1)
         for i in data["data"]["list"]:
             temp_List.append([i["nickname"], i["game_uid"], i["region"]])
@@ -46,7 +46,7 @@ class genshin:
         req = http.get(setting.genshin_Signlisturl.format(setting.genshin_Act_id), headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
-            tools.log.warn("获取签到奖励列表失败")
+            tools.log.warning("获取签到奖励列表失败")
             print(req.text)
             exit(1)
         return data["data"]["awards"]
@@ -56,7 +56,7 @@ class genshin:
         req = http.get(setting.genshin_Is_signurl.format(setting.genshin_Act_id, region, uid), headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
-            tools.log.warn("获取账号签到信息失败！")
+            tools.log.warning("获取账号签到信息失败！")
             print(req.text)
             exit(1)
         return data["data"]
@@ -69,7 +69,7 @@ class genshin:
                 time.sleep(random.randint(2, 8))
                 is_data = self.Is_sign(region=i[2], uid=i[1])
                 if is_data["first_bind"]:
-                    tools.log.warn(f"旅行者{i[0]}是第一次绑定米游社，请先手动签到一次")
+                    tools.log.warning(f"旅行者{i[0]}是第一次绑定米游社，请先手动签到一次")
                 else:
                     sign_Days = is_data["total_sign_day"] - 1
                     if is_data["is_sign"]:
@@ -88,7 +88,7 @@ class genshin:
                         elif data["retcode"] == -5003:
                             tools.log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.Get_item(self.sign_Give[sign_Days])}")
                         else:
-                            tools.log.warn("账号签到失败！")
+                            tools.log.warning("账号签到失败！")
                             print(req.text)
         else:
-            tools.log.warn("账号没有绑定任何原神账号！")
+            tools.log.warning("账号没有绑定任何原神账号！")

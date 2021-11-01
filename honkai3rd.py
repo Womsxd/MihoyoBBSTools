@@ -34,7 +34,7 @@ class honkai3rd:
         req = http.get(setting.honkai3rd_Account_info_url, headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
-            tools.log.warn("获取账号列表失败！")
+            tools.log.warning("获取账号列表失败！")
             exit(1)
         for i in data["data"]["list"]:
             temp_List.append([i["nickname"], i["game_uid"], i["region"]])
@@ -42,7 +42,7 @@ class honkai3rd:
         return temp_List
 
     # 获取今天已经签到了的dict
-    def Get_today_item(self, raw_data: list) -> dict:
+    def Get_today_item(raw_data: list) -> dict:
         # 用range进行循环，当status等于0的时候上一个就是今天签到的dict
         for i in range(len(raw_data)):
             if raw_data[i]["status"] == 0:
@@ -57,7 +57,7 @@ class honkai3rd:
         req = http.get(setting.honkai3rd_Is_signurl.format(setting.honkai3rd_Act_id, region, uid), headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
-            tools.log.warn("获取账号签到信息失败！")
+            tools.log.warning("获取账号签到信息失败！")
             print(req.text)
             exit(1)
         today_Item = self.Get_today_item(data["data"]["sign"]["list"])
@@ -86,7 +86,7 @@ class honkai3rd:
                         # 崩坏3应为奖励列表和签到信息在一起了，加上上面已经可以进行了一次判断，所以这里旧不重复再次执行判断来获取内容了
                         tools.log.info(f"舰长{i[0]}今天已经签到过了~")
                     else:
-                        tools.log.warn("账号签到失败！")
+                        tools.log.warning("账号签到失败！")
                         print(req.text)
         else:
-            tools.log.warn("账号没有绑定任何崩坏3账号！")
+            tools.log.warning("账号没有绑定任何崩坏3账号！")

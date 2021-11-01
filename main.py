@@ -73,7 +73,7 @@ def main():
         else:
             tools.log.info("崩坏3签到功能未启用！")
     else:
-        tools.log.warn("Config未启用！")
+        tools.log.warning("Config未启用！")
 
 
 if __name__ == "__main__":
