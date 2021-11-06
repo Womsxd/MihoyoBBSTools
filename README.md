@@ -60,6 +60,55 @@
 
 7. **此时Cookie已经复制到你的粘贴板上了**
 
+
+
+## 使用Docker运行
+
+Docker的运行脚本基于Linux平台编写，暂未在Win平台测试。
+
+将本项目Clone至本地后，请先按照上述步骤添加或修改配置文件。随后运行`make-docker.sh`脚本本地构建Docker镜像，同时初次运行容器。
+
+```shell
+sh make-docker.sh
+```
+
+或手动执行
+
+```
+# 编译容器
+docker build -f Dockerfile --tag ${docker_name}:"${time_now}" .
+```
+
+```
+# 运行容器（默认自动多配置文件）
+docker run -itd \
+	--name ${docker_name} \
+	--log-opt max-size=1m \
+	-v $(pwd):/var/app \
+	${docker_name}:"${time_now}"
+# 运行容器（直接运行main.py）
+docker run -itd \
+	--name ${docker_name} \
+	--log-opt max-size=1m \
+	-v $(pwd):/var/app \
+	-e MULTI=FALSE \
+	${docker_name}:"${time_now}"
+```
+
+若需要添加配置文件或修改配置文件，可直接在主机config文件夹中修改，修改的内容将实时同步在容器中。
+
+若需要再次运行签到脚本，可手动重启容器。每次运行Docker容器后，容器内将自动按照参数执行签到活动，签到完成后容器将自动停止运行。
+
+```
+docker restart ${docker_name} && docker logs -f ${docker_name}
+```
+
+关于每日定时，用户可在容器外部设计定时触发（启动）程序，每日定时运行脚本。
+
+（若有需要可自行编写相关脚本通知完成状态
+
+
+
 ## 使用的第三方库
 
 requests: [github](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/)
