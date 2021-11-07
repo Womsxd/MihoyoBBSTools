@@ -131,6 +131,9 @@ dmypy.json
 # VSCode
 .vscode/
 
+# idea
+.idea/
+
 #自己用的推送((
 push_main.py
 
