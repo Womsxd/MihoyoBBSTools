@@ -15,7 +15,6 @@ RUN sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.li
 # Project environment
 WORKDIR /var/app
 COPY . /var/app
-COPY ./Config/openssl.cnf /etc/ssl
 
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip \
     && pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
