@@ -61,7 +61,6 @@
 7. **此时Cookie已经复制到你的粘贴板上了**
 
 
-
 ## 使用Docker运行
 
 Docker的运行脚本基于Linux平台编写，暂未在Win平台测试。
@@ -107,13 +106,19 @@ docker restart ${docker_name} && docker logs -f ${docker_name}
 
 （若有需要可自行编写相关脚本通知完成状态
 
-
-
 ## 使用的第三方库
 
 requests: [github](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/)
 
 httpx: [github](https://github.com/encode/httpx) [pypi](https://pypi.org/project/httpx/)
+
+## 关于使用 Github Actions 运行
+
+本项目**不支持**也**不推荐**使用`Github Actions`来每日自动执行！
+
+也**不会**处理使用`Github Actions`执行有关的issues！
+
+推荐使用 阿里云/腾讯云 的云函数来进行每日自动执行脚本。
 
 ## License
 
