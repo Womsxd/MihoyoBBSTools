@@ -1,2 +1,3 @@
-httpx==0.21.1
-requests==2.26.0
+httpx>=0.21.1
+#requests是为了云函数的兼容
+requests>=2.26.0
