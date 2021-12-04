@@ -42,7 +42,7 @@ def main_multi(autorun: bool):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) >= 2 and sys.argv[1] == "autorun":
+    if (len(sys.argv) >= 2 and sys.argv[1] == "autorun") or os.getenv("AutoMihoyoBBS_autorun") == "1":
         autorun = True
     else:
         autorun = False
