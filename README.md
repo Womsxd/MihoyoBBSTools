@@ -106,6 +106,26 @@ docker restart mihoyo-bbs && docker logs -f mihoyo-bbs
 
 （若有需要可自行编写相关脚本通知完成状态
 
+## 使用云函数运行
+
+>以腾讯云为例
+
+1. 在本地完整运行一次。
+
+2. 打开并登录[云函数控制台](https://console.cloud.tencent.com/scf/list)。
+
+3. 新建云函数 - 自定义创建，函数类型选`事件函数`，部署方式选`代码部署`，运行环境选 `Python3.6`.
+
+4. 提交方法选`本地上传文件夹`，并在下方的函数代码处上传整个项目文件夹。
+
+5. 执行方法填写 `index.main_handler`.
+
+6. 展开高级配置，将执行超时时间修改为 `300 秒`，其他保持默认。
+
+7. 展开触发器配置，选中自定义创建，触发周期选择`自定义触发周期`，并填写表达式`0 0 10 * * * *`（此处为每天上午 10 时运行一次，可以自行修改）
+
+8. 完成，enjoy it！
+
 ## 使用的第三方库
 
 requests: [github](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/)
