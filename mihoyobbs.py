@@ -49,7 +49,7 @@ class mihoyobbs:
         tools.log.info("正在获取任务列表")
         req = http.get(url=setting.bbs_Taskslist, headers=self.headers)
         data = req.json()
-        if "err" in data["message"]:
+        if "err" in data["message"] or data["retcode"] == -100:
             tools.log.info("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
             config.Clear_cookies()
             exit(1)
