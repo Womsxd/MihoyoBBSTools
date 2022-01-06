@@ -82,5 +82,5 @@ if __name__ == "__main__":
     try:
         main()
     except cookieError:
-        print("账号Cookie有问题！")
+        tools.log.error("账号Cookie有问题！")
 pass

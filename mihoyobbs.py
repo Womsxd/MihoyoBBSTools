@@ -52,7 +52,7 @@ class mihoyobbs:
         req = http.get(url=setting.bbs_Taskslist, headers=self.headers)
         data = req.json()
         if "err" in data["message"] or data["retcode"] == -100:
-            tools.log.info("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
+            tools.log.error("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
             config.Clear_cookies()
             raise cookieError('Cookie expires')
         else:
@@ -120,7 +120,7 @@ class mihoyobbs:
                     tools.log.info(str(i["name"] + data["message"]))
                     time.sleep(random.randint(2, 8))
                 else:
-                    tools.log.info("签到失败，你的cookie可能已过期，请重新设置cookie。")
+                    tools.log.error("签到失败，你的cookie可能已过期，请重新设置cookie。")
                     config.Clear_cookies()
                     raise cookieError('Cookie expires')
 
