@@ -46,6 +46,7 @@ def main_multi(autorun: bool):
             results["ok"].append(i)
         log.info(f"{i}执行完毕")
         time.sleep(random.randint(3, 10))
+    print("")
     log.info(f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，失败{len(results["error"])}个')
 
 
