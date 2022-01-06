@@ -6,6 +6,7 @@ import tools
 import config
 import random
 import setting
+from error import cookieError
 
 
 # 搜索配置文件
@@ -32,13 +33,20 @@ def main_multi(autorun: bool):
             input("请输入回车继续，需要重新搜索配置文件请Ctrl+C退出脚本")
         except:
             exit(0)
+    results = {"ok":[],"error":[]}
     for i in iter(config_List):
         tools.log.info(f"正在执行{i}")
         setting.mihoyobbs_List_Use = []
         config.config_Path = f"{config.path}/{i}"
-        main.main()
+        try:
+            main.main()
+        except cookieError:
+            results["error"].append(i)
+        else:
+            results["ok"].append(i)
         tools.log.info(f"{i}执行完毕")
         time.sleep(random.randint(3, 10))
+    print(f'脚本执行完毕，共执行{len(config_List)}个配置文件，成功{len(results["ok"])}个，失败{len(results["error"])}个')
 
 
 if __name__ == "__main__":

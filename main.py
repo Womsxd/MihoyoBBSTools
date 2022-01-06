@@ -7,6 +7,7 @@ import genshin
 import setting
 import mihoyobbs
 import honkai3rd
+from error import cookieError
 
 
 def main():
@@ -78,5 +79,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except cookieError:
+        print("账号Cookie有问题！")
 pass

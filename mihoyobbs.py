@@ -4,6 +4,8 @@ import config
 import random
 import setting
 from request import http
+from error import cookieError
+
 
 Today_getcoins = 0
 Today_have_getcoins = 0  # 这个变量以后可能会用上，先留着了
@@ -52,7 +54,7 @@ class mihoyobbs:
         if "err" in data["message"] or data["retcode"] == -100:
             tools.log.info("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
             config.Clear_cookies()
-            exit(1)
+            raise cookieError('Cookie expires')
         else:
             Today_getcoins = data["data"]["can_get_points"]
             Today_have_getcoins = data["data"]["already_received_points"]
@@ -120,7 +122,7 @@ class mihoyobbs:
                 else:
                     tools.log.info("签到失败，你的cookie可能已过期，请重新设置cookie。")
                     config.Clear_cookies()
-                    exit(1)
+                    raise cookieError('Cookie expires')
 
     # 看帖子
     def Readposts(self):
