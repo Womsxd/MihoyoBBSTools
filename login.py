@@ -1,15 +1,15 @@
 import config
 import request
 import setting
-from tools import log
-from error import cookieError
+from loghelper import log
+from error import CookieError
 
 
 def login():
     if config.mihoyobbs_Cookies == '':
         log.error("请填入Cookies!")
-        config.Clear_cookies()
-        raise cookieError('No cookie')
+        config.clear_cookies()
+        raise CookieError('No cookie')
     # 判断Cookie里面是否有login_ticket 没有的话直接退了
     if "login_ticket" in config.mihoyobbs_Cookies:
         temp_Cookies = config.mihoyobbs_Cookies.split(";")
@@ -25,12 +25,12 @@ def login():
             config.mihoyobbs_Stoken = data["data"]["list"][0]["token"]
             log.info("登录成功！")
             log.info("正在保存Config！")
-            config.Save_config()
+            config.save_config()
         else:
             log.error("cookie已失效,请重新登录米游社抓取cookie")
-            config.Clear_cookies()
-            raise cookieError('Cookie expires')
+            config.clear_cookies()
+            raise CookieError('Cookie expires')
     else:
         log.error("cookie中没有'login_ticket'字段,请重新登录米游社，重新抓取cookie!")
-        config.Clear_cookies()
-        raise cookieError('Cookie lost login_ticket')
+        config.clear_cookies()
+        raise CookieError('Cookie lost login_ticket')

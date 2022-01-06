@@ -1,6 +1,6 @@
 import os
 import json
-import tools
+from loghelper import log
 
 # 是否启用config
 enable_Config = True
@@ -41,7 +41,7 @@ path = os.path.dirname(os.path.realpath(__file__)) + "/config"
 config_Path = f"{path}/config.json"
 
 
-def Load_config():
+def load_config():
     with open(config_Path, "r") as f:
         data = json.load(f)
         global enable_Config
@@ -68,10 +68,10 @@ def Load_config():
         genshin_Auto_sign = data["genshin_Auto_sign"]
         honkai3rd_Auto_sign = data["honkai3rd_Auto_sign"]
         f.close()
-        tools.log.info("Config加载完毕")
+        log.info("Config加载完毕")
 
 
-def Save_config():
+def save_config():
     with open(config_Path, "r+") as f:
         data = json.load(f)
         data["mihoyobbs_Login_ticket"] = mihoyobbs_Login_ticket
@@ -83,10 +83,10 @@ def Save_config():
         f.write(temp_Text)
         f.flush()
         f.close()
-        tools.log.info("Config保存完毕")
+        log.info("Config保存完毕")
 
 
-def Clear_cookies():
+def clear_cookies():
     with open(config_Path, "r+") as f:
         data = json.load(f)
         data["enable_Config"] = False
@@ -100,4 +100,4 @@ def Clear_cookies():
         f.write(temp_Text)
         f.flush()
         f.close()
-        tools.log.info("Cookie删除完毕")
+        log.info("Cookie删除完毕")
