@@ -138,4 +138,4 @@ dmypy.json
 config/*.json
 
 # push配置
-config/push.ini
+config/*.ini
