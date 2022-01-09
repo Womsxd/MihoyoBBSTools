@@ -75,8 +75,10 @@ def main():
             honkai3rd_help.Sign_acc()
         else:
             log.info("崩坏3签到功能未启用！")
+        return 0
     else:
         log.warning("Config未启用！")
+        return 1
 
 
 if __name__ == "__main__":

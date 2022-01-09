@@ -33,21 +33,24 @@ def main_multi(autorun: bool):
             input("请输入回车继续，需要重新搜索配置文件请Ctrl+C退出脚本")
         except:
             exit(0)
-    results = {"ok": [], "error": []}
+    results = {"ok": [], "close": [], "error": []}
     for i in iter(config_list):
         log.info(f"正在执行{i}")
         setting.mihoyobbs_List_Use = []
         config.config_Path = f"{config.path}/{i}"
         try:
-            main.main()
+            run_code = main.main()
         except CookieError:
             results["error"].append(i)
         else:
-            results["ok"].append(i)
+            if run_code == 0:
+                results["ok"].append(i)
+            else:
+                results["close"].append(i)
         log.info(f"{i}执行完毕")
         time.sleep(random.randint(3, 10))
     print("")
-    log.info(f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，失败{len(results["error"])}个')
+    log.info(f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，没执行{results["close"]}个，失败{len(results["error"])}个')
 
 
 if __name__ == "__main__":
