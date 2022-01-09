@@ -23,18 +23,18 @@ if opt_id != 0:
         url=send_Url,
         data={
             "token": SendKey,
-            "title": "米游社脚本执行出错！",
-            "desp": "这里是运行相关日志：\r\n" + opt_info
+            "title": "「米游社-签到」Error!",
+            "content": opt_info.split()[-1] + "\n这里是运行相关日志：\r\n" + opt_info,
         }
     )
 else:
+    print("OK!")
     http.post(
         url=send_Url,
         data={
             "token": SendKey,
-            "title": "米游社脚本执行成功",
-            "desp": "这里是运行相关日志：\r\n" + opt_info
+            "title": "「米游社-签到」OK!",
+            "content": opt_info.split()[-1] + "\n这里是运行相关日志：\r\n" + opt_info,
         }
     )
-    print("OK!")
 exit(0)
