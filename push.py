@@ -6,8 +6,12 @@ cfg = ConfigParser()
 
 
 def load_config():
-    cfg.read(os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config'), 'push.ini'),
-             encoding='utf-8')
+    config_path = os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config'), 'push.ini')
+    if os.path.exists(config_path):
+        cfg.read(config_path, encoding='utf-8')
+        return True
+    else:
+        return False
 
 
 def title(status):
@@ -49,7 +53,8 @@ def cq_http(status, push_message):
 
 
 def push(status, push_message):
-    load_config()
+    if not load_config():
+        return 0
     if cfg.getboolean('setting', 'enable'):
         push_server = cfg.get('setting', 'push_server').lower()
         if push_server == "cqhttp":
