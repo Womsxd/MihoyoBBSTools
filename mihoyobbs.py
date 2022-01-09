@@ -135,7 +135,7 @@ class mihoyobbs:
                 req = http.get(url=setting.bbs_Detailurl.format(self.postsList[i][0]), headers=self.headers)
                 data = req.json()
                 if data["message"] == "OK":
-                    log.info("看帖：{} 成功".format(self.postsList[i][1]))
+                    log.debug("看帖：{} 成功".format(self.postsList[i][1]))
                 time.sleep(random.randint(2, 8))
 
     # 点赞
@@ -149,7 +149,7 @@ class mihoyobbs:
                                 json={"post_id": self.postsList[i][0], "is_cancel": False})
                 data = req.json()
                 if data["message"] == "OK":
-                    log.info("点赞：{} 成功".format(self.postsList[i][1]))
+                    log.debug("点赞：{} 成功".format(self.postsList[i][1]))
                 # 判断取消点赞是否打开
                 if config.mihoyobbs["bbs_Unlike"]:
                     time.sleep(random.randint(2, 8))
@@ -157,7 +157,7 @@ class mihoyobbs:
                                     json={"post_id": self.postsList[i][0], "is_cancel": True})
                     data = req.json()
                     if data["message"] == "OK":
-                        log.info("取消点赞：{} 成功".format(self.postsList[i][1]))
+                        log.debug("取消点赞：{} 成功".format(self.postsList[i][1]))
                 time.sleep(random.randint(2, 8))
 
                 # 分享操作
@@ -166,9 +166,15 @@ class mihoyobbs:
         if self.Task_do["bbs_Share"]:
             log.info("分享任务已经完成过了~")
         else:
-            log.info("正在分享......")
-            req = http.get(url=setting.bbs_Shareurl.format(self.postsList[0][0]), headers=self.headers)
-            data = req.json()
-            if data["message"] == "OK":
-                log.info("分享：{} 成功".format(self.postsList[0][1]))
+            log.info("正在执行分享任务......")
+            for i in range(3):
+                req = http.get(url=setting.bbs_Shareurl.format(self.postsList[0][0]), headers=self.headers)
+                data = req.json()
+                if data["message"] == "OK":
+                    log.debug("分享：{} 成功".format(self.postsList[0][1]))
+                    log.info("分享任务执行成功......")
+                    break
+                else:
+                    log.debug(f"分享任务执行失败，正在执行第{i+2}次，共3次")
+                    time.sleep(random.randint(2, 8))
             time.sleep(random.randint(2, 8))
