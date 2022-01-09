@@ -134,9 +134,8 @@ dmypy.json
 # idea
 .idea/
 
-#自己用的推送((
-push_main.py
-
 # 避免上传配置文件
-.idea/
 config/*.json
+
+# push配置
+config/push.ini
