@@ -1,6 +1,6 @@
 import time
+import push
 import login
-import tools
 import config
 import random
 import genshin
@@ -83,7 +83,9 @@ def main():
 
 if __name__ == "__main__":
     try:
-        main()
+        status_code = main()
     except CookieError:
+        status_code = 0
         log.error("账号Cookie有问题！")
+    push.push(status_code, "脚本已执行")
 pass

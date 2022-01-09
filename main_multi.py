@@ -2,6 +2,7 @@ import os
 import sys
 import main
 import time
+import push
 import config
 import random
 import setting
@@ -50,7 +51,9 @@ def main_multi(autorun: bool):
         log.info(f"{i}执行完毕")
         time.sleep(random.randint(3, 10))
     print("")
-    log.info(f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，没执行{results["close"]}个，失败{len(results["error"])}个')
+    push_message = f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，没执行{results["close"]}个，失败{len(results["error"])}个'
+    log.info(push_message)
+    push.push(0,push_message)
 
 
 if __name__ == "__main__":
