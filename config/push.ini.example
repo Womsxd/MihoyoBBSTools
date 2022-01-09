@@ -1,8 +1,12 @@
 [setting]
-enable=true
-push_server=cqhttp #共有 cqhttp ftqq(sever酱) Pushplus
-push_token=123456 #server酱和pushplus的推送token
+enable=false
+#共有 cqhttp ftqq(sever酱) Pushplus
+push_server=cqhttp
+#server酱和pushplus的推送token
+push_token=123456
 
 [cqhttp]
-cqhttp_url=http://127.0.0.1:5000/send_private_msg #cqhttp的服务端地址
-cqhttp_qq=10001 #推送给谁
+#cqhttp的服务端地址
+cqhttp_url=http://127.0.0.1:5000/send_private_msg
+#推送给谁
+cqhttp_qq=10001

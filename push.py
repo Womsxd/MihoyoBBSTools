@@ -6,8 +6,7 @@ cfg = ConfigParser()
 
 
 def load_config():
-    config_path = os.path.dirname(os.path.realpath(__file__)) + "/push.ini"
-    cfg.read(config_path)
+    cfg.read(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'push.ini'))
 
 
 def title(status):
