@@ -51,7 +51,7 @@ def cq_http(status, push_message):
 def push(status, push_message):
     load_config()
     if cfg.getboolean('setting', 'enable'):
-        if cfg.get('setting', 'push_server') == "cq_http":
+        if cfg.get('setting', 'push_server') == "cqhttp":
             cq_http(status, push_message)
         elif cfg.get('setting', 'push_server') == "ftqq":
             ftqq(status, push_message)
