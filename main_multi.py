@@ -52,7 +52,7 @@ def main_multi(autorun: bool):
         time.sleep(random.randint(3, 10))
     print("")
     push_message = f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，没执行{len(results["close"])}个，失败{len(results["error"])}个'\
-                   '\r\n没执行的脚本: {results["close"]}\r\n执行失败的脚本: {results["error"]}'
+                   f'\r\n没执行的脚本: {results["close"]}\r\n执行失败的脚本: {results["error"]}'
     log.info(push_message)
     push.push(0,push_message)
 
