@@ -1,9 +1,15 @@
 import main
+import push
 import main_multi
+from error import CookieError
 
 
 def main_handler(event: dict, context: dict):
-    main.main()
+    try:
+        status_code = main.main()
+    except CookieError:
+        status_code = 0
+    push.push(status_code, "脚本已执行")
     print("云函数测试支持！")
     return 0
 
