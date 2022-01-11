@@ -1,5 +1,6 @@
 import os
 from request import http
+from loghelper import log
 from configparser import ConfigParser
 
 cfg = ConfigParser()
@@ -57,10 +58,13 @@ def push(status, push_message):
         return 0
     if cfg.getboolean('setting', 'enable'):
         push_server = cfg.get('setting', 'push_server').lower()
+        log.info("正在执行推送......")
+        log.debug(f"推送所用的服务为：{push_server}")
         if push_server == "cqhttp":
             cq_http(status, push_message)
         elif push_server == "ftqq":
             ftqq(status, push_message)
         elif push_server == "pushplus":
             pushplus(status, push_message)
+        log.info("推送完毕......")
     return 0

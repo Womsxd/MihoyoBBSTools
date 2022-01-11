@@ -23,7 +23,7 @@ if opt_id != 0:
         url=send_Url,
         data={
             "title": "米游社脚本执行出错！",
-            "desp": "这里是运行相关日志：\r\n" + opt_info
+            "desp": "\nHello!推送相关的设置已修改，请注意更新!\n这里是运行相关日志：\r\n" + opt_info
         }
     )
 else:
@@ -31,7 +31,7 @@ else:
         url=send_Url,
         data={
             "title": "米游社脚本执行成功",
-            "desp": "这里是运行相关日志：\r\n" + opt_info
+            "desp": "\nHello!推送相关的设置已修改，请注意更新!\n这里是运行相关日志：\r\n" + opt_info
         }
     )
     print("OK!")

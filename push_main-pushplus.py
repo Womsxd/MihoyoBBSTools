@@ -24,7 +24,7 @@ if opt_id != 0:
         data={
             "token": SendKey,
             "title": "「米游社-签到」Error!",
-            "content": opt_info.split()[-1] + "\n这里是运行相关日志：\r\n" + opt_info,
+            "content": opt_info.split()[-1] + "\nHello!推送相关的设置已修改，请注意更新!\n这里是运行相关日志：\r\n" + opt_info,
         }
     )
 else:
@@ -34,7 +34,7 @@ else:
         data={
             "token": SendKey,
             "title": "「米游社-签到」OK!",
-            "content": opt_info.split()[-1] + "\n这里是运行相关日志：\r\n" + opt_info,
+            "content": opt_info.split()[-1] + "\nHello!推送相关的设置已修改，请注意更新!\n这里是运行相关日志：\r\n" + opt_info,
         }
     )
 exit(0)
