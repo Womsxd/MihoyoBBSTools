@@ -1,6 +1,6 @@
 [setting]
 enable=false
-#共有 cqhttp ftqq(sever酱) pushplus
+#共有 cqhttp ftqq(sever酱) pushplus telegram
 push_server=cqhttp
 #server酱和pushplus的推送token
 push_token=123456
@@ -10,3 +10,8 @@ push_token=123456
 cqhttp_url=http://127.0.0.1:5000/send_private_msg
 #推送给谁
 cqhttp_qq=10001
+
+[telegram]
+api_url=api.telegram.org
+bot_token=123465:abcdefg
+chat_id=123456

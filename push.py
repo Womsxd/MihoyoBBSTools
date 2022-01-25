@@ -22,6 +22,16 @@ def title(status):
         return "「米游社脚本」执行失败!"
 
 
+def telegram(status, push_message):
+    http.post(
+        url="https://{}/bot{}/sendMessage".format(cfg.get('telegram', 'api_url'), cfg.get('telegram', 'bot_token')),
+        data={
+            "chat_id": cfg.get('telegram', 'chat_id'),
+            "text": title(status) + "\r\n" + push_message
+        }
+    )
+
+
 def ftqq(status, push_message):
     http.post(
         url="https://sctapi.ftqq.com/{}.send".format(cfg.get('setting', 'push_token')),
@@ -66,5 +76,7 @@ def push(status, push_message):
             ftqq(status, push_message)
         elif push_server == "pushplus":
             pushplus(status, push_message)
+        elif push_server == "telegram":
+            telegram(status, push_message)
         log.info("推送完毕......")
     return 0
