@@ -5,6 +5,7 @@ import random
 import setting
 from request import http
 from loghelper import log
+from error import CookieError
 
 
 class honkai3rd:
@@ -36,7 +37,9 @@ class honkai3rd:
         data = req.json()
         if data["retcode"] != 0:
             log.warning("获取账号列表失败！")
-            exit(1)
+            config.honkai3rd_Auto_sign = False
+            config.save_config()
+            raise CookieError("BBS Cookie Errror")
         for i in data["data"]["list"]:
             temp_List.append([i["nickname"], i["game_uid"], i["region"]])
         log.info(f"已获取到{len(temp_List)}个崩坏3账号信息")

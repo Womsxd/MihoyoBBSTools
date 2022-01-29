@@ -5,6 +5,7 @@ import random
 import setting
 from request import http
 from loghelper import log
+from error import CookieError
 
 
 class Genshin:
@@ -35,7 +36,9 @@ class Genshin:
         data = req.json()
         if data["retcode"] != 0:
             log.warning("获取账号列表失败！")
-            exit(1)
+            config.genshin_Auto_sign = False
+            config.save_config()
+            raise CookieError("BBS Cookie Errror")
         for i in data["data"]["list"]:
             temp_list.append([i["nickname"], i["game_uid"], i["region"]])
         log.info(f"已获取到{len(temp_list)}个原神账号信息")
@@ -49,7 +52,6 @@ class Genshin:
         if data["retcode"] != 0:
             log.warning("获取签到奖励列表失败")
             print(req.text)
-            exit(1)
         return data["data"]["awards"]
 
     # 判断签到
@@ -59,7 +61,9 @@ class Genshin:
         if data["retcode"] != 0:
             log.warning("获取账号签到信息失败！")
             print(req.text)
-            exit(1)
+            config.genshin_Auto_sign = False
+            config.save_config()
+            raise CookieError("BBS Cookie Errror")
         return data["data"]
 
     # 签到
