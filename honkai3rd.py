@@ -98,9 +98,9 @@ class Honkai3rd:
                 else:
                     log.info(f"舰长{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(today_item)}")
             if is_data["is_sign"] or data["retcode"] == 0 or data["retcode"] == -5003:
-                return_data += f"\n舰长：{i[0]}已连续签到{self.sign_day}天，今天获得的奖励是{tools.get_item(today_item)}"
+                return_data += f"\n{i[0]}已连续签到{self.sign_day}天\n今天获得的奖励是{tools.get_item(today_item)}"
             else:
-                return_data += f"\n舰长：{i[0]}，本次签到失败"
+                return_data += f"\n{i[0]}，本次签到失败"
         else:
             log.warning("账号没有绑定任何崩坏3账号！")
             return_data += "\n并没有绑定任何崩坏3账号"

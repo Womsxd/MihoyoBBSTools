@@ -39,9 +39,9 @@ def main():
             bbs = mihoyobbs.mihoyobbs()
             if bbs.Task_do["bbs_Sign"] and bbs.Task_do["bbs_Read_posts"] and bbs.Task_do["bbs_Like_posts"] and \
                     bbs.Task_do["bbs_Share"]:
-                bbs_message = f"今天已经全部完成了！一共获得{mihoyobbs.Today_have_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币"
-                return_data += "\n" + bbs_message
-                log.info(bbs_message)
+                return_data += "\n" + f"今天已经全部完成了！\n"\
+                                      f"一共获得{mihoyobbs.Today_have_getcoins}个米游币\n目前有{mihoyobbs.Have_coins}个米游币"
+                log.info(f"今天已经全部完成了！一共获得{mihoyobbs.Today_have_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
             else:
                 if config.mihoyobbs["bbs_Signin"]:
                     bbs.signing()
@@ -52,10 +52,10 @@ def main():
                 if config.mihoyobbs["bbs_Share"]:
                     bbs.share_post()
                 bbs.Get_taskslist()
-                bbs_message = f"今天已经获得{mihoyobbs.Today_have_getcoins}个米游币，"\
-                              f"还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币"
-                return_data += "\n" + bbs_message
-                log.info(bbs_message)
+                return_data += "\n" + f"今天已经获得{mihoyobbs.Today_have_getcoins}个米游币\n"\
+                               f"还能获得{mihoyobbs.Today_getcoins}个米游币\n目前有{mihoyobbs.Have_coins}个米游币"
+                log.info(f"今天已经获得{mihoyobbs.Today_have_getcoins}个米游币，"
+                         f"还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
                 time.sleep(random.randint(2, 8))
         else:
             return_data += "\n" + "米游社功能未启用！"
