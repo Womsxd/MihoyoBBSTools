@@ -13,6 +13,7 @@ from error import CookieError
 
 def main():
     # 初始化，加载配置
+    return_data = "米游社："
     config.load_config()
     if config.enable_Config:
         # 检测参数是否齐全，如果缺少就进行登入操作
@@ -23,12 +24,6 @@ def main():
             time.sleep(random.randint(2, 8))
         # 获取要使用的BBS列表,#判断是否开启bbs_Signin_multi
         if config.mihoyobbs["bbs_Signin_multi"]:
-            # 速度快，但是无法设置主社区，主社区默认为第一个
-            '''
-            for i in setting.mihoyobbs_List:
-                if int(i["id"]) in config.mihoyobbs["bbs_Signin_multi_list"]:
-                    setting.mihoyobbs_List_Use.append(i)
-            '''
             # 用这里的方案可以实现当让id在第一个的时候为主社区
             for i in config.mihoyobbs["bbs_Signin_multi_list"]:
                 for i2 in setting.mihoyobbs_List:
@@ -44,7 +39,9 @@ def main():
             bbs = mihoyobbs.mihoyobbs()
             if bbs.Task_do["bbs_Sign"] and bbs.Task_do["bbs_Read_posts"] and bbs.Task_do["bbs_Like_posts"] and \
                     bbs.Task_do["bbs_Share"]:
-                log.info(f"今天已经全部完成了！一共获得{mihoyobbs.Today_have_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+                bbs_message = f"今天已经全部完成了！一共获得{mihoyobbs.Today_have_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币"
+                return_data += "\n" + bbs_message
+                log.info(bbs_message)
             else:
                 if config.mihoyobbs["bbs_Signin"]:
                     bbs.signing()
@@ -55,37 +52,42 @@ def main():
                 if config.mihoyobbs["bbs_Share"]:
                     bbs.share_post()
                 bbs.Get_taskslist()
-                log.info(
-                    f"今天已经获得{mihoyobbs.Today_have_getcoins}个米游币，还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+                bbs_message = f"今天已经获得{mihoyobbs.Today_have_getcoins}个米游币，"\
+                              f"还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币"
+                return_data += "\n" + bbs_message
+                log.info(bbs_message)
                 time.sleep(random.randint(2, 8))
         else:
+            return_data += "\n" + "米游社功能未启用！"
             log.info("米游社功能未启用！")
         # 原神签到
         if config.genshin_Auto_sign:
             log.info("正在进行原神签到")
             genshin_help = genshin.Genshin()
-            genshin_help.sign_account()
+            return_data += "\n" + genshin_help.sign_account()
             time.sleep(random.randint(2, 8))
         else:
+            return_data += "\n" + "原神签到功能未启用！"
             log.info("原神签到功能未启用！")
         # 崩坏3签到
         if config.honkai3rd_Auto_sign:
             log.info("正在进行崩坏3签到")
-            honkai3rd_help = honkai3rd.honkai3rd()
-            honkai3rd_help.Sign_acc()
+            honkai3rd_help = honkai3rd.Honkai3rd()
+            return_data += "\n" + honkai3rd_help.sign_account()
         else:
+            return_data += "\n" + "崩坏3签到功能未启用！"
             log.info("崩坏3签到功能未启用！")
-        return 0
+        return 0, return_data
     else:
         log.warning("Config未启用！")
-        return 1
+        return 1, "Config未启用！"
 
 
 if __name__ == "__main__":
     try:
-        status_code = main()
+        status_code, message = main()
     except CookieError:
         status_code = 0
         log.error("账号Cookie有问题！")
-    push.push(status_code, "脚本已执行")
+    push.push(status_code, message)
 pass
