@@ -13,7 +13,7 @@ from error import CookieError
 
 def main():
     # 初始化，加载配置
-    return_data = "米游社："
+    return_data = "\n米游社："
     config.load_config()
     if config.enable_Config:
         # 检测参数是否齐全，如果缺少就进行登入操作
@@ -64,18 +64,16 @@ def main():
         if config.genshin_Auto_sign:
             log.info("正在进行原神签到")
             genshin_help = genshin.Genshin()
-            return_data += "\n" + genshin_help.sign_account()
+            return_data += "\n\n" + genshin_help.sign_account()
             time.sleep(random.randint(2, 8))
         else:
-            return_data += "\n" + "原神签到功能未启用！"
             log.info("原神签到功能未启用！")
         # 崩坏3签到
         if config.honkai3rd_Auto_sign:
             log.info("正在进行崩坏3签到")
             honkai3rd_help = honkai3rd.Honkai3rd()
-            return_data += "\n" + honkai3rd_help.sign_account()
+            return_data += "\n\n" + honkai3rd_help.sign_account()
         else:
-            return_data += "\n" + "崩坏3签到功能未启用！"
             log.info("崩坏3签到功能未启用！")
         return 0, return_data
     else:
