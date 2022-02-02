@@ -62,26 +62,25 @@ class Honkai3rd:
     # 签到
     def sign_account(self):
         return_data = "崩坏3："
-
         if len(self.acc_List) == 0:
             log.warning("账号没有绑定任何崩坏3账号！")
             return_data += "\n并没有绑定任何崩坏3账号"
         else:
             for i in self.acc_List:
                 log.info(f"正在为舰长 {i[0]} 进行签到...")
-
                 req = http.get(setting.honkai3rd_Is_signurl.format(setting.honkai3rd_Act_id, i[2], i[1]), headers=self.headers)
                 data = req.json()
+                re_message = ""
                 if data["retcode"] != 0:
-                    log.warning("获取账号签到信息失败！")
+                    re_message = f"舰长 {i[0]} 获取账号签到信息失败！"
+                    log.warning(re_message)
                     print(req.text)
                     continue
                 today_item = self.get_today_item(data["data"]["sign"]["list"])
                 # 判断是否已经签到
                 if today_item["status"] == 0:
-                    log.info(
-                        f"舰长 {i[0]} 今天已经签到过了~\t已连续签到{self.sign_day}天\t今天获得的奖励是{tools.get_item(today_item)}"
-                    )
+                    re_message = f"舰长 {i[0]} 今天已经签到过了~\t已连续签到{self.sign_day}天\t今天获得的奖励是{tools.get_item(today_item)}"
+                    log.info(re_message)
                 else:
                     time.sleep(random.randint(2, 8))
                     req = http.post(url=setting.honkai3rd_SignUrl, headers=self.headers,
@@ -89,15 +88,14 @@ class Honkai3rd:
                     data = req.json()
                     if data["retcode"] == 0:
                         today_item = self.get_today_item(data["data"]["list"])
-                        log.info(
-                            f"舰长 {i[0]} 签到成功~\t已连续签到{self.sign_day}天\t今天获得的奖励是{tools.get_item(today_item)}"
-                        )
+                        re_message = f"舰长 {i[0]} 签到成功~\t已连续签到{self.sign_day}天\t今天获得的奖励是{tools.get_item(today_item)}"
+                        log.info(re_message)
                     elif data["retcode"] == -5003:
-                        log.info(
-                            f"舰长 {i[0]} 今天已经签到过了~\t已连续签到{self.sign_day}天\t今天获得的奖励是{tools.get_item(today_item)}"
-                        )
+                        re_message = f"舰长 {i[0]} 今天已经签到过了~\t已连续签到{self.sign_day}天\t今天获得的奖励是{tools.get_item(today_item)}"
+                        log.info(re_message)
                     else:
-                        log.warning("账号签到失败！")
+                        re_message = f"舰长 {i[0]} 本次签到失败！"
+                        log.warning(re_message)
                         print(req.text)
-
+                return_data += re_message
         return return_data
