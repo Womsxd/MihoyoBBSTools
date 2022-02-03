@@ -40,7 +40,7 @@ def main_multi(autorun: bool):
         setting.mihoyobbs_List_Use = []
         config.config_Path = f"{config.path}/{i}"
         try:
-            run_code = main.main()
+            run_code, run_message = main.main()
         except CookieError:
             results["error"].append(i)
         else:
@@ -54,7 +54,7 @@ def main_multi(autorun: bool):
     push_message = f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，没执行{len(results["close"])}个，失败{len(results["error"])}个'\
                    f'\r\n没执行的配置文件: {results["close"]}\r\n执行失败的配置文件: {results["error"]}'
     log.info(push_message)
-    push.push(0,push_message)
+    push.push(0, push_message)
 
 
 if __name__ == "__main__":
