@@ -6,10 +6,10 @@ from error import CookieError
 
 def main_handler(event: dict, context: dict):
     try:
-        status_code = main.main()
+        status_code, push_message = main.main()
     except CookieError:
         status_code = 0
-    push.push(status_code, "脚本已执行")
+    push.push(status_code, push_message)
     print("云函数测试支持！")
     return 0
 
