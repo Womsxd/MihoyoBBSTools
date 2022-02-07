@@ -97,6 +97,8 @@ class Genshin:
                             log.warning("账号签到失败！")
                             print(req.text)
                     if is_data["is_sign"] or data["retcode"] == 0 or data["retcode"] == -5003:
+                        if data["retcode"] == 0:
+                            sign_days += 1
                         return_data += f"\n{i[0]}已连续签到{sign_days}天\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days])}"
                     else:
                         return_data += f"\n{i[0]}，本次签到失败"
