@@ -78,6 +78,7 @@ class Genshin:
                     log.warning(f"旅行者{i[0]}是第一次绑定米游社，请先手动签到一次")
                 else:
                     sign_days = is_data["total_sign_day"] - 1
+                    ok = True 
                     if is_data["is_sign"]:
                         log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days])}")
                     else:
@@ -86,19 +87,15 @@ class Genshin:
                                         json={'act_id': setting.genshin_Act_id, 'region': i[2], 'uid': i[1]})
                         data = req.json()
                         if data["retcode"] == 0:
-                            if sign_days == 0:
-                                log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days])}")
-                            else:
-                                log.info(
-                                    f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days + 1])}")
+                            log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是{tools.get_item(self.sign_Give[0 if sign_days == 0 else sign_days + 1])}")
+                            sign_days += 1
                         elif data["retcode"] == -5003:
                             log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days])}")
                         else:
                             log.warning("账号签到失败！")
                             print(req.text)
-                    if is_data["is_sign"] or data["retcode"] == 0 or data["retcode"] == -5003:
-                        if data["retcode"] == 0:
-                            sign_days += 1
+                            ok = False
+                    if ok:
                         return_data += f"\n{i[0]}已连续签到{sign_days}天\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days])}"
                     else:
                         return_data += f"\n{i[0]}，本次签到失败"
