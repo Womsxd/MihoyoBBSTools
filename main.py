@@ -85,7 +85,8 @@ if __name__ == "__main__":
     try:
         status_code, message = main()
     except CookieError:
-        status_code = 0
+        status_code = 1
+        message = "账号Cookie出错！"
         log.error("账号Cookie有问题！")
     push.push(status_code, message)
 pass
