@@ -8,3 +8,7 @@ services:
        - MULTI=TRUE
      volumes:
        - .:/var/app
+     logging:
+       driver: "json-file"
+       options:
+        max-size: "1m"
