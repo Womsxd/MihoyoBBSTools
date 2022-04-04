@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  mihoyo-bbs:
+    image: darkatse/mihoyo-bbs
+    environment:
+      - CRON_SIGNIN=30 9 * * *
+      - MULTI=TRUE
+    volumes:
+      - .:/var/app
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
