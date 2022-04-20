@@ -65,46 +65,21 @@
 
 Docker的运行脚本基于Linux平台编写，暂未在Win平台测试。
 
-将本项目Clone至本地后，请先按照上述步骤添加或修改配置文件。随后运行`make-docker.sh`脚本本地构建Docker镜像，同时脚本会自动启动Docker容器（默认容器名为mihoyo-bbs），进行首次运行并显示Log信息。
-
-```shell
-sh make-docker.sh
+将本项目Clone至本地后，请先按照上述步骤添加或修改配置文件。随后执行
 ```
-
-或手动执行
-
+docker-compose up -d
 ```
-# 编译容器
-docker build -f Dockerfile --tag mihoyo-bbs:latest .
+启动docker容器。  
+&nbsp;  
+容器运行成功后可用
 ```
-
+docker-compose logs -f
 ```
-# 运行容器（默认自动多配置文件）
-docker run -itd \
-	--name mihoyo-bbs \
-	--log-opt max-size=1m \
-	-v $(pwd):/var/app \
-	mihoyo-bbs:latest
-# 运行容器（直接运行main.py）
-docker run -itd \
-	--name mihoyo-bbs \
-	--log-opt max-size=1m \
-	-v $(pwd):/var/app \
-	-e MULTI=FALSE \
-	mihoyo-bbs:latest
-```
-
+命令来查看程序输出。  
+&nbsp;  
 若需要添加配置文件或修改配置文件，可直接在主机config文件夹中修改，修改的内容将实时同步在容器中。
 
-每次运行Docker容器后，容器内将自动按照参数执行签到活动，签到完成后容器将自动停止运行。手动重启容器即可重新运行脚本。
-
-```
-docker restart mihoyo-bbs && docker logs -f mihoyo-bbs
-```
-
-关于每日定时，用户可在容器外部设计定时触发（启动）程序，每日定时运行脚本。
-
-（若有需要可自行编写相关脚本通知完成状态
+每次运行Docker容器后，容器内将自动按照参数执行签到活动，签到完成后容器将默认在每天上午9:30运行一次，如果想自行修改时间可自行编辑`docker-compose.yml`文件中的`CRON_SIGNIN`，将其修改成想运行的时间。
 
 ## 使用云函数运行
 
