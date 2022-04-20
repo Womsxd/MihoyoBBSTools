@@ -22,6 +22,7 @@ def title(status):
         return "「米游社脚本」执行失败!"
 
 
+# telegram的推送
 def telegram(status, push_message):
     http.post(
         url="https://{}/bot{}/sendMessage".format(cfg.get('telegram', 'api_url'), cfg.get('telegram', 'bot_token')),
@@ -32,6 +33,7 @@ def telegram(status, push_message):
     )
 
 
+# server酱
 def ftqq(status, push_message):
     http.post(
         url="https://sctapi.ftqq.com/{}.send".format(cfg.get('setting', 'push_token')),
@@ -42,9 +44,10 @@ def ftqq(status, push_message):
     )
 
 
+# pushplus
 def pushplus(status, push_message):
     http.post(
-        url="http://www.pushplus.plus/send",
+        url="https://www.pushplus.plus/send",
         data={
             "token": cfg.get('setting', 'push_token'),
             "title": title(status),
@@ -53,6 +56,7 @@ def pushplus(status, push_message):
     )
 
 
+# cq http协议的推送
 def cq_http(status, push_message):
     http.post(
         url=cfg.get('cqhttp', 'cqhttp_url'),
@@ -63,20 +67,34 @@ def cq_http(status, push_message):
     )
 
 
+# 企业微信 感谢linjie5492@github
+def wecom(status, push_message, wx_push_token=None):
+    secret = cfg.get('wecom', 'secret')
+    wechat_id = cfg.get('wecom', 'wechat_id')
+    push_token = http.post(
+        url=f'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={wechat_id}&corpsecret={secret}',
+        data="").json()['access_token']
+    push_data = {
+        "agentid": cfg.get('wecom', 'agentid'),
+        "msgtype": "text",
+        "touser": "@all",
+        "text": {
+            "content": title(status) + "\r\n" + push_message
+        }, "safe": 0}
+    http.post(f'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={push_token}', json=push_data)
+
+
 def push(status, push_message):
     if not load_config():
         return 0
     if cfg.getboolean('setting', 'enable'):
         push_server = cfg.get('setting', 'push_server').lower()
         log.info("正在执行推送......")
-        log.debug(f"推送所用的服务为：{push_server}")
-        if push_server == "cqhttp":
-            cq_http(status, push_message)
-        elif push_server == "ftqq":
-            ftqq(status, push_message)
-        elif push_server == "pushplus":
-            pushplus(status, push_message)
-        elif push_server == "telegram":
-            telegram(status, push_message)
-        log.info("推送完毕......")
+        try:
+            log.debug(f"推送所用的服务为：{push_server}")
+            eval(push_server[:10].lower() + "(status, push_message)")
+        except NameError:
+            log.warning("推送服务名称错误")
+        else:
+            log.info("推送完毕......")
     return 0
