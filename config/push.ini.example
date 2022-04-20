@@ -21,3 +21,7 @@ chat_id=123456
 agentid=
 secret=
 wechat_id=
+
+[pushdeer]
+api_url=https://api2.pushdeer.com
+token=

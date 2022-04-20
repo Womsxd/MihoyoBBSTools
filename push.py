@@ -68,7 +68,7 @@ def cq_http(status, push_message):
 
 
 # 企业微信 感谢linjie5492@github
-def wecom(status, push_message, wx_push_token=None):
+def wecom(status, push_message):
     secret = cfg.get('wecom', 'secret')
     wechat_id = cfg.get('wecom', 'wechat_id')
     push_token = http.post(
@@ -82,6 +82,19 @@ def wecom(status, push_message, wx_push_token=None):
             "content": title(status) + "\r\n" + push_message
         }, "safe": 0}
     http.post(f'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={push_token}', json=push_data)
+
+
+# pushdeer
+def pushdeer(status, push_message):
+    http.get(
+        url=f'{cfg.get("pushdeer", "api_url")}/message/push',
+        params={
+            "push_key": cfg.get("pushdeer", "token"),
+            "text": title(status),
+            "desp": str(push_message).replace("\r\n", "\r\n\r\n"),
+            "type": "markdown"
+        }
+    )
 
 
 def push(status, push_message):
