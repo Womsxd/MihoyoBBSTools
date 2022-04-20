@@ -1,20 +1,12 @@
-import datetime
 import os
-import logging
-import signal
 import time
-#from settings import *
+import signal
+import datetime
+from loghelper import log
 
 from crontab import CronTab
 
 time_format = "%Y-%m-%d %H:%M:%S"
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s %(levelname)s %(message)s',
-    datefmt='%Y-%m-%dT%H:%M:%S')
-
-
-log = logging
 
 def stop_me(_signo, _stack):
     log.info("Docker container has stoped....")
