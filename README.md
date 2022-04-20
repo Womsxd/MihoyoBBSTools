@@ -60,21 +60,24 @@
 
 7. **此时Cookie已经复制到你的粘贴板上了**
 
-
 ## 使用Docker运行
 
 Docker的运行脚本基于Linux平台编写，暂未在Win平台测试。
 
 将本项目Clone至本地后，请先按照上述步骤添加或修改配置文件。随后执行
-```
+
+```text
 docker-compose up -d
 ```
+
 启动docker容器。  
 &nbsp;  
 容器运行成功后可用
-```
+
+```text
 docker-compose logs -f
 ```
+
 命令来查看程序输出。  
 &nbsp;  
 若需要添加配置文件或修改配置文件，可直接在主机config文件夹中修改，修改的内容将实时同步在容器中。
@@ -93,7 +96,7 @@ docker-compose logs -f
 
 4. 提交方法选`本地上传文件夹`，并在下方的函数代码处上传整个项目文件夹。
 
-5. 执行方法填写 `index.main_handler`.
+5. 执行方法填写 `index.main_handler`,多用户请填写`main_handler_mulit`.
 
 6. 展开高级配置，将执行超时时间修改为 `300 秒`，其他保持默认。
 
