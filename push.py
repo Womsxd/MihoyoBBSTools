@@ -89,7 +89,7 @@ def pushdeer(status, push_message):
     http.get(
         url=f'{cfg.get("pushdeer", "api_url")}/message/push',
         params={
-            "push_key": cfg.get("pushdeer", "token"),
+            "pushkey": cfg.get("pushdeer", "token"),
             "text": title(status),
             "desp": str(push_message).replace("\r\n", "\r\n\r\n"),
             "type": "markdown"
