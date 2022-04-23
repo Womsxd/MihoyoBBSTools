@@ -13,7 +13,7 @@ from error import CookieError
 
 def main():
     # 初始化，加载配置
-    return_data = "\n米游社："
+    return_data = "\n米游社: "
     config.load_config()
     if config.enable_Config:
         # 检测参数是否齐全，如果缺少就进行登入操作
@@ -36,26 +36,31 @@ def main():
                     setting.mihoyobbs_List_Use.append(i)
         # 米游社签到
         if config.mihoyobbs["bbs_Global"]:
-            bbs = mihoyobbs.mihoyobbs()
+            bbs = mihoyobbs.Mihoyobbs()
             if bbs.Task_do["bbs_Sign"] and bbs.Task_do["bbs_Read_posts"] and bbs.Task_do["bbs_Like_posts"] and \
                     bbs.Task_do["bbs_Share"]:
-                return_data += "\n" + f"今天已经全部完成了！\n"\
-                                      f"一共获得{mihoyobbs.Today_have_getcoins}个米游币\n目前有{mihoyobbs.Have_coins}个米游币"
-                log.info(f"今天已经全部完成了！一共获得{mihoyobbs.Today_have_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+                return_data += "\n" + f"今天已经全部完成了！\n" \
+                                      f"一共获得{mihoyobbs.today_have_get_coins}个米游币\n目前有{mihoyobbs.Have_coins}个米游币"
+                log.info(f"今天已经全部完成了！一共获得{mihoyobbs.today_have_get_coins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
             else:
-                if config.mihoyobbs["bbs_Signin"]:
-                    bbs.signing()
-                if config.mihoyobbs["bbs_Read_posts"]:
-                    bbs.read_posts()
-                if config.mihoyobbs["bbs_Like_posts"]:
-                    bbs.Likeposts()
-                if config.mihoyobbs["bbs_Share"]:
-                    bbs.share_post()
-                bbs.Get_taskslist()
-                return_data += "\n" + f"今天已经获得{mihoyobbs.Today_have_getcoins}个米游币\n"\
-                               f"还能获得{mihoyobbs.Today_getcoins}个米游币\n目前有{mihoyobbs.Have_coins}个米游币"
-                log.info(f"今天已经获得{mihoyobbs.Today_have_getcoins}个米游币，"
-                         f"还能获得{mihoyobbs.Today_getcoins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+                i = 0
+                while mihoyobbs.today_get_coins != 0 and i < 3:
+                    if i > 0:
+                        bbs.refresh_list()
+                    if config.mihoyobbs["bbs_Signin"]:
+                        bbs.signing()
+                    if config.mihoyobbs["bbs_Read_posts"]:
+                        bbs.read_posts()
+                    if config.mihoyobbs["bbs_Like_posts"]:
+                        bbs.like_posts()
+                    if config.mihoyobbs["bbs_Share"]:
+                        bbs.share_post()
+                    bbs.get_tasks_list()
+                    i += 1
+                return_data += "\n" + f"今天已经获得{mihoyobbs.today_have_get_coins}个米游币\n" \
+                                      f"还能获得{mihoyobbs.today_get_coins}个米游币\n目前有{mihoyobbs.Have_coins}个米游币"
+                log.info(f"今天已经获得{mihoyobbs.today_have_get_coins}个米游币，"
+                         f"还能获得{mihoyobbs.today_get_coins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
                 time.sleep(random.randint(2, 8))
         else:
             return_data += "\n" + "米游社功能未启用！"
