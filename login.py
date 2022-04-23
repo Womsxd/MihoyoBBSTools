@@ -18,10 +18,10 @@ def login():
                 config.mihoyobbs_Login_ticket = i.split("=")[1]
                 break
         # 这里获取Stuid，但是实际是可以直接拿cookie里面的Uid
-        data = request.get(url=setting.bbs_Cookieurl.format(config.mihoyobbs_Login_ticket))
+        data = request.get(url=setting.bbs_Cookie_url.format(config.mihoyobbs_Login_ticket))
         if "成功" in data["data"]["msg"]:
             config.mihoyobbs_Stuid = str(data["data"]["cookie_info"]["account_id"])
-            data = request.get(url=setting.bbs_Cookieurl2.format(config.mihoyobbs_Login_ticket, config.mihoyobbs_Stuid))
+            data = request.get(url=setting.bbs_Cookie_url2.format(config.mihoyobbs_Login_ticket, config.mihoyobbs_Stuid))
             config.mihoyobbs_Stoken = data["data"]["list"][0]["token"]
             log.info("登录成功！")
             log.info("正在保存Config！")

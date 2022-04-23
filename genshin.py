@@ -6,6 +6,7 @@ import setting
 from request import http
 from loghelper import log
 from error import CookieError
+from account import get_account_list
 
 
 class Genshin:
@@ -15,34 +16,20 @@ class Genshin:
             'DS': tools.get_ds(web=True, web_old=True),
             'Origin': 'https://webstatic.mihoyo.com',
             'x-rpc-app_version': setting.mihoyobbs_Version_old,
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 9; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36 miHoYoBBS/2.3.0',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 9; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) '
+                          'Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36 miHoYoBBS/2.3.0',
             'x-rpc-client_type': setting.mihoyobbs_Client_type_web,
-            'Referer': 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true&act_id=e202009291139501&utm_source=bbs&utm_medium=mys&utm_campaign=icon',
+            'Referer': 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true&act_id'
+                       f'={setting.genshin_Act_id}&utm_source=bbs&utm_medium=mys&utm_campaign=icon',
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,en-US;q=0.8',
             'X-Requested-With': 'com.mihoyo.hyperion',
             "Cookie": config.mihoyobbs_Cookies,
             'x-rpc-device_id': tools.get_device_id()
         }
-        self.acc_List = self.get_account_list()
+        self.acc_List = get_account_list("hk4e_cn", self.headers)
         if len(self.acc_List) != 0:
             self.sign_Give = self.get_signgive()
-
-    # 获取绑定的账号列表
-    def get_account_list(self) -> list:
-        log.info("正在获取米哈游账号绑定原神账号列表...")
-        temp_list = []
-        req = http.get(setting.genshin_Account_info_url, headers=self.headers)
-        data = req.json()
-        if data["retcode"] != 0:
-            log.warning("获取账号列表失败！")
-            config.genshin_Auto_sign = False
-            config.save_config()
-            raise CookieError("BBS Cookie Errror")
-        for i in data["data"]["list"]:
-            temp_list.append([i["nickname"], i["game_uid"], i["region"]])
-        log.info(f"已获取到{len(temp_list)}个原神账号信息")
-        return temp_list
 
     # 获取已经签到奖励列表
     def get_signgive(self) -> list:
@@ -68,7 +55,7 @@ class Genshin:
 
     # 签到
     def sign_account(self):
-        return_data = "原神："
+        return_data = "原神: "
         if len(self.acc_List) != 0:
             for i in self.acc_List:
                 log.info(f"正在为旅行者{i[0]}进行签到...")

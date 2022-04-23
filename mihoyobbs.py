@@ -50,7 +50,7 @@ class mihoyobbs:
         global Today_have_getcoins
         global Have_coins
         log.info("正在获取任务列表")
-        req = http.get(url=setting.bbs_Taskslist, headers=self.headers)
+        req = http.get(url=setting.bbs_Tasks_list, headers=self.headers)
         data = req.json()
         if "err" in data["message"] or data["retcode"] == -100:
             log.error("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
@@ -101,7 +101,7 @@ class mihoyobbs:
     def get_list(self) -> list:
         temp_list = []
         log.info("正在获取帖子列表......")
-        req = http.get(url=setting.bbs_Listurl.format(setting.mihoyobbs_List_Use[0]["forumId"]), headers=self.headers)
+        req = http.get(url=setting.bbs_List_url.format(setting.mihoyobbs_List_Use[0]["forumId"]), headers=self.headers)
         data = req.json()
         for n in range(5):
             temp_list.append([data["data"]["list"][n]["post"]["post_id"], data["data"]["list"][n]["post"]["subject"]])
@@ -115,7 +115,7 @@ class mihoyobbs:
         else:
             log.info("正在签到......")
             for i in setting.mihoyobbs_List_Use:
-                req = http.post(url=setting.bbs_Signurl.format(i["id"]), data={}, headers=self.headers)
+                req = http.post(url=setting.bbs_Sign_url.format(i["id"]), data={}, headers=self.headers)
                 data = req.json()
                 if "err" not in data["message"]:
                     log.info(str(i["name"] + data["message"]))
@@ -132,7 +132,7 @@ class mihoyobbs:
         else:
             log.info("正在看帖......")
             for i in range(self.Task_do["bbs_Read_posts_num"]):
-                req = http.get(url=setting.bbs_Detailurl.format(self.postsList[i][0]), headers=self.headers)
+                req = http.get(url=setting.bbs_Detail_url.format(self.postsList[i][0]), headers=self.headers)
                 data = req.json()
                 if data["message"] == "OK":
                     log.debug("看帖：{} 成功".format(self.postsList[i][1]))
@@ -145,7 +145,7 @@ class mihoyobbs:
         else:
             log.info("正在点赞......")
             for i in range(self.Task_do["bbs_Like_posts_num"]):
-                req = http.post(url=setting.bbs_Likeurl, headers=self.headers,
+                req = http.post(url=setting.bbs_Like_url, headers=self.headers,
                                 json={"post_id": self.postsList[i][0], "is_cancel": False})
                 data = req.json()
                 if data["message"] == "OK":
@@ -153,7 +153,7 @@ class mihoyobbs:
                 # 判断取消点赞是否打开
                 if config.mihoyobbs["bbs_Unlike"]:
                     time.sleep(random.randint(2, 8))
-                    req = http.post(url=setting.bbs_Likeurl, headers=self.headers,
+                    req = http.post(url=setting.bbs_Like_url, headers=self.headers,
                                     json={"post_id": self.postsList[i][0], "is_cancel": True})
                     data = req.json()
                     if data["message"] == "OK":
@@ -168,7 +168,7 @@ class mihoyobbs:
         else:
             log.info("正在执行分享任务......")
             for i in range(3):
-                req = http.get(url=setting.bbs_Shareurl.format(self.postsList[0][0]), headers=self.headers)
+                req = http.get(url=setting.bbs_Share_url.format(self.postsList[0][0]), headers=self.headers)
                 data = req.json()
                 if data["message"] == "OK":
                     log.debug("分享：{} 成功".format(self.postsList[0][1]))

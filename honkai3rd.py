@@ -5,7 +5,7 @@ import random
 import setting
 from request import http
 from loghelper import log
-from error import CookieError
+from account import get_account_list
 
 
 class Honkai3rd:
@@ -27,24 +27,8 @@ class Honkai3rd:
             "Cookie": config.mihoyobbs_Cookies,
             'x-rpc-device_id': tools.get_device_id()
         }
-        self.acc_List = self.get_account_list()
+        self.acc_List = get_account_list("bh3_cn", self.headers)
         self.sign_day = 0
-
-    # 获取绑定的账号列表
-    def get_account_list(self) -> list:
-        log.info("正在获取米哈游账号绑定的崩坏3账号列表...")
-        temp_list = []
-        req = http.get(setting.honkai3rd_Account_info_url, headers=self.headers)
-        data = req.json()
-        if data["retcode"] != 0:
-            log.warning("获取账号列表失败！")
-            config.honkai3rd_Auto_sign = False
-            config.save_config()
-            raise CookieError("BBS Cookie Error")
-        for i in data["data"]["list"]:
-            temp_list.append([i["nickname"], i["game_uid"], i["region"]])
-        log.info(f"已获取到{len(temp_list)}个崩坏3账号信息")
-        return temp_list
 
     # 获取今天已经签到了的dict
     def get_today_item(self, raw_data: list):
@@ -61,14 +45,15 @@ class Honkai3rd:
 
     # 签到
     def sign_account(self):
-        return_data = "崩坏3："
+        return_data = "崩坏3: "
         if len(self.acc_List) == 0:
             log.warning("账号没有绑定任何崩坏3账号！")
             return_data += "\n并没有绑定任何崩坏3账号"
         else:
             for i in self.acc_List:
                 log.info(f"正在为舰长 {i[0]} 进行签到...")
-                req = http.get(setting.honkai3rd_Is_signurl.format(setting.honkai3rd_Act_id, i[2], i[1]), headers=self.headers)
+                req = http.get(setting.honkai3rd_Is_signurl.format(setting.honkai3rd_Act_id, i[2], i[1]),
+                               headers=self.headers)
                 data = req.json()
                 re_message = ""
                 if data["retcode"] != 0:

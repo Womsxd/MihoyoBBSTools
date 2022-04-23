@@ -22,7 +22,7 @@ mihoyobbs = {
     # 1是崩坏3 2是原神 3是崩坏2 4是未定事件簿 5是大别墅
     # 可以通过设置讨论区的id位置来设置主讨论区，[5,1]就是大别墅为主社区
     # 看帖子 点赞 分享帖子都是使用主社区获取到的列表
-    "bbs_Signin_multi_list": [2, 5],
+    "bbs_Signin_multi_list": [],
     # 浏览3个帖子
     "bbs_Read_posts": True,
     # 完成5次点赞
@@ -57,14 +57,7 @@ def load_config():
         mihoyobbs_Stuid = data["mihoyobbs_Stuid"]
         mihoyobbs_Stoken = data["mihoyobbs_Stoken"]
         mihoyobbs_Cookies = data["mihoyobbs_Cookies"]
-        mihoyobbs["bbs_Global"] = data["mihoyobbs"]["bbs_Global"]
-        mihoyobbs["bbs_Signin"] = data["mihoyobbs"]["bbs_Signin"]
-        mihoyobbs["bbs_Signin_multi"] = data["mihoyobbs"]["bbs_Signin_multi"]
-        mihoyobbs["bbs_Signin_multi_list"] = data["mihoyobbs"]["bbs_Signin_multi_list"]
-        mihoyobbs["bbs_Read_posts"] = data["mihoyobbs"]["bbs_Read_posts"]
-        mihoyobbs["bbs_Like_posts"] = data["mihoyobbs"]["bbs_Like_posts"]
-        mihoyobbs["bbs_Unlike"] = data["mihoyobbs"]["bbs_Unlike"]
-        mihoyobbs["bbs_Share"] = data["mihoyobbs"]["bbs_Share"]
+        mihoyobbs = data["mihoyobbs"]
         genshin_Auto_sign = data["genshin_Auto_sign"]
         honkai3rd_Auto_sign = data["honkai3rd_Auto_sign"]
         f.close()
@@ -101,3 +94,4 @@ def clear_cookies():
         f.flush()
         f.close()
         log.info("Cookie删除完毕")
+

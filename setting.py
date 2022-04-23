@@ -41,28 +41,45 @@ mihoyobbs_List = [{
     "url": "https://bbs.mihoyo.com/sr/"
 }]
 
+game_id2name = {
+    "bh2_cn": "崩坏2",
+    "bh3_cn": "崩坏3",
+    "nxx_cn": "未定事件簿",
+    "hk4e_cn": "原神",
+}
 # Config Load之后run里面进行列表的选择
 mihoyobbs_List_Use = []
 
-# 米游社的API列表
-bbs_Cookieurl = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket?login_ticket={}"
-bbs_Cookieurl2 = "https://api-takumi.mihoyo.com/auth/api/getMultiTokenByLoginTicket?login_ticket={}&token_types=3&uid={}"
-bbs_Taskslist = "https://bbs-api.mihoyo.com/apihub/sapi/getUserMissionsState"  # 获取任务列表
-bbs_Signurl = "https://bbs-api.mihoyo.com/apihub/sapi/signIn?gids={}"  # post
-bbs_Listurl = "https://bbs-api.mihoyo.com/post/api/getForumPostList?forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1"
-bbs_Detailurl = "https://bbs-api.mihoyo.com/post/api/getPostFull?post_id={}"
-bbs_Shareurl = "https://bbs-api.mihoyo.com/apihub/api/getShareConf?entity_id={}&entity_type=1"
-bbs_Likeurl = "https://bbs-api.mihoyo.com/apihub/sapi/upvotePost"  # post json 
+# 通用设置
+bbs_Api = "https://bbs-api.mihoyo.com"
+web_Api = "https://api-takumi.mihoyo.com"
+account_Info_url = web_Api + "/binding/api/getUserGameRolesByCookie?game_biz="
 
-# 原神自动签到相关的设置
-genshin_Act_id = "e202009291139501"
-genshin_Account_info_url = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=hk4e_cn"
-genshin_Signlisturl = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/home?act_id={}"
-genshin_Is_signurl = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/info?act_id={}&region={}&uid={}"
-genshin_Signurl = "https://api-takumi.mihoyo.com/event/bbs_sign_reward/sign"
+# 米游社的API列表
+bbs_Cookie_url = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket?login_ticket={}"
+bbs_Cookie_url2 = web_Api + "/auth/api/getMultiTokenByLoginTicket?login_ticket={}&token_types=3&uid={}"
+bbs_Tasks_list = bbs_Api + "/apihub/sapi/getUserMissionsState"  # 获取任务列表
+bbs_Sign_url = bbs_Api + "/apihub/sapi/signIn?gids={}"  # post
+bbs_List_url = bbs_Api + "/post/api/getForumPostList?forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1"
+bbs_Detail_url = bbs_Api + "/post/api/getPostFull?post_id={}"
+bbs_Share_url = bbs_Api + "/apihub/api/getShareConf?entity_id={}&entity_type=1"
+bbs_Like_url = bbs_Api + "/apihub/sapi/upvotePost"  # post json
+
+# 崩坏2自动签到相关的相关设置
+honkai2_Act_id = "e202203291431091"
+honkai2_Account_info_url = account_Info_url + "bh2_cn"  # 废弃字段，之后可能会删除
+honkai2_Is_signurl = web_Api + "/event/luna/info?lang=zh-cn&act_id={}&region={}&uid={}"
+honkai2_Sign_url = web_Api + "/event/luna/sign"
 
 # 崩坏3自动签到相关的设置
 honkai3rd_Act_id = "ea20211026151532"
-honkai3rd_Account_info_url = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=bh3_cn"
-honkai3rd_Is_signurl = "https://api-takumi.mihoyo.com/common/eutheniav2/index?act_id={}&region={}&uid={}"
-honkai3rd_SignUrl = "https://api-takumi.mihoyo.com/common/eutheniav2/sign"
+honkai3rd_Account_info_url = account_Info_url + "bh3_cn" # 废弃字段，之后可能会删除
+honkai3rd_Is_signurl = web_Api + "/common/eutheniav2/index?act_id={}&region={}&uid={}"
+honkai3rd_SignUrl = web_Api + "/common/eutheniav2/sign"
+
+# 原神自动签到相关的设置
+genshin_Act_id = "e202009291139501"
+genshin_Account_info_url = account_Info_url + "hk4e_cn" # 废弃字段，之后可能会删除
+genshin_Signlisturl = web_Api + "/event/bbs_sign_reward/home?act_id={}"
+genshin_Is_signurl = web_Api + "/event/bbs_sign_reward/info?act_id={}&region={}&uid={}"
+genshin_Signurl = web_Api + "/event/bbs_sign_reward/sign"
