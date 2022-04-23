@@ -57,7 +57,7 @@ def pushplus(status, push_message):
 
 
 # cq http协议的推送
-def cq_http(status, push_message):
+def cqhttp(status, push_message):
     http.post(
         url=cfg.get('cqhttp', 'cqhttp_url'),
         json={
