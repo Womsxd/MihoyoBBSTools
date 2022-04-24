@@ -73,13 +73,13 @@ honkai2_Sign_url = web_Api + "/event/luna/sign"
 
 # 崩坏3自动签到相关的设置
 honkai3rd_Act_id = "ea20211026151532"
-honkai3rd_Account_info_url = account_Info_url + "bh3_cn" # 废弃字段，之后可能会删除
+honkai3rd_Account_info_url = account_Info_url + "bh3_cn"  # 废弃字段，之后可能会删除
 honkai3rd_Is_signurl = web_Api + "/common/eutheniav2/index?act_id={}&region={}&uid={}"
 honkai3rd_SignUrl = web_Api + "/common/eutheniav2/sign"
 
 # 原神自动签到相关的设置
 genshin_Act_id = "e202009291139501"
-genshin_Account_info_url = account_Info_url + "hk4e_cn" # 废弃字段，之后可能会删除
+genshin_Account_info_url = account_Info_url + "hk4e_cn"  # 废弃字段，之后可能会删除
 genshin_Signlisturl = web_Api + "/event/bbs_sign_reward/home?act_id={}"
 genshin_Is_signurl = web_Api + "/event/bbs_sign_reward/info?act_id={}&region={}&uid={}"
 genshin_Signurl = web_Api + "/event/bbs_sign_reward/sign"

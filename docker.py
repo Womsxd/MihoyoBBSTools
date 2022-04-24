@@ -8,6 +8,7 @@ from crontab import CronTab
 
 time_format = "%Y-%m-%d %H:%M:%S"
 
+
 def stop_me(_signo, _stack):
     log.info("Docker container has stoped....")
     exit(-1)

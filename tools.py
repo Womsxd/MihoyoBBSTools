@@ -53,10 +53,10 @@ def get_item(raw_data: dict) -> str:
 
 
 # 获取明天早晨0点的时间戳
-def nextday() -> int:
+def next_day() -> int:
     now_time = int(time.time())
-    nextday_time = now_time - now_time % 86400 + time.timezone + 86400
-    return nextday_time
+    next_day_time = now_time - now_time % 86400 + time.timezone + 86400
+    return next_day_time
 
 
 # 获取Openssl版本

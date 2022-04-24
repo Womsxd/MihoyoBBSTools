@@ -72,8 +72,8 @@ def save_config():
         data["mihoyobbs_Stoken"] = mihoyobbs_Stoken
         f.seek(0)
         f.truncate()
-        temp_Text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
-        f.write(temp_Text)
+        temp_text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
+        f.write(temp_text)
         f.flush()
         f.close()
         log.info("Config保存完毕")
@@ -89,9 +89,8 @@ def clear_cookies():
         data["mihoyobbs_Cookies"] = ""
         f.seek(0)
         f.truncate()
-        temp_Text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
-        f.write(temp_Text)
+        temp_text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
+        f.write(temp_text)
         f.flush()
         f.close()
         log.info("Cookie删除完毕")
-
