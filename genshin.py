@@ -74,7 +74,7 @@ class Genshin:
                                         json={'act_id': setting.genshin_Act_id, 'region': i[2], 'uid': i[1]})
                         data = req.json()
                         if data["retcode"] == 0:
-                            log.info("旅行者{i[0]}签到成功~\r\n今天获得的奖励是"
+                            log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是"
                                      f"{tools.get_item(self.sign_Give[0 if sign_days == 0 else sign_days + 1])}")
                             sign_days += 1
                         elif data["retcode"] == -5003:
