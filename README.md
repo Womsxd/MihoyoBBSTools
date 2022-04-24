@@ -96,7 +96,7 @@ docker-compose logs -f
 
 4. 提交方法选`本地上传文件夹`，并在下方的函数代码处上传整个项目文件夹。
 
-5. 执行方法填写 `index.main_handler`,多用户请填写`main_handler_mulit`.
+5. 执行方法填写 `index.main_handler`,多用户请填写`index.main_handler_mulit`.
 
 6. 展开高级配置，将执行超时时间修改为 `300 秒`，其他保持默认。
 
