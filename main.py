@@ -81,6 +81,8 @@ def main():
         else:
             log.info("崩坏3签到功能未启用！")
         return 0, return_data
+    elif config.mihoyobbs_Cookies == "CookieError":
+        raise CookieError('Cookie expires')
     else:
         log.warning("Config未启用！")
         return 1, "Config未启用！"

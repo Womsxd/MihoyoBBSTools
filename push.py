@@ -18,8 +18,10 @@ def load_config():
 def title(status):
     if status == 0:
         return "「米游社脚本」执行成功!"
-    else:
+    elif status == 1:
         return "「米游社脚本」执行失败!"
+    elif status == 2:
+        return "「米游社脚本」部分账号执行失败！"
 
 
 # telegram的推送

@@ -55,7 +55,12 @@ def main_multi(autorun: bool):
                    f'没执行{len(results["close"])}个，失败{len(results["error"])}个' \
                    f'\r\n没执行的配置文件: {results["close"]}\r\n执行失败的配置文件: {results["error"]}'
     log.info(push_message)
-    push.push(0, push_message)
+    status = 0
+    if len(results["error"]) == len(config_list):
+        status = 1
+    elif len(results["error"]) < len(config_list):
+        status = 2
+    push.push(status, push_message)
 
 
 if __name__ == "__main__":

@@ -86,7 +86,7 @@ def clear_cookies():
         data["mihoyobbs_Login_ticket"] = ""
         data["mihoyobbs_Stuid"] = ""
         data["mihoyobbs_Stoken"] = ""
-        data["mihoyobbs_Cookies"] = ""
+        data["mihoyobbs_Cookies"] = "CookieError"
         f.seek(0)
         f.truncate()
         temp_text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
