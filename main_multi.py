@@ -58,7 +58,7 @@ def main_multi(autorun: bool):
     status = 0
     if len(results["error"]) == len(config_list):
         status = 1
-    elif len(results["error"]) < len(config_list):
+    elif len(results["error"]) != 0:
         status = 2
     push.push(status, push_message)
 
