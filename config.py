@@ -75,6 +75,7 @@ def load_config():
 
 
 def save_config():
+    global serverless
     if not serverless:
         log.info("云函数执行，无法保存")
         return None
@@ -83,16 +84,23 @@ def save_config():
         data["mihoyobbs_Login_ticket"] = login_ticket
         data["mihoyobbs_Stuid"] = stuid
         data["mihoyobbs_Stoken"] = stoken
-        f.seek(0)
-        f.truncate()
         temp_text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
-        f.write(temp_text)
-        f.flush()
+        try:
+            f.seek(0)
+            f.truncate()
+            f.write(temp_text)
+            f.flush()
+        except OSError:
+            serverless = True
+            log.info("Cookie保存失败")
+            exit(-1)
+        else:
+            log.info("Config保存完毕")
         f.close()
-        log.info("Config保存完毕")
 
 
 def clear_cookies():
+    global serverless
     if not serverless:
         log.info("云函数执行，无法保存")
         return None
@@ -103,10 +111,15 @@ def clear_cookies():
         data["mihoyobbs_Stuid"] = ""
         data["mihoyobbs_Stoken"] = ""
         data["mihoyobbs_Cookies"] = "CookieError"
-        f.seek(0)
-        f.truncate()
         temp_text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
-        f.write(temp_text)
-        f.flush()
+        try:
+            f.seek(0)
+            f.truncate()
+            f.write(temp_text)
+            f.flush()
+        except OSError:
+            serverless = True
+            log.info("Cookie删除失败")
+        else:
+            log.info("Cookie删除完毕")
         f.close()
-        log.info("Cookie删除完毕")
