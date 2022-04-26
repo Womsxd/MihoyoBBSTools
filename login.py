@@ -6,24 +6,24 @@ from error import CookieError
 
 
 def login():
-    if config.mihoyobbs_Cookies == '':
+    if config.cookies == '':
         log.error("请填入Cookies!")
         config.clear_cookies()
         raise CookieError('No cookie')
     # 判断Cookie里面是否有login_ticket 没有的话直接退了
-    if "login_ticket" in config.mihoyobbs_Cookies:
-        temp_cookies = config.mihoyobbs_Cookies.split(";")
+    if "login_ticket" in config.cookies:
+        temp_cookies = config.cookies.split(";")
         for i in temp_cookies:
             if i.split("=")[0] == " login_ticket":
-                config.mihoyobbs_Login_ticket = i.split("=")[1]
+                config.login_ticket = i.split("=")[1]
                 break
         # 这里获取Stuid，但是实际是可以直接拿cookie里面的Uid
-        data = http.get(url=setting.bbs_Cookie_url.format(config.mihoyobbs_Login_ticket)).json()
+        data = http.get(url=setting.bbs_Cookie_url.format(config.login_ticket)).json()
         if "成功" in data["data"]["msg"]:
-            config.mihoyobbs_Stuid = str(data["data"]["cookie_info"]["account_id"])
+            config.stuid = str(data["data"]["cookie_info"]["account_id"])
             data = http.get(url=setting.bbs_Cookie_url2.format(
-                config.mihoyobbs_Login_ticket, config.mihoyobbs_Stuid)).json()
-            config.mihoyobbs_Stoken = data["data"]["list"][0]["token"]
+                config.login_ticket, config.stuid)).json()
+            config.stoken = data["data"]["list"][0]["token"]
             log.info("登录成功！")
             log.info("正在保存Config！")
             config.save_config()

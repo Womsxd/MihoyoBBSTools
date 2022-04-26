@@ -15,9 +15,9 @@ def main():
     # 初始化，加载配置
     return_data = "\n米游社: "
     config.load_config()
-    if config.enable_Config:
+    if config.enable:
         # 检测参数是否齐全，如果缺少就进行登入操作
-        if config.mihoyobbs_Login_ticket == "" or config.mihoyobbs_Stuid == "" or config.mihoyobbs_Stoken == "":
+        if config.login_ticket == "" or config.stuid == "" or config.stoken == "":
             # 登入，如果没开启bbs全局没打开就无需进行登入操作
             if config.mihoyobbs["bbs_Global"]:
                 login.login()
@@ -81,7 +81,7 @@ def main():
         else:
             log.info("崩坏3签到功能未启用！")
         return 0, return_data
-    elif config.mihoyobbs_Cookies == "CookieError":
+    elif config.cookies == "CookieError":
         raise CookieError('Cookie expires')
     else:
         log.warning("Config未启用！")

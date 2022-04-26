@@ -16,7 +16,7 @@ class Mihoyobbs:
     def __init__(self):
         self.headers = {
             "DS": tools.get_ds(web=False, web_old=False),
-            "cookie": f"stuid={config.mihoyobbs_Stuid};stoken={config.mihoyobbs_Stoken}",
+            "cookie": f"stuid={config.stuid};stoken={config.stoken}",
             "x-rpc-client_type": setting.mihoyobbs_Client_type,
             "x-rpc-app_version": setting.mihoyobbs_Version,
             "x-rpc-sys_version": "6.0.1",

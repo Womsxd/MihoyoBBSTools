@@ -25,7 +25,7 @@ class Honkai2:
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,en-US;q=0.8',
             'X-Requested-With': 'com.mihoyo.hyperion',
-            "Cookie": config.mihoyobbs_Cookies,
+            "Cookie": config.cookies,
             'x-rpc-device_id': tools.get_device_id()
         }
         self.acc_List = get_account_list("bh2_cn", self.headers)
