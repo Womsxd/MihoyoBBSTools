@@ -2,9 +2,11 @@ import main
 import push
 import main_multi
 from error import CookieError
+from config import serverless
 
 
 def main_handler(event: dict, context: dict):
+    serverless = True
     try:
         status_code, push_message = main.main()
     except CookieError:
@@ -15,6 +17,7 @@ def main_handler(event: dict, context: dict):
 
 
 def main_handler_mulit(event: dict, context: dict):
+    serverless = True
     # 多用户需要传递True表示自动执行，不需要手动进行确认
     main_multi.main_multi(True)
     print("云函数多用户测试支持！")

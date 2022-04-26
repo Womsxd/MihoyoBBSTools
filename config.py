@@ -2,6 +2,9 @@ import os
 import json
 from loghelper import log
 
+# 这个字段现在还没找好塞什么地方好，就先塞config这里了
+serverless = False
+
 # 是否启用config
 enable = True
 # 这里的内容会自动获取
@@ -72,6 +75,9 @@ def load_config():
 
 
 def save_config():
+    if not serverless:
+        log.info("云函数执行，无法保存")
+        return None
     with open(config_Path, "r+") as f:
         data = json.load(f)
         data["mihoyobbs_Login_ticket"] = login_ticket
@@ -87,6 +93,9 @@ def save_config():
 
 
 def clear_cookies():
+    if not serverless:
+        log.info("云函数执行，无法保存")
+        return None
     with open(config_Path, "r+") as f:
         data = json.load(f)
         data["enable_Config"] = False
