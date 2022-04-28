@@ -5,69 +5,47 @@ from loghelper import log
 # 这个字段现在还没找好塞什么地方好，就先塞config这里了
 serverless = False
 
-# 是否启用config
-enable = True
-# 这里的内容会自动获取
-login_ticket = ""
-stuid = ""
-stoken = ""
-# 这里是米游社的cookie
-cookies = ""
-# 这个dist里面的内容和米游社有关
-mihoyobbs = {
-    # 全局开关，关闭之后下面的都不执行
-    "bbs_Global": True,
-    # 讨论区签到
-    "bbs_Signin": True,
-    # 多个讨论区签到
-    "bbs_Signin_multi": True,
-    # 指定签到讨论区
-    # 1是崩坏3 2是原神 3是崩坏2 4是未定事件簿 5是大别墅
-    # 可以通过设置讨论区的id位置来设置主讨论区，[5,1]就是大别墅为主社区
-    # 看帖子 点赞 分享帖子都是使用主社区获取到的列表
-    "bbs_Signin_multi_list": [],
-    # 浏览3个帖子
-    "bbs_Read_posts": True,
-    # 完成5次点赞
-    "bbs_Like_posts": True,
-    # 完成后取消点赞
-    "bbs_Unlike": True,
-    # 分享帖子
-    "bbs_Share": True,
-}
-# 原神自动签到
-genshin_Auto_sign = True
-# 崩坏3自动签到
-honkai3rd_Auto_sign = True
+v5_config = '{"enable":false,"version":5,"account":{"cookie":"","login_ticket":"","stuid":"","stoken":""},"mihoyobbs":{' \
+            '"enable":true,"checkin":true,"checkin_multi":true,"checkin_multi_list":[2,5],"read_posts":true,' \
+            '"like_posts":true,"un_like":true,"share_post":true},"games":{"cn":{"enable":true,"hokai2":{' \
+            '"auto_checkin":false,"black_list":[]},"honkai3rd":{"auto_checkin":false,"black_list":[]},' \
+            '"tears_of_themis":{"auto_checkin":false,"black_list":[]},"genshin":{"auto_checkin":false,"black_list":[' \
+            ']}},"os":{"enable":false,"cookie":"","genshin":{"auto_checkin":false,"black_list":[]}}}} '
+config = json.loads(v5_config)
 
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
 config_Path = f"{path}/config.json"
 
 
 def load_v4(data: dict):
-    global enable
-    global login_ticket
-    global stuid
-    global stoken
-    global cookies
-    global mihoyobbs
-    global genshin_Auto_sign
-    global honkai3rd_Auto_sign
-    enable = data["enable_Config"]
-    login_ticket = data["mihoyobbs_Login_ticket"]
-    stuid = data["mihoyobbs_Stuid"]
-    stoken = data["mihoyobbs_Stoken"]
-    cookies = data["mihoyobbs_Cookies"]
-    mihoyobbs = data["mihoyobbs"]
-    genshin_Auto_sign = data["genshin_Auto_sign"]
-    honkai3rd_Auto_sign = data["honkai3rd_Auto_sign"]
+    global config
+    # 配置开关
+    config["enable"] = data["enable_Config"]
+    # 账号 cookie
+    config["account"]["login_ticket"] = data["mihoyobbs_Login_ticket"]
+    config["account"]["stuid"] = data["mihoyobbs_Stuid"]
+    config["account"]["stoken"] = data["mihoyobbs_Stoken"]
+    config["account"]["cookie"] = data["mihoyobbs_Cookies"]
+    # bbs 相关设置(自己之前造的孽)
+    config["mihoyobbs"]["enable"] = data["mihoyobbs"]["bbs_Global"]
+    config["mihoyobbs"]["checkin"] = data["mihoyobbs"]["bbs_Signin"]
+    config["mihoyobbs"]["checkin_multi"] = data["mihoyobbs"]["bbs_Signin_multi"]
+    config["mihoyobbs"]["checkin_multi_list"] = data["mihoyobbs"]["bbs_Signin_multi_list"]
+    config["mihoyobbs"]["read_post"] = data["mihoyobbs"]["bbs_Read_posts"]
+    config["mihoyobbs"]["like_post"] = data["mihoyobbs"]["bbs_Like_posts"]
+    config["mihoyobbs"]["un_like"] = data["mihoyobbs"]["bbs_Unlike"]
+    config["mihoyobbs"]["share_post"] = data["mihoyobbs"]["bbs_Share"]
+    # 游戏相关设置 v4只支持原神和崩坏3，所以其他选项默认关闭
+    config["games"]["cn"]["genshin"] = data["genshin_Auto_sign"]
+    config["games"]["cn"]["honkai3rd"] = data["honkai3rd_Auto_sign"]
 
 
 def load_config():
+    global config
     with open(config_Path, "r") as f:
         data = json.load(f)
         if data.get('version') == 5:
-            pass
+            config = data
         else:
             load_v4(data)
         f.close()
@@ -81,9 +59,9 @@ def save_config():
         return None
     with open(config_Path, "r+") as f:
         data = json.load(f)
-        data["mihoyobbs_Login_ticket"] = login_ticket
-        data["mihoyobbs_Stuid"] = stuid
-        data["mihoyobbs_Stoken"] = stoken
+        data["mihoyobbs_Login_ticket"] = config["account"]["login_ticket"]
+        data["mihoyobbs_Stuid"] = config["account"]["stuid"]
+        data["mihoyobbs_Stoken"] = config["account"]["stoken"]
         temp_text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
         try:
             f.seek(0)

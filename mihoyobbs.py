@@ -16,7 +16,7 @@ class Mihoyobbs:
     def __init__(self):
         self.headers = {
             "DS": tools.get_ds(web=False, web_old=False),
-            "cookie": f"stuid={config.stuid};stoken={config.stoken}",
+            "cookie": f'stuid={config.config["account"]["stuid"]};stoken={config.config["account"]["stoken"]}',
             "x-rpc-client_type": setting.mihoyobbs_Client_type,
             "x-rpc-app_version": setting.mihoyobbs_Version,
             "x-rpc-sys_version": "6.0.1",
@@ -159,7 +159,7 @@ class Mihoyobbs:
                 if data["message"] == "OK":
                     log.debug("点赞：{} 成功".format(self.postsList[i][1]))
                 # 判断取消点赞是否打开
-                if config.mihoyobbs["bbs_Unlike"]:
+                if config.config["mihoyobbs"]["un_like"] :
                     time.sleep(random.randint(2, 8))
                     req = http.post(url=setting.bbs_Like_url, headers=self.headers,
                                     json={"post_id": self.postsList[i][0], "is_cancel": True})

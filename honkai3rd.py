@@ -24,7 +24,7 @@ class Honkai3rd:
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,en-US;q=0.8',
             'X-Requested-With': 'com.mihoyo.hyperion',
-            "Cookie": config.cookies,
+            "Cookie": config.config["account"]["cookie"],
             'x-rpc-device_id': tools.get_device_id()
         }
         self.acc_List = get_account_list("bh3_cn", self.headers)

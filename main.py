@@ -15,17 +15,17 @@ def main():
     # 初始化，加载配置
     return_data = "\n米游社: "
     config.load_config()
-    if config.enable:
+    if config.config["enable"]:
         # 检测参数是否齐全，如果缺少就进行登入操作
-        if config.login_ticket == "" or config.stuid == "" or config.stoken == "":
+        if config.config["account"]["login_ticket"] == "" or config.config["account"]["stuid"] == "" or config.config["account"]["stoken"] == "":
             # 登入，如果没开启bbs全局没打开就无需进行登入操作
-            if config.mihoyobbs["bbs_Global"]:
+            if config.config["mihoyobbs"]["enable"] :
                 login.login()
             time.sleep(random.randint(2, 8))
         # 获取要使用的BBS列表,#判断是否开启bbs_Signin_multi
-        if config.mihoyobbs["bbs_Signin_multi"]:
+        if config.config["mihoyobbs"]["checkin_multi"] :
             # 用这里的方案可以实现当让id在第一个的时候为主社区
-            for i in config.mihoyobbs["bbs_Signin_multi_list"]:
+            for i in config.config["mihoyobbs"]["checkin_multi_list"] :
                 for i2 in setting.mihoyobbs_List:
                     if i == int(i2["id"]):
                         setting.mihoyobbs_List_Use.append(i2)
@@ -35,7 +35,7 @@ def main():
                 if int(i["id"]) == 5:
                     setting.mihoyobbs_List_Use.append(i)
         # 米游社签到
-        if config.mihoyobbs["bbs_Global"]:
+        if config.config["mihoyobbs"]["enable"] :
             bbs = mihoyobbs.Mihoyobbs()
             if bbs.Task_do["bbs_Sign"] and bbs.Task_do["bbs_Read_posts"] and bbs.Task_do["bbs_Like_posts"] and \
                     bbs.Task_do["bbs_Share"]:
@@ -47,13 +47,13 @@ def main():
                 while mihoyobbs.today_get_coins != 0 and i < 3:
                     if i > 0:
                         bbs.refresh_list()
-                    if config.mihoyobbs["bbs_Signin"]:
+                    if config.config["mihoyobbs"]["checkin"] :
                         bbs.signing()
-                    if config.mihoyobbs["bbs_Read_posts"]:
+                    if config.config["mihoyobbs"]["read_post"] :
                         bbs.read_posts()
-                    if config.mihoyobbs["bbs_Like_posts"]:
+                    if config.config["mihoyobbs"]["like_post"] :
                         bbs.like_posts()
-                    if config.mihoyobbs["bbs_Share"]:
+                    if config.config["mihoyobbs"]["share_post"] :
                         bbs.share_post()
                     bbs.get_tasks_list()
                     i += 1
@@ -66,7 +66,7 @@ def main():
             return_data += "\n" + "米游社功能未启用！"
             log.info("米游社功能未启用！")
         # 原神签到
-        if config.genshin_Auto_sign:
+        if config.config["games"]["cn"]["genshin"]:
             log.info("正在进行原神签到")
             genshin_help = genshin.Genshin()
             return_data += "\n\n" + genshin_help.sign_account()
@@ -74,14 +74,14 @@ def main():
         else:
             log.info("原神签到功能未启用！")
         # 崩坏3签到
-        if config.honkai3rd_Auto_sign:
+        if config.config["games"]["cn"]["honkai3rd"]:
             log.info("正在进行崩坏3签到")
             honkai3rd_help = honkai3rd.Honkai3rd()
             return_data += "\n\n" + honkai3rd_help.sign_account()
         else:
             log.info("崩坏3签到功能未启用！")
         return 0, return_data
-    elif config.cookies == "CookieError":
+    elif config.config["account"]["cookie"] == "CookieError":
         raise CookieError('Cookie expires')
     else:
         log.warning("Config未启用！")

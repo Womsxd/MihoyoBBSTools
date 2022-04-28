@@ -41,7 +41,7 @@ def get_ds(web: bool, web_old: bool) -> str:
 
 # 生成一个device id
 def get_device_id() -> str:
-    return str(uuid.uuid3(uuid.NAMESPACE_URL, config.cookies)).replace(
+    return str(uuid.uuid3(uuid.NAMESPACE_URL, config.config["account"]["cookie"])).replace(
         '-', '').upper()
 
 

@@ -24,7 +24,7 @@ class Genshin:
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,en-US;q=0.8',
             'X-Requested-With': 'com.mihoyo.hyperion',
-            "Cookie": config.cookies,
+            "Cookie": config.config["account"]["cookie"],
             'x-rpc-device_id': tools.get_device_id()
         }
         self.acc_List = get_account_list("hk4e_cn", self.headers)
@@ -48,7 +48,7 @@ class Genshin:
         if data["retcode"] != 0:
             log.warning("获取账号签到信息失败！")
             print(req.text)
-            config.genshin_Auto_sign = False
+            config.config["games"]["cn"]["genshin"] = False
             config.save_config()
             raise CookieError("BBS Cookie Errror")
         return data["data"]
