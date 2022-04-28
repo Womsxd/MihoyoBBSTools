@@ -66,7 +66,7 @@ def main():
             return_data += "\n" + "米游社功能未启用！"
             log.info("米游社功能未启用！")
         # 原神签到
-        if config.config["games"]["cn"]["genshin"]:
+        if config.config["games"]["cn"]["genshin"]["auto_checkin"]:
             log.info("正在进行原神签到")
             genshin_help = genshin.Genshin()
             return_data += "\n\n" + genshin_help.sign_account()
@@ -74,7 +74,7 @@ def main():
         else:
             log.info("原神签到功能未启用！")
         # 崩坏3签到
-        if config.config["games"]["cn"]["honkai3rd"]:
+        if config.config["games"]["cn"]["honkai3rd"]["auto_checkin"]:
             log.info("正在进行崩坏3签到")
             honkai3rd_help = honkai3rd.Honkai3rd()
             return_data += "\n\n" + honkai3rd_help.sign_account()

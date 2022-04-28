@@ -18,12 +18,12 @@ def stop_module(game_id: str) -> None:
         # 崩坏2功能敬请期待
         pass
     elif game_id == "bh3_cn":
-        config.config["games"]["cn"]["honkai3rd"] = False
+        config.config["games"]["cn"]["honkai3rd"]["auto_checkin"] = False
     elif game_id == "nxx_cn":
         # 未定好像没米游社签到
         pass
     elif game_id == "hk4e_cn":
-        config.config["games"]["cn"]["genshin"] = False
+        config.config["games"]["cn"]["genshin"]["auto_checkin"] = False
     else:
         raise NameError
     config.save_config()

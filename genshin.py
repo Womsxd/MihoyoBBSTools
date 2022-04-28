@@ -38,7 +38,7 @@ class Genshin:
         if data["retcode"] != 0:
             log.warning("获取账号签到信息失败！")
             print(req.text)
-            config.config["games"]["cn"]["genshin"] = False
+            config.config["games"]["cn"]["genshin"]["auto_checkin"] = False
             config.save_config()
             raise CookieError("BBS Cookie Errror")
         return data["data"]
@@ -48,6 +48,8 @@ class Genshin:
         return_data = "原神: "
         if len(self.acc_List) != 0:
             for i in self.acc_List:
+                if i[1] in config.config["games"]["cn"]["genshin"]["black_list"]:
+                    continue
                 log.info(f"正在为旅行者{i[0]}进行签到...")
                 time.sleep(random.randint(2, 8))
                 is_data = self.is_sign(region=i[2], uid=i[1])

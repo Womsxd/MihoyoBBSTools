@@ -41,6 +41,8 @@ class Honkai3rd:
             return_data += "\n并没有绑定任何崩坏3账号"
         else:
             for i in self.acc_List:
+                if i[1] in config.config["games"]["cn"]["honkai3rd"]["black_list"]:
+                    continue
                 log.info(f"正在为舰长 {i[0]} 进行签到...")
                 req = http.get(setting.honkai3rd_Is_signurl.format(setting.honkai3rd_Act_id, i[2], i[1]),
                                headers=self.headers)
