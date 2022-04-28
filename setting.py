@@ -50,6 +50,23 @@ game_id2name = {
 # Config Load之后run里面进行列表的选择
 mihoyobbs_List_Use = []
 
+# 游戏签到的请求头
+headers = {
+    'Accept': 'application/json, text/plain, */*',
+    'DS': "",
+    'Origin': 'https://webstatic.mihoyo.com',
+    'x-rpc-app_version': mihoyobbs_Version_old,
+    'User-Agent': 'Mozilla/5.0 (Linux; Android 9; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) '
+                  'Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36 miHoYoBBS/2.3.0',
+    'x-rpc-client_type': mihoyobbs_Client_type_web,
+    'Referer': '',
+    'Accept-Encoding': 'gzip, deflate',
+    'Accept-Language': 'zh-CN,en-US;q=0.8',
+    'X-Requested-With': 'com.mihoyo.hyperion',
+    "Cookie": "",
+    'x-rpc-device_id': ""
+}
+
 # 通用设置
 bbs_Api = "https://bbs-api.mihoyo.com"
 web_Api = "https://api-takumi.mihoyo.com"
