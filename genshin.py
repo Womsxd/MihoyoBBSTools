@@ -58,6 +58,7 @@ class Genshin:
                     ok = True 
                     if is_data["is_sign"]:
                         log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days])}")
+                        sign_days += 1
                     else:
                         time.sleep(random.randint(2, 8))
                         req = http.post(url=setting.genshin_Signurl, headers=self.headers,
@@ -66,7 +67,7 @@ class Genshin:
                         if data["retcode"] == 0:
                             log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是"
                                      f"{tools.get_item(self.sign_Give[0 if sign_days == 0 else sign_days + 1])}")
-                            sign_days += 1
+                            sign_days += 2
                         elif data["retcode"] == -5003:
                             log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days])}")
                         else:
@@ -74,7 +75,7 @@ class Genshin:
                             print(req.text)
                             ok = False
                     if ok:
-                        return_data += f"\n{i[0]}已连续签到{sign_days}天\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days])}"
+                        return_data += f"\n{i[0]}已连续签到{sign_days}天\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days-1])}"
                     else:
                         return_data += f"\n{i[0]}，本次签到失败"
         else:
