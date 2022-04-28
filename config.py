@@ -36,8 +36,8 @@ def load_v4(data: dict):
     config["mihoyobbs"]["un_like"] = data["mihoyobbs"]["bbs_Unlike"]
     config["mihoyobbs"]["share_post"] = data["mihoyobbs"]["bbs_Share"]
     # 游戏相关设置 v4只支持原神和崩坏3，所以其他选项默认关闭
-    config["games"]["cn"]["genshin"] = data["genshin_Auto_sign"]
-    config["games"]["cn"]["honkai3rd"] = data["honkai3rd_Auto_sign"]
+    config["games"]["cn"]["genshin"]["auto_checkin"] = data["genshin_Auto_sign"]
+    config["games"]["cn"]["honkai3rd"]["auto_checkin"] = data["honkai3rd_Auto_sign"]
 
 
 def load_config():
