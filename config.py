@@ -54,7 +54,7 @@ def load_config():
 
 def save_config():
     global serverless
-    if not serverless:
+    if serverless:
         log.info("云函数执行，无法保存")
         return None
     with open(config_Path, "r+") as f:
@@ -79,7 +79,7 @@ def save_config():
 
 def clear_cookies():
     global serverless
-    if not serverless:
+    if serverless:
         log.info("云函数执行，无法保存")
         return None
     with open(config_Path, "r+") as f:
