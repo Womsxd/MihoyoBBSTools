@@ -54,7 +54,7 @@ class Honkai3rd:
                 today_item = self.get_today_item(data["data"]["sign"]["list"])
                 # 判断是否已经签到
                 if today_item["status"] == 0:
-                    re_message = f"舰长 {i[0]} 今天已经签到过了~\t已连续签到{self.sign_day}天\t今天获得的奖励是{tools.get_item(today_item)}"
+                    re_message = f"舰长 {i[0]} 今天已经签到过了~\t已连续签到{self.sign_day + 1}天\t今天获得的奖励是{tools.get_item(today_item)}"
                     log.info(re_message)
                 else:
                     time.sleep(random.randint(2, 8))
@@ -63,14 +63,14 @@ class Honkai3rd:
                     data = req.json()
                     if data["retcode"] == 0:
                         today_item = self.get_today_item(data["data"]["list"])
-                        re_message = f"舰长 {i[0]} 签到成功~\t已连续签到{self.sign_day}天\t今天获得的奖励是{tools.get_item(today_item)}"
+                        re_message = f"舰长 {i[0]} 签到成功~\t已连续签到{self.sign_day + 2}天\t今天获得的奖励是{tools.get_item(today_item)}"
                         log.info(re_message)
                     elif data["retcode"] == -5003:
-                        re_message = f"舰长 {i[0]} 今天已经签到过了~\t已连续签到{self.sign_day}天\t今天获得的奖励是{tools.get_item(today_item)}"
+                        re_message = f"舰长 {i[0]} 今天已经签到过了~\t已连续签到{self.sign_day + 1}天\t今天获得的奖励是{tools.get_item(today_item)}"
                         log.info(re_message)
                     else:
                         re_message = f"舰长 {i[0]} 本次签到失败！"
                         log.warning(re_message)
                         print(req.text)
-                return_data += re_message
+                return_data += "\r\n" + re_message
         return return_data

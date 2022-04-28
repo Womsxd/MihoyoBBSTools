@@ -72,7 +72,6 @@ class Genshin:
                             log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days])}")
                         else:
                             log.warning("账号签到失败！")
-                            print(req.text)
                             ok = False
                     if ok:
                         return_data += f"\n{i[0]}已连续签到{sign_days}天\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days-1])}"
