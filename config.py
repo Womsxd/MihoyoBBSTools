@@ -31,8 +31,8 @@ def load_v4(data: dict):
     config["mihoyobbs"]["checkin"] = data["mihoyobbs"]["bbs_Signin"]
     config["mihoyobbs"]["checkin_multi"] = data["mihoyobbs"]["bbs_Signin_multi"]
     config["mihoyobbs"]["checkin_multi_list"] = data["mihoyobbs"]["bbs_Signin_multi_list"]
-    config["mihoyobbs"]["read_post"] = data["mihoyobbs"]["bbs_Read_posts"]
-    config["mihoyobbs"]["like_post"] = data["mihoyobbs"]["bbs_Like_posts"]
+    config["mihoyobbs"]["read_posts"] = data["mihoyobbs"]["bbs_Read_posts"]
+    config["mihoyobbs"]["like_posts"] = data["mihoyobbs"]["bbs_Like_posts"]
     config["mihoyobbs"]["un_like"] = data["mihoyobbs"]["bbs_Unlike"]
     config["mihoyobbs"]["share_post"] = data["mihoyobbs"]["bbs_Share"]
     # 游戏相关设置 v4只支持原神和崩坏3，所以其他选项默认关闭
@@ -46,6 +46,16 @@ def load_config():
         data = json.load(f)
         if data.get('version') == 5:
             config = data
+            try:
+                config["mihoyobbs"]["like_post"]
+            except KeyError:
+                pass
+            else:
+                config["mihoyobbs"]["read_posts"] = config["mihoyobbs"]["read_post"]
+                config["mihoyobbs"]["like_posts"] = config["mihoyobbs"]["like_post"]
+                del config["mihoyobbs"]["like_post"]
+                del config["mihoyobbs"]["read_post"]
+                save_config()
         else:
             load_v4(data)
             log.info("升级v5 config")

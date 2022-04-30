@@ -17,15 +17,16 @@ def main():
     config.load_config()
     if config.config["enable"]:
         # 检测参数是否齐全，如果缺少就进行登入操作
-        if config.config["account"]["login_ticket"] == "" or config.config["account"]["stuid"] == "" or config.config["account"]["stoken"] == "":
+        if config.config["account"]["login_ticket"] == "" or config.config["account"]["stuid"] == "" or \
+                config.config["account"]["stoken"] == "":
             # 登入，如果没开启bbs全局没打开就无需进行登入操作
-            if config.config["mihoyobbs"]["enable"] :
+            if config.config["mihoyobbs"]["enable"]:
                 login.login()
             time.sleep(random.randint(2, 8))
         # 获取要使用的BBS列表,#判断是否开启bbs_Signin_multi
-        if config.config["mihoyobbs"]["checkin_multi"] :
+        if config.config["mihoyobbs"]["checkin_multi"]:
             # 用这里的方案可以实现当让id在第一个的时候为主社区
-            for i in config.config["mihoyobbs"]["checkin_multi_list"] :
+            for i in config.config["mihoyobbs"]["checkin_multi_list"]:
                 for i2 in setting.mihoyobbs_List:
                     if i == int(i2["id"]):
                         setting.mihoyobbs_List_Use.append(i2)
@@ -35,7 +36,7 @@ def main():
                 if int(i["id"]) == 5:
                     setting.mihoyobbs_List_Use.append(i)
         # 米游社签到
-        if config.config["mihoyobbs"]["enable"] :
+        if config.config["mihoyobbs"]["enable"]:
             bbs = mihoyobbs.Mihoyobbs()
             if bbs.Task_do["bbs_Sign"] and bbs.Task_do["bbs_Read_posts"] and bbs.Task_do["bbs_Like_posts"] and \
                     bbs.Task_do["bbs_Share"]:
@@ -47,13 +48,13 @@ def main():
                 while mihoyobbs.today_get_coins != 0 and i < 3:
                     if i > 0:
                         bbs.refresh_list()
-                    if config.config["mihoyobbs"]["checkin"] :
+                    if config.config["mihoyobbs"]["checkin"]:
                         bbs.signing()
-                    if config.config["mihoyobbs"]["read_post"] :
+                    if config.config["mihoyobbs"]["read_posts"]:
                         bbs.read_posts()
-                    if config.config["mihoyobbs"]["like_post"] :
+                    if config.config["mihoyobbs"]["like_posts"]:
                         bbs.like_posts()
-                    if config.config["mihoyobbs"]["share_post"] :
+                    if config.config["mihoyobbs"]["share_post"]:
                         bbs.share_post()
                     bbs.get_tasks_list()
                     i += 1
