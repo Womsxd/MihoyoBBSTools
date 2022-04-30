@@ -48,6 +48,9 @@ def load_config():
             config = data
         else:
             load_v4(data)
+            log.info("升级v5 config")
+            # 直接升级到v5 config
+            save_config()
         f.close()
         log.info("Config加载完毕")
 
@@ -58,11 +61,7 @@ def save_config():
         log.info("云函数执行，无法保存")
         return None
     with open(config_Path, "r+") as f:
-        data = json.load(f)
-        data["mihoyobbs_Login_ticket"] = config["account"]["login_ticket"]
-        data["mihoyobbs_Stuid"] = config["account"]["stuid"]
-        data["mihoyobbs_Stoken"] = config["account"]["stoken"]
-        temp_text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
+        temp_text = json.dumps(config, sort_keys=False, indent=4, separators=(', ', ': '))
         try:
             f.seek(0)
             f.truncate()
@@ -78,18 +77,18 @@ def save_config():
 
 
 def clear_cookies():
+    global config
     global serverless
     if serverless:
         log.info("云函数执行，无法保存")
         return None
     with open(config_Path, "r+") as f:
-        data = json.load(f)
-        data["enable_Config"] = False
-        data["mihoyobbs_Login_ticket"] = ""
-        data["mihoyobbs_Stuid"] = ""
-        data["mihoyobbs_Stoken"] = ""
-        data["mihoyobbs_Cookies"] = "CookieError"
-        temp_text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
+        config["enable"] = False
+        config["account"]["login_ticket"] = ""
+        config["account"]["stuid"] = ""
+        config["account"]["stoken"] = ""
+        config["account"]["cookie"] = "CookieError"
+        temp_text = json.dumps(config, sort_keys=False, indent=4, separators=(', ', ': '))
         try:
             f.seek(0)
             f.truncate()

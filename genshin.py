@@ -32,7 +32,7 @@ class Genshin:
         return data["data"]["awards"]
 
     # 判断签到
-    def is_sign(self, region: str, uid: str):
+    def is_sign(self, region: str, uid: str) -> dict:
         req = http.get(setting.genshin_Is_signurl.format(setting.genshin_Act_id, region, uid), headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
@@ -44,7 +44,7 @@ class Genshin:
         return data["data"]
 
     # 签到
-    def sign_account(self):
+    def sign_account(self) -> str:
         return_data = "原神: "
         if len(self.acc_List) != 0:
             for i in self.acc_List:

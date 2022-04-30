@@ -34,7 +34,7 @@ class Honkai3rd:
                 return raw_data[i]
 
     # 签到
-    def sign_account(self):
+    def sign_account(self) -> str:
         return_data = "崩坏3: "
         if len(self.acc_List) == 0:
             log.warning("账号没有绑定任何崩坏3账号！")
