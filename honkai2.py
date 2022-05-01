@@ -54,7 +54,8 @@ class Honkai2:
                 log.info(f"正在为崩坏2玩家: {i[0]}进行签到...")
                 time.sleep(random.randint(2, 8))
                 is_data = self.is_sign(region=i[2], uid=i[1])
-                if not is_data["is_sub"]:  # 这个字段不知道干啥的，就先塞这里了
+                # if not is_data["is_sub"]:  # 这个字段不知道干啥的，就先塞这里了
+                if False: # 算了先改成false
                     log.warning(f"旅行者{i[0]}是第一次绑定米游社，请先手动签到一次")
                 else:
                     sign_days = is_data["total_sign_day"] - 1
