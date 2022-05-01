@@ -14,9 +14,7 @@ def game_id2name(game_id: str) -> str:
 
 def stop_module(game_id: str) -> None:
     if game_id == "bh2_cn":
-        # config.honkai2rd_Auto_sign = False
-        # 崩坏2功能敬请期待
-        pass
+        config.config["games"]["cn"]["hokai2"]["auto_checkin"] = False
     elif game_id == "bh3_cn":
         config.config["games"]["cn"]["honkai3rd"]["auto_checkin"] = False
     elif game_id == "nxx_cn":
