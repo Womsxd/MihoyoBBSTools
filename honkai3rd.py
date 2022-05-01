@@ -17,7 +17,7 @@ class Honkai3rd:
                                   f'{setting.honkai3rd_Act_id}&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
         self.headers['Cookie'] = config.config["account"]["cookie"]
         self.headers['x-rpc-device_id'] = tools.get_device_id()
-        self.acc_List = get_account_list("bh3_cn", self.headers)
+        self.account_list = get_account_list("bh3_cn", self.headers)
         self.sign_day = 0
 
     # 获取今天已经签到了的dict
@@ -36,11 +36,11 @@ class Honkai3rd:
     # 签到
     def sign_account(self) -> str:
         return_data = "崩坏3: "
-        if len(self.acc_List) == 0:
+        if len(self.account_list) == 0:
             log.warning("账号没有绑定任何崩坏3账号！")
             return_data += "\n并没有绑定任何崩坏3账号"
         else:
-            for i in self.acc_List:
+            for i in self.account_list:
                 if i[1] in config.config["games"]["cn"]["honkai3rd"]["black_list"]:
                     continue
                 log.info(f"正在为舰长 {i[0]} 进行签到...")

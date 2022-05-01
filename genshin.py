@@ -17,14 +17,14 @@ class Genshin:
                                   f'&act_id={setting.genshin_Act_id}&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
         self.headers['Cookie'] = config.config["account"]["cookie"]
         self.headers['x-rpc-device_id'] = tools.get_device_id()
-        self.acc_List = get_account_list("hk4e_cn", self.headers)
-        if len(self.acc_List) != 0:
-            self.sign_Give = self.get_signgive()
+        self.account_list = get_account_list("hk4e_cn", self.headers)
+        if len(self.account_list) != 0:
+            self.checkin_rewards = self.get_checkin_rewards()
 
     # 获取已经签到奖励列表
-    def get_signgive(self) -> list:
+    def get_checkin_rewards(self) -> list:
         log.info("正在获取签到奖励列表...")
-        req = http.get(setting.genshin_Signlisturl.format(setting.genshin_Act_id), headers=self.headers)
+        req = http.get(setting.genshin_checkin_rewards, headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
             log.warning("获取签到奖励列表失败")
@@ -46,8 +46,8 @@ class Genshin:
     # 签到
     def sign_account(self) -> str:
         return_data = "原神: "
-        if len(self.acc_List) != 0:
-            for i in self.acc_List:
+        if len(self.account_list) != 0:
+            for i in self.account_list:
                 if i[1] in config.config["games"]["cn"]["genshin"]["black_list"]:
                     continue
                 log.info(f"正在为旅行者{i[0]}进行签到...")
@@ -59,7 +59,7 @@ class Genshin:
                     sign_days = is_data["total_sign_day"] - 1
                     ok = True 
                     if is_data["is_sign"]:
-                        log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days])}")
+                        log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days])}")
                         sign_days += 1
                     else:
                         time.sleep(random.randint(2, 8))
@@ -68,15 +68,15 @@ class Genshin:
                         data = req.json()
                         if data["retcode"] == 0:
                             log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是"
-                                     f"{tools.get_item(self.sign_Give[0 if sign_days == 0 else sign_days + 1])}")
+                                     f"{tools.get_item(self.checkin_rewards[0 if sign_days == 0 else sign_days + 1])}")
                             sign_days += 2
                         elif data["retcode"] == -5003:
-                            log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days])}")
+                            log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days])}")
                         else:
                             log.warning("账号签到失败！")
                             ok = False
                     if ok:
-                        return_data += f"\n{i[0]}已连续签到{sign_days}天\n今天获得的奖励是{tools.get_item(self.sign_Give[sign_days-1])}"
+                        return_data += f"\n{i[0]}已连续签到{sign_days}天\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days - 1])}"
                     else:
                         return_data += f"\n{i[0]}，本次签到失败"
         else:
