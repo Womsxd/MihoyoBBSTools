@@ -26,12 +26,12 @@
 
   7. **使用[获取Cookie](#获取米游社Cookie)里面的方法来获取米游社Cookie**
 
-  8. 将复制的Cookie粘贴到`config.json`的`"mihoyobbs_Cookies":" "`中
+  8. 将复制的Cookie粘贴到`config.json`的`"cookie":" "`中(在`account`里面)
 
         例子
 
         > ```json
-        > "mihoyobbs_Cookies": "你复制的cookie"
+        > "cookie": "你复制的cookie"
         > ```
 
   9. 在命令提示符(cmd)/powershell，输入`python main.py`来进行执行
@@ -46,7 +46,7 @@
 
 3. 打开`http://bbs.mihoyo.com/ys/`并进行登入操作
 
-4. 在上一步登入完成后新建标签页，打开`http://user.mihoyo.com/`并进行登入操作 (如果你不需要自动获取米游币可以忽略这个步骤，并把`bbs_Global`改为`false`即可)
+4. 在上一步登入完成后新建标签页，打开`http://user.mihoyo.com/`并进行登入操作 (如果你不需要自动获取米游币可以忽略这个步骤，并把`mihoyobbs`的`enable`改为`false`即可)
 
 5. 按下键盘上的`F12`或右键检查,打开开发者工具,点击Console
 
