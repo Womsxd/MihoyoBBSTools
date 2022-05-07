@@ -13,10 +13,10 @@
 >此字段的作用是是否启用这个配置文件，`bool`类型，可设置`true`(默认)和`false`
 
 ```json
-"config_Version": 3,
+"config_Version": 5,
 ```
 
->此字段的作用是表明配置文件版本(不过脚本里面暂时没有用到)，`int`类型
+>此字段的作用是表明配置文件版本(4会被转成5)，`int`类型
 
 ```json
 "mihoyobbs_Login_ticket": "", 
@@ -44,34 +44,34 @@
 
 ```json
 "mihoyobbs": {
-    "bbs_Global": true, 
-    "bbs_Signin": true, 
-    "bbs_Signin_multi": true, 
-    "bbs_Signin_multi_list": [2, 5], 
-    "bbs_Read_posts": true, 
-    "bbs_Like_posts": true, 
-    "bbs_Unlike": true, 
-    "bbs_Share": true
+    "enable": true, 
+    "checkin": true, 
+    "checkin_multi": true, 
+    "checkin_multi_list": [2, 5], 
+    "read_posts": true, 
+    "like_posts": true, 
+    "un_like": true, 
+    "share_post": true
 }, 
 ```
 
 此字段的作用是米游币获取相关的设置，`object`类型(**python**里面是`dict`)
 
->`bbs_Global`的作用是是否启用米游币获取，`bool`类型，可设置`true`(默认)和`false`
+>`enable`的作用是是否启用米游币获取，`bool`类型，可设置`true`(默认)和`false`
 >
->`bbs_Signin`的作用是是否启用讨论区自动签到，`bool`类型，可设置`true`(默认)和`false`
+>`checkin`的作用是是否启用讨论区自动签到，`bool`类型，可设置`true`(默认)和`false`
 >
->`bbs_Signin_multi`的作用是是否启用多个讨论区签到(关闭的话只签到大别墅)，`bool`类型，可设置`true`(默认)和`false`
+>`checkin_multi`的作用是是否启用多个讨论区签到(关闭的话只签到大别墅)，`bool`类型，可设置`true`(默认)和`false`
 >
->`bbs_Signin_multi_list`的作用设置要签到的讨论区，`array`类型(**python**里面是`list`)，可设置内容可以设置`[1,2,3,4,5]`签到全部讨论区，默认是`[2,5]`，可以通过调整id的位置来进行设置阅读/点赞/分享指定讨论区的帖子`[2,1,5]`（签到原神，崩坏3和大别墅）[讨论区的id对应关系](## 讨论区的id对应关系)
+>`checkin_multi_list`的作用设置要签到的讨论区，`array`类型(**python**里面是`list`)，可设置内容可以设置`[1,2,3,4,5]`签到全部讨论区，默认是`[2,5]`，可以通过调整id的位置来进行设置阅读/点赞/分享指定讨论区的帖子`[2,1,5]`（签到原神，崩坏3和大别墅）[讨论区的id对应关系](## 讨论区的id对应关系)
 >
->`bbs_Read_posts`的作用是是否启用自动阅读帖子，`bool`类型，可设置`true`(默认)和`false`
+>`read_posts`的作用是是否启用自动阅读帖子，`bool`类型，可设置`true`(默认)和`false`
 >
->`bbs_Like_posts`的作用是是否启用自动点赞帖子，`bool`类型，可设置`true`(默认)和`false`
+>`like_posts`的作用是是否启用自动点赞帖子，`bool`类型，可设置`true`(默认)和`false`
 >
->`bbs_Unlike`的作用是是否启用自动取消帖子点赞(当`bbs_Like_posts`为`false`时本设置无效)，`bool`类型，可设置`true`(默认)和`false`
+>`un_like`的作用是是否启用自动取消帖子点赞(当`like_posts`为`false`时本设置无效)，`bool`类型，可设置`true`(默认)和`false`
 >
->`bbs_Share`的作用是是否启用自动分享帖子，`bool`类型，可设置`true`(默认)和`false`
+>`share_post`的作用是是否启用自动分享帖子，`bool`类型，可设置`true`(默认)和`false`
 
 ```json
 "genshin_Auto_sign": true,

@@ -5,13 +5,33 @@ from loghelper import log
 # 这个字段现在还没找好塞什么地方好，就先塞config这里了
 serverless = False
 
-v5_config = '{"enable":false,"version":5,"account":{"cookie":"","login_ticket":"","stuid":"","stoken":""},"mihoyobbs":{' \
-            '"enable":true,"checkin":true,"checkin_multi":true,"checkin_multi_list":[2,5],"read_posts":true,' \
-            '"like_posts":true,"un_like":true,"share_post":true},"games":{"cn":{"enable":true,"hokai2":{' \
-            '"auto_checkin":false,"black_list":[]},"honkai3rd":{"auto_checkin":false,"black_list":[]},' \
-            '"tears_of_themis":{"auto_checkin":false,"black_list":[]},"genshin":{"auto_checkin":false,"black_list":[' \
-            ']}},"os":{"enable":false,"cookie":"","genshin":{"auto_checkin":false,"black_list":[]}}}} '
-config = json.loads(v5_config)
+config = {
+    'enable': True, 'version': 5,
+    'account': {
+        'cookie': '',
+        'login_ticket': '',
+        'stuid': '',
+        'stoken': ''
+    },
+    'mihoyobbs': {
+        'enable': True, 'checkin': True, 'checkin_multi': True, 'checkin_multi_list': [2, 5],
+        'read_posts': True, 'like_posts': True, 'un_like': True, 'share_post': True
+    },
+    'games': {
+        'cn': {
+            'enable': True,
+            'genshin': {'auto_checkin': True, 'black_list': []},
+            'hokai2': {'auto_checkin': False, 'black_list': []},
+            'honkai3rd': {'auto_checkin': False, 'black_list': []},
+            'tears_of_themis': {'auto_checkin': False, 'black_list': []},
+        },
+        'os': {
+            'enable': False, 'cookie': '',
+            'genshin': {'auto_checkin': False, 'black_list': []}
+        }
+    }
+}
+
 
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
 config_Path = f"{path}/config.json"

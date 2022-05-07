@@ -1,8 +1,8 @@
 [setting]
 enable=false
-#共有 cqhttp ftqq(sever酱) pushplus telegram
+#共有 cqhttp ftqq(sever酱) pushplus telegram dingrobot
 push_server=cqhttp
-#server酱和pushplus的推送token
+#server酱 pushplus dingrobot 的推送token
 push_token=123456
 
 [cqhttp]
@@ -25,3 +25,6 @@ wechat_id=
 [pushdeer]
 api_url=https://api2.pushdeer.com
 token=
+
+[dingrobot]
+api_url=https://oapi.dingtalk.com/robot/send

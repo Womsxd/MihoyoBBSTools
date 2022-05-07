@@ -99,6 +99,20 @@ def pushdeer(status, push_message):
     )
 
 
+# dingding robot
+def dingrobot(status, push_message):
+    # print('dingrobot', title(status) + "\r\n" + push_message)
+    access_token=cfg.get('setting', 'push_token')
+    # print(f"https://oapi.dingtalk.com/robot/send?access_token={access_token}")
+    rep = http.post(
+        url=f"https://oapi.dingtalk.com/robot/send?access_token={access_token}",
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        json={
+            "msgtype": "text", "text": { "content": title(status) + "\r\n" + push_message }
+        }
+    ).json()
+    print(rep)
+
 def push(status, push_message):
     if not load_config():
         return 0
@@ -107,9 +121,13 @@ def push(status, push_message):
         log.info("正在执行推送......")
         try:
             log.debug(f"推送所用的服务为：{push_server}")
-            eval(push_server[:10].lower() + "(status, push_message)")
+            eval(push_server[:10] + "(status, push_message)")
         except NameError:
             log.warning("推送服务名称错误")
         else:
             log.info("推送完毕......")
     return 0
+
+if __name__ == "__main__":
+    push(0, '推送正文')
+
