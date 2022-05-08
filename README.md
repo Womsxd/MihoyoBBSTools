@@ -86,9 +86,9 @@ docker-compose logs -f
 
 ## 使用云函数运行
 
-**腾讯云函数服务免费额度近期有变化，为了避免产生费用，建议切换到阿里云 函数计算 FC**
+腾讯云函数服务免费额度近期有变化，为了**避免产生费用**，建议切换到阿里云 函数计算 FC
 
->腾讯云
+* 腾讯云
 
 1. 在本地完整运行一次。
 
@@ -106,7 +106,7 @@ docker-compose logs -f
 
 8. 完成，enjoy it！
 
->阿里云
+* 阿里云
 
   1. 在本地完整运行一次。
   2. 打开并登录[函数计算 FC](https://fcnext.console.aliyun.com/cn-hangzhou/services)。注意左上方显示的地区，可点击切换其他地区。
@@ -138,6 +138,10 @@ httpx: [github](https://github.com/encode/httpx) [pypi](https://pypi.org/project
 也**不会**处理使用`Github Actions`执行有关的issues！
 
 推荐使用 阿里云/腾讯云 的云函数来进行每日自动执行脚本。
+
+## Stargazers over time
+
+![Stargazers over time](https://starchart.cc/Womsxd/AutoMihoyoBBS.svg)
 
 ## License
 
