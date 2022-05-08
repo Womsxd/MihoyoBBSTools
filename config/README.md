@@ -108,9 +108,9 @@
 ## dingrobot
 钉钉群机器人
 
-[dingrobot]中的api_url填写**Webhook**地址
+**webhook**填写**Webhook**地址
 
-[setting]中的**push_token**用于填写**安全设置**中**加签**的密钥，此选项为可选项
+**secret**填写**安全设置**中**加签**的密钥，此选项为可选项
 
 填写示例
 
@@ -118,9 +118,9 @@
 [setting]
 enable=true
 push_server=dingrobot
-push_token=
 
 [dingrobot]
-api_url=https://oapi.dingtalk.com/robot/send?access_token=XXX
+webhook=https://oapi.dingtalk.com/robot/send?access_token=XXX
+secret=
 ```
 

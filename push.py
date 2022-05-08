@@ -105,8 +105,8 @@ def pushdeer(status, push_message):
 
 # 钉钉群机器人
 def dingrobot(status, push_message):
-    api_url = cfg.get('dingrobot', 'api_url')    # https://oapi.dingtalk.com/robot/send?access_token=XXX
-    secret = cfg.get('setting', 'push_token')    # 安全设置 -> 加签 -> 密钥
+    api_url = cfg.get('dingrobot', 'webhook')  # https://oapi.dingtalk.com/robot/send?access_token=XXX
+    secret = cfg.get('dingrobot', 'secret')    # 安全设置 -> 加签 -> 密钥 -> SEC*
 
     if secret:
         timestamp = str(round(time.time() * 1000))

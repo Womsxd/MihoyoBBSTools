@@ -27,4 +27,5 @@ api_url=https://api2.pushdeer.com
 token=
 
 [dingrobot]
-api_url=https://oapi.dingtalk.com/robot/send?access_token=XXX
+webhook=https://oapi.dingtalk.com/robot/send?access_token=XXX
+secret=
