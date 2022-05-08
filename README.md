@@ -111,19 +111,20 @@ docker-compose logs -f
   1. 在本地完整运行一次。
   2. 打开并登录[函数计算 FC](https://fcnext.console.aliyun.com/cn-hangzhou/services)。注意左上方显示的地区，可点击切换其他地区。
   3. 创建服务 （日志功能可能产生费用，建议关闭）
-     1. - 创建函数
+     1. 创建函数
      2. 从零开始创建
-        1. `请求处理程序类型：处理事件请求` 
-        2. `请求处理程序：index.main_handler`，多用户请填写`index.main_handler_mulit` 
+        1. `请求处理程序类型：处理事件请求`
+        2. `请求处理程序：index.main_handler`，多用户请填写`index.main_handler_mulit`
         3. 配置触发器：触发器类型 定时触发器 异步调用。建议触发方式设为`指定时间`
         4. 点击创建
      3. 进入函数详情
         1. 打开函数配置
         2. 修改 `环境信息` - `执行超时时间` 为300秒。
   4. 测试运行
-     1. 打开 `函数详情` 
+     1. 打开 `函数详情`
      2. 点击`测试函数`
   5. 完成
+
 ## 使用的第三方库
 
 requests: [github](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/)
