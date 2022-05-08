@@ -1,4 +1,9 @@
 import os
+import time
+import base64
+import hashlib
+import urllib
+import hmac
 from request import http
 from loghelper import log
 from configparser import ConfigParser
@@ -98,36 +103,53 @@ def pushdeer(status, push_message):
         }
     )
 
-
-# dingding robot
+# 钉钉群机器人
 def dingrobot(status, push_message):
-    # print('dingrobot', title(status) + "\r\n" + push_message)
-    access_token=cfg.get('setting', 'push_token')
-    # print(f"https://oapi.dingtalk.com/robot/send?access_token={access_token}")
+    api_url = cfg.get('dingrobot', 'webhook')  # https://oapi.dingtalk.com/robot/send?access_token=XXX
+    secret = cfg.get('dingrobot', 'secret')    # 安全设置 -> 加签 -> 密钥 -> SEC*
+
+    if secret:
+        timestamp = str(round(time.time() * 1000))
+        sign_string = f"{timestamp}\n{secret}"
+        hmac_code = hmac.new(
+            key=secret.encode("utf-8"),
+            msg=sign_string.encode("utf-8"),
+            digestmod=hashlib.sha256
+        ).digest()
+        sign = urllib.parse.quote_plus(base64.b64encode(hmac_code))
+        api_url = f"{api_url}&timestamp={timestamp}&sign={sign}"
+    
     rep = http.post(
-        url=f"https://oapi.dingtalk.com/robot/send?access_token={access_token}",
+        url=api_url,
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
             "msgtype": "text", "text": { "content": title(status) + "\r\n" + push_message }
         }
     ).json()
-    print(rep)
+    log.info(f"推送结果：{rep.get('errmsg')}")
 
 def push(status, push_message):
     if not load_config():
         return 0
     if cfg.getboolean('setting', 'enable'):
-        push_server = cfg.get('setting', 'push_server').lower()
         log.info("正在执行推送......")
+        func_name = cfg.get('setting', 'push_server').lower()
+        func = globals().get(func_name)
+        # print(func)
+        if not func:
+            log.warning("推送服务名称错误：请检查config/push.ini -> [setting] -> push_server")
+            return 0
+        log.debug(f"推送所用的服务为：{func_name}")
         try:
-            log.debug(f"推送所用的服务为：{push_server}")
-            eval(push_server[:10] + "(status, push_message)")
-        except NameError:
-            log.warning("推送服务名称错误")
+            # eval(push_server[:10] + "(status, push_message)")
+            # 与面代码等效 20220508
+            func(status, push_message)
+        except:
+            log.warning("推送执行错误")
+            return 0
         else:
             log.info("推送完毕......")
-    return 0
+    return 1
 
 if __name__ == "__main__":
-    push(0, '推送正文')
-
+    push(0, f'推送验证{int(time.time())}')
