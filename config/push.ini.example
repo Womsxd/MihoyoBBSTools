@@ -31,3 +31,7 @@ token=
 [dingrobot]
 webhook=https://oapi.dingtalk.com/robot/send?access_token=XXX
 secret=
+
+[bark]
+api_url=https://api.day.app
+token=ssXXX

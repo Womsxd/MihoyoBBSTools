@@ -137,6 +137,12 @@ def dingrobot(status, push_message):
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
 
+# Bark
+def bark(status, push_message):
+    http.get(
+        url=f'{cfg.get("bark", "api_url")}/{cfg.get("bark", "token")}/{title(status)}/{push_message}'
+    )
+
 def push(status, push_message):
     if not load_config():
         return 0
