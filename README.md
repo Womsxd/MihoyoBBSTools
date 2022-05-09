@@ -131,6 +131,8 @@ requests: [github](https://github.com/psf/requests) [pypi](https://pypi.org/proj
 
 httpx: [github](https://github.com/encode/httpx) [pypi](https://pypi.org/project/httpx/)
 
+crontab: [github](https://github.com/josiahcarlson/parse-crontab) [pypi](https://pypi.org/project/crontab/)
+
 ## 关于使用 Github Actions 运行
 
 本项目**不支持**也**不推荐**使用`Github Actions`来每日自动执行！
@@ -141,7 +143,7 @@ httpx: [github](https://github.com/encode/httpx) [pypi](https://pypi.org/project
 
 ## Stargazers over time
 
-![Stargazers over time](https://starchart.cc/Womsxd/AutoMihoyoBBS.svg)
+[![Stargazers over time](https://starchart.cc/Womsxd/AutoMihoyoBBS.svg)](https://starchart.cc/Womsxd/AutoMihoyoBBS)
 
 ## License
 
