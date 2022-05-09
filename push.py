@@ -77,17 +77,26 @@ def cqhttp(status, push_message):
 # 企业微信 感谢linjie5492@github
 def wecom(status, push_message):
     secret = cfg.get('wecom', 'secret')
-    wechat_id = cfg.get('wecom', 'wechat_id')
+    corpid = cfg.get('wecom', 'wechat_id')
+    try:
+        touser = cfg.get('wecom', 'touser')
+    except:
+        # 没有配置时赋默认值
+        touser = '@all'
+    
     push_token = http.post(
-        url=f'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={wechat_id}&corpsecret={secret}',
-        data="").json()['access_token']
+        url=f'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={corpid}&corpsecret={secret}',
+        data=""
+    ).json()['access_token']
     push_data = {
         "agentid": cfg.get('wecom', 'agentid'),
         "msgtype": "text",
-        "touser": "@all",
+        "touser": touser,
         "text": {
             "content": title(status) + "\r\n" + push_message
-        }, "safe": 0}
+        },
+        "safe": 0
+    }
     http.post(f'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={push_token}', json=push_data)
 
 
@@ -144,8 +153,8 @@ def push(status, push_message):
             # eval(push_server[:10] + "(status, push_message)")
             # 与面代码等效 20220508
             func(status, push_message)
-        except:
-            log.warning("推送执行错误")
+        except Exception as r:
+            log.warning(f"推送执行错误：{str(r)}")
             return 0
         else:
             log.info("推送完毕......")

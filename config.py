@@ -130,3 +130,14 @@ def clear_cookies():
         else:
             log.info("Cookie删除完毕")
         f.close()
+
+if __name__ == "__main__":
+    # 初始化配置文件
+    # try:
+    #     account_cookie = config['account']['cookie']
+    #     config = load_config()
+    #     config['account']['cookie'] = account_cookie
+    # except OSError:
+    #     pass
+    # save_config()
+    pass
