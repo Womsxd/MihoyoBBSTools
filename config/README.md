@@ -102,7 +102,7 @@
 
 # push.ini配置教程
 
-* push_server 可选范围 cqhttp ftqq(sever酱) pushplus telegram dingrobot
+* push_server 可选范围 cqhttp ftqq(sever酱) pushplus telegram dingrobot bark
 
 
 ## Wecom
@@ -148,5 +148,31 @@ push_server=dingrobot
 [dingrobot]
 webhook=https://oapi.dingtalk.com/robot/send?access_token=XXX
 secret=
+```
+
+
+
+## bark
+
+一款开源的消息推送工具 https://github.com/Finb/Bark
+
+手机安装bark客户端获得托管在api.day.app的Token，也可以自己搭建私有服务端。
+
+**api_url**一般不用改，自己搭建私有服务端的需要改掉
+
+**token**填写**APP**内**URL**中的密钥，此选项必填
+
+> `https://api.day.app/` `token部分` `/Title/NotificationContent`
+
+填写示例
+
+```ini
+[setting]
+enable=true
+push_server=bark
+
+[bark]
+api_url=https://api.day.app
+token=XXX
 ```
 
