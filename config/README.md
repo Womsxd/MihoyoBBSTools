@@ -105,6 +105,32 @@
 * push_server 可选范围 cqhttp ftqq(sever酱) pushplus telegram dingrobot
 
 
+## Wecom
+企业微信
+
+**wechat_id**填写**企业ID**，见:  我的企业 -> 企业设置 -> 企业ID
+
+**agentid**填写**AgentId**，见:  应用管理 -> 自建 -> 「你自己的应用」 -> 复制数字
+**secret**填写**Secret**，见:  应用管理 -> 自建 -> 「你自己的应用」->  点<u>查看</u>链接
+
+**touser**填写**接收人**，默认 @all 通知企业内所有人，指定接收人时使用大驼峰拼音，多个可用｜隔开
+
+填写示例
+
+```ini
+[setting]
+enable=true
+push_server=wecom
+
+[wecom]
+#企业微信的corpid
+wechat_id=
+#企业微信的应用配置
+agentid=
+secret=
+touser=@all
+```
+
 ## dingrobot
 钉钉群机器人
 
