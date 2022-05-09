@@ -1,6 +1,6 @@
 [setting]
 enable=false
-#共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot
+#共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot bark
 push_server=cqhttp
 #server酱 pushplus dingrobot 的推送token
 push_token=123456
