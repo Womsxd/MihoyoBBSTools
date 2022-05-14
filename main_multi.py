@@ -32,7 +32,7 @@ def main_multi(autorun: bool):
         log.info(f"已搜索到{len(config_list)}个配置文件，请确认是否无多余文件！\r\n{config_list}")
         try:
             input("请输入回车继续，需要重新搜索配置文件请Ctrl+C退出脚本")
-        except:
+        except KeyboardInterrupt:
             exit(0)
     results = {"ok": [], "close": [], "error": []}
     for i in iter(config_list):
@@ -51,10 +51,16 @@ def main_multi(autorun: bool):
         log.info(f"{i}执行完毕")
         time.sleep(random.randint(3, 10))
     print("")
-    push_message = f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，没执行{len(results["close"])}个，失败{len(results["error"])}个'\
+    push_message = f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，' \
+                   f'没执行{len(results["close"])}个，失败{len(results["error"])}个' \
                    f'\r\n没执行的配置文件: {results["close"]}\r\n执行失败的配置文件: {results["error"]}'
     log.info(push_message)
-    push.push(0, push_message)
+    status = 0
+    if len(results["error"]) == len(config_list):
+        status = 1
+    elif len(results["error"]) != 0:
+        status = 2
+    push.push(status, push_message)
 
 
 if __name__ == "__main__":

@@ -1,20 +1,49 @@
 {
-    "enable_Config": true,
-    "config_Version": 4,
-    "mihoyobbs_Login_ticket": "", 
-    "mihoyobbs_Stuid": "", 
-    "mihoyobbs_Stoken": "", 
-    "mihoyobbs_Cookies": "", 
-    "mihoyobbs": {
-        "bbs_Global": true, 
-        "bbs_Signin": true, 
-        "bbs_Signin_multi": true, 
-        "bbs_Signin_multi_list": [2, 5], 
-        "bbs_Read_posts": true, 
-        "bbs_Like_posts": true, 
-        "bbs_Unlike": true, 
-        "bbs_Share": true
-    }, 
-    "genshin_Auto_sign": true,
-    "honkai3rd_Auto_sign": false
+  "enable": true,
+  "version": 5,
+  "account": {
+    "cookie": "",
+    "login_ticket": "",
+    "stuid": "",
+    "stoken": ""
+  },
+  "mihoyobbs": {
+    "enable": true,
+    "checkin": true,
+    "checkin_multi": true,
+    "checkin_multi_list": [2, 5],
+    "read_posts": true,
+    "like_posts": true,
+    "un_like": true,
+    "share_post": true
+  },
+  "games": {
+    "cn": {
+      "enable": true,
+      "hokai2": {
+        "auto_checkin": false,
+        "black_list": []
+      },
+      "honkai3rd": {
+        "auto_checkin": false,
+        "black_list": []
+      },
+      "tears_of_themis": {
+        "auto_checkin": false,
+        "black_list": []
+      },
+      "genshin": {
+        "auto_checkin": false,
+        "black_list": []
+      }
+    },
+    "os": {
+      "enable": false,
+      "cookie": "",
+      "genshin": {
+        "auto_checkin": false,
+        "black_list": []
+      }
+    }
+  }
 }

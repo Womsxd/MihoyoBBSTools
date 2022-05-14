@@ -2,102 +2,142 @@ import os
 import json
 from loghelper import log
 
-# 是否启用config
-enable_Config = True
-# 这里的内容会自动获取
-mihoyobbs_Login_ticket = ""
-mihoyobbs_Stuid = ""
-mihoyobbs_Stoken = ""
-# 这里是米游社的cookie
-mihoyobbs_Cookies = ""
-# 这个dist里面的内容和米游社有关
-mihoyobbs = {
-    # 全局开关，关闭之后下面的都不执行
-    "bbs_Global": True,
-    # 讨论区签到
-    "bbs_Signin": True,
-    # 多个讨论区签到
-    "bbs_Signin_multi": True,
-    # 指定签到讨论区
-    # 1是崩坏3 2是原神 3是崩坏2 4是未定事件簿 5是大别墅
-    # 可以通过设置讨论区的id位置来设置主讨论区，[5,1]就是大别墅为主社区
-    # 看帖子 点赞 分享帖子都是使用主社区获取到的列表
-    "bbs_Signin_multi_list": [2, 5],
-    # 浏览3个帖子
-    "bbs_Read_posts": True,
-    # 完成5次点赞
-    "bbs_Like_posts": True,
-    # 完成后取消点赞
-    "bbs_Unlike": True,
-    # 分享帖子
-    "bbs_Share": True,
+# 这个字段现在还没找好塞什么地方好，就先塞config这里了
+serverless = False
+
+config = {
+    'enable': True, 'version': 5,
+    'account': {
+        'cookie': '',
+        'login_ticket': '',
+        'stuid': '',
+        'stoken': ''
+    },
+    'mihoyobbs': {
+        'enable': True, 'checkin': True, 'checkin_multi': True, 'checkin_multi_list': [2, 5],
+        'read_posts': True, 'like_posts': True, 'un_like': True, 'share_post': True
+    },
+    'games': {
+        'cn': {
+            'enable': True,
+            'genshin': {'auto_checkin': True, 'black_list': []},
+            'hokai2': {'auto_checkin': False, 'black_list': []},
+            'honkai3rd': {'auto_checkin': False, 'black_list': []},
+            'tears_of_themis': {'auto_checkin': False, 'black_list': []},
+        },
+        'os': {
+            'enable': False, 'cookie': '',
+            'genshin': {'auto_checkin': False, 'black_list': []}
+        }
+    }
 }
-# 原神自动签到
-genshin_Auto_sign = True
-# 崩坏3自动签到
-honkai3rd_Auto_sign = True
+
 
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
 config_Path = f"{path}/config.json"
 
 
+def load_v4(data: dict):
+    global config
+    # 配置开关
+    config["enable"] = data["enable_Config"]
+    # 账号 cookie
+    config["account"]["login_ticket"] = data["mihoyobbs_Login_ticket"]
+    config["account"]["stuid"] = data["mihoyobbs_Stuid"]
+    config["account"]["stoken"] = data["mihoyobbs_Stoken"]
+    config["account"]["cookie"] = data["mihoyobbs_Cookies"]
+    # bbs 相关设置(自己之前造的孽)
+    config["mihoyobbs"]["enable"] = data["mihoyobbs"]["bbs_Global"]
+    config["mihoyobbs"]["checkin"] = data["mihoyobbs"]["bbs_Signin"]
+    config["mihoyobbs"]["checkin_multi"] = data["mihoyobbs"]["bbs_Signin_multi"]
+    config["mihoyobbs"]["checkin_multi_list"] = data["mihoyobbs"]["bbs_Signin_multi_list"]
+    config["mihoyobbs"]["read_posts"] = data["mihoyobbs"]["bbs_Read_posts"]
+    config["mihoyobbs"]["like_posts"] = data["mihoyobbs"]["bbs_Like_posts"]
+    config["mihoyobbs"]["un_like"] = data["mihoyobbs"]["bbs_Unlike"]
+    config["mihoyobbs"]["share_post"] = data["mihoyobbs"]["bbs_Share"]
+    # 游戏相关设置 v4只支持原神和崩坏3，所以其他选项默认关闭
+    config["games"]["cn"]["genshin"]["auto_checkin"] = data["genshin_Auto_sign"]
+    config["games"]["cn"]["honkai3rd"]["auto_checkin"] = data["honkai3rd_Auto_sign"]
+
+
 def load_config():
+    global config
     with open(config_Path, "r") as f:
         data = json.load(f)
-        global enable_Config
-        global mihoyobbs_Login_ticket
-        global mihoyobbs_Stuid
-        global mihoyobbs_Stoken
-        global mihoyobbs_Cookies
-        global mihoyobbs
-        global genshin_Auto_sign
-        global honkai3rd_Auto_sign
-        enable_Config = data["enable_Config"]
-        mihoyobbs_Login_ticket = data["mihoyobbs_Login_ticket"]
-        mihoyobbs_Stuid = data["mihoyobbs_Stuid"]
-        mihoyobbs_Stoken = data["mihoyobbs_Stoken"]
-        mihoyobbs_Cookies = data["mihoyobbs_Cookies"]
-        mihoyobbs["bbs_Global"] = data["mihoyobbs"]["bbs_Global"]
-        mihoyobbs["bbs_Signin"] = data["mihoyobbs"]["bbs_Signin"]
-        mihoyobbs["bbs_Signin_multi"] = data["mihoyobbs"]["bbs_Signin_multi"]
-        mihoyobbs["bbs_Signin_multi_list"] = data["mihoyobbs"]["bbs_Signin_multi_list"]
-        mihoyobbs["bbs_Read_posts"] = data["mihoyobbs"]["bbs_Read_posts"]
-        mihoyobbs["bbs_Like_posts"] = data["mihoyobbs"]["bbs_Like_posts"]
-        mihoyobbs["bbs_Unlike"] = data["mihoyobbs"]["bbs_Unlike"]
-        mihoyobbs["bbs_Share"] = data["mihoyobbs"]["bbs_Share"]
-        genshin_Auto_sign = data["genshin_Auto_sign"]
-        honkai3rd_Auto_sign = data["honkai3rd_Auto_sign"]
+        if data.get('version') == 5:
+            config = data
+            try:
+                config["mihoyobbs"]["like_post"]
+            except KeyError:
+                pass
+            else:
+                config["mihoyobbs"]["read_posts"] = config["mihoyobbs"]["read_post"]
+                config["mihoyobbs"]["like_posts"] = config["mihoyobbs"]["like_post"]
+                del config["mihoyobbs"]["like_post"]
+                del config["mihoyobbs"]["read_post"]
+                save_config()
+        else:
+            load_v4(data)
+            log.info("升级v5 config")
+            # 直接升级到v5 config
+            save_config()
         f.close()
         log.info("Config加载完毕")
 
 
 def save_config():
+    global serverless
+    if serverless:
+        log.info("云函数执行，无法保存")
+        return None
     with open(config_Path, "r+") as f:
-        data = json.load(f)
-        data["mihoyobbs_Login_ticket"] = mihoyobbs_Login_ticket
-        data["mihoyobbs_Stuid"] = mihoyobbs_Stuid
-        data["mihoyobbs_Stoken"] = mihoyobbs_Stoken
-        f.seek(0)
-        f.truncate()
-        temp_Text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
-        f.write(temp_Text)
-        f.flush()
+        temp_text = json.dumps(config, sort_keys=False, indent=4, separators=(', ', ': '))
+        try:
+            f.seek(0)
+            f.truncate()
+            f.write(temp_text)
+            f.flush()
+        except OSError:
+            serverless = True
+            log.info("Cookie保存失败")
+            exit(-1)
+        else:
+            log.info("Config保存完毕")
         f.close()
-        log.info("Config保存完毕")
 
 
 def clear_cookies():
+    global config
+    global serverless
+    if serverless:
+        log.info("云函数执行，无法保存")
+        return None
     with open(config_Path, "r+") as f:
-        data = json.load(f)
-        data["enable_Config"] = False
-        data["mihoyobbs_Login_ticket"] = ""
-        data["mihoyobbs_Stuid"] = ""
-        data["mihoyobbs_Stoken"] = ""
-        data["mihoyobbs_Cookies"] = ""
-        f.seek(0)
-        f.truncate()
-        temp_Text = json.dumps(data, sort_keys=False, indent=4, separators=(', ', ': '))
-        f.write(temp_Text)
-        f.flush()
+        config["enable"] = False
+        config["account"]["login_ticket"] = ""
+        config["account"]["stuid"] = ""
+        config["account"]["stoken"] = ""
+        config["account"]["cookie"] = "CookieError"
+        temp_text = json.dumps(config, sort_keys=False, indent=4, separators=(', ', ': '))
+        try:
+            f.seek(0)
+            f.truncate()
+            f.write(temp_text)
+            f.flush()
+        except OSError:
+            serverless = True
+            log.info("Cookie删除失败")
+        else:
+            log.info("Cookie删除完毕")
         f.close()
-        log.info("Cookie删除完毕")
+
+if __name__ == "__main__":
+    # 初始化配置文件
+    # try:
+    #     account_cookie = config['account']['cookie']
+    #     config = load_config()
+    #     config['account']['cookie'] = account_cookie
+    # except OSError:
+    #     pass
+    # save_config()
+    pass
