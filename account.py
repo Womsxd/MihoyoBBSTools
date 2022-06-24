@@ -5,13 +5,6 @@ from loghelper import log
 from error import CookieError
 
 
-def game_id2name(game_id: str) -> str:
-    try:
-        return setting.game_id2name[game_id]
-    except NameError:
-        return game_id
-
-
 def stop_module(game_id: str) -> None:
     if game_id == "bh2_cn":
         config.config["games"]["cn"]["hokai2"]["auto_checkin"] = False
@@ -27,15 +20,15 @@ def stop_module(game_id: str) -> None:
 
 
 def get_account_list(game_id: str, headers: dict) -> list:
-    log.info(f"正在获取米哈游账号绑定的{game_id2name(game_id)}账号列表...")
+    log.info(f"正在获取米哈游账号绑定的{setting.game_id2name.get(game_id,game_id)}账号列表...")
     temp_list = []
     req = http.get(setting.account_Info_url + game_id, headers=headers)
     data = req.json()
     if data["retcode"] != 0:
-        log.warning(f"获取{game_id2name(game_id)}账号列表失败！")
+        log.warning(f"获取{setting.game_id2name.get(game_id,game_id)}账号列表失败！")
         stop_module(game_id)
         raise CookieError("BBS Cookie Error")
     for i in data["data"]["list"]:
         temp_list.append([i["nickname"], i["game_uid"], i["region"]])
-    log.info(f"已获取到{len(temp_list)}个{game_id2name(game_id)}账号信息")
+    log.info(f"已获取到{len(temp_list)}个{setting.game_id2name.get(game_id,game_id)}账号信息")
     return temp_list
