@@ -98,6 +98,12 @@ honkai3rd_Act_id = "ea20211026151532"
 honkai3rd_Is_signurl = web_Api + "/common/eutheniav2/index?act_id={}&region={}&uid={}"
 honkai3rd_SignUrl = web_Api + "/common/eutheniav2/sign"
 
+# 未定事件簿自动签到相关设置
+tearsofthemis_Act_id = "e202202251749321"
+tearsofthemis_checkin_rewards = f'{web_Api}/event/luna/home?lang=zh-cn&act_id={tearsofthemis_Act_id}'
+tearsofthemis_Is_signurl = honkai2_Is_signurl
+tearsofthemis_Sign_url = honkai2_Sign_url  # 和二崩完全一致
+
 # 原神自动签到相关的设置
 genshin_Act_id = "e202009291139501"
 genshin_checkin_rewards = f'{web_Api}/event/bbs_sign_reward/home?act_id={genshin_Act_id}'
