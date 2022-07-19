@@ -8,6 +8,7 @@ import genshin
 import setting
 import mihoyobbs
 import honkai3rd
+import tearsofthemis
 from loghelper import log
 from error import CookieError
 
@@ -78,6 +79,11 @@ def main():
             log.info("正在进行崩坏3签到")
             honkai3rd_help = honkai3rd.Honkai3rd()
             return_data += "\n\n" + honkai3rd_help.sign_account()
+        # 崩坏3签到
+        if config.config["games"]["cn"]["tears_of_themis"]["auto_checkin"]:
+            log.info("正在进行未定事件簿签到")
+            tearsofthemis_help = tearsofthemis.Tears_of_themis()
+            return_data += "\n\n" + tearsofthemis_help.sign_account()
         # 原神签到
         if config.config["games"]["cn"]["genshin"]["auto_checkin"]:
             log.info("正在进行原神签到")
