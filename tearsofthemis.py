@@ -13,9 +13,9 @@ class Tears_of_themis:
     def __init__(self) -> None:
         self.headers = setting.headers
         self.headers['DS'] = tools.get_ds(web=True, web_old=True)
-        self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin/bh2/index.html?bbs_auth_required' \
-                                  f'=true&act_id={setting.tearsofthemis_Act_id}&bbs_presentation_style=fullscreen' \
-                                  '&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
+        self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin/nxx/index.html?bbs_auth_required' \
+                                  '=true&bbs_presentation_style=fullscreen' \
+                                  f'act_id={setting.tearsofthemis_Act_id}'
         self.headers['Cookie'] = config.config["account"]["cookie"]
         self.headers['x-rpc-device_id'] = tools.get_device_id()
         self.account_list = get_account_list("nxx_cn", self.headers)
@@ -34,7 +34,8 @@ class Tears_of_themis:
 
     # 判断签到
     def is_sign(self, region: str, uid: str) -> dict:
-        req = http.get(setting.honkai2_Is_signurl.format(setting.honkai2_Act_id, region, uid), headers=self.headers)
+        req = http.get(setting.tearsofthemis_Is_signurl.format(setting.tearsofthemis_Act_id, region, uid),
+                       headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
             log.warning("获取账号签到信息失败！")
@@ -55,17 +56,18 @@ class Tears_of_themis:
                 time.sleep(random.randint(2, 8))
                 is_data = self.is_sign(region=i[2], uid=i[1])
                 # if not is_data["is_sub"]:  # 这个字段不知道干啥的，就先塞这里了
-                if False: # 算了先改成false
+                if False:  # 算了先改成false
                     log.warning(f"旅行者{i[0]}是第一次绑定米游社，请先手动签到一次")
                 else:
                     sign_days = is_data["total_sign_day"] - 1
                     ok = True
                     if is_data["is_sign"]:
-                        log.info(f"未定事件簿玩家:{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days])}")
+                        log.info(
+                            f"未定事件簿玩家:{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days])}")
                         sign_days += 1
                     else:
                         time.sleep(random.randint(2, 8))
-                        req = http.post(url=setting.honkai2_Sign_url, headers=self.headers,
+                        req = http.post(url=setting.tearsofthemis_Sign_url, headers=self.headers,
                                         json={'act_id': setting.tearsofthemis_Act_id, 'region': i[2], 'uid': i[1]})
                         data = req.json()
                         if data["retcode"] == 0:
@@ -73,7 +75,8 @@ class Tears_of_themis:
                                      f"{tools.get_item(self.checkin_rewards[0 if sign_days == 0 else sign_days + 1])}")
                             sign_days += 2
                         elif data["retcode"] == -5003:
-                            log.info(f"未定事件簿玩家:{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days])}")
+                            log.info(
+                                f"未定事件簿玩家:{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days])}")
                         else:
                             log.warning("账号签到失败！")
                             ok = False
