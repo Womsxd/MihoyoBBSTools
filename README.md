@@ -115,9 +115,11 @@ docker-compose logs -f
      1. 创建函数
      2. 从零开始创建
         1. `请求处理程序类型：处理事件请求`
-        2. `请求处理程序：index.main_handler`，多用户请填写`index.main_handler_mulit`
-        3. 配置触发器：触发器类型 定时触发器 异步调用。建议触发方式设为`指定时间`
-        4. 点击创建
+        2. 推荐设置运行环境为`Python3.9`
+        3. 根据[官方文档](https://help.aliyun.com/document_detail/422183.html) 进行安装模块并打包
+        4. `请求处理程序：index.main_handler`，多用户请填写`index.main_handler_mulit`
+        5. 配置触发器：触发器类型 定时触发器 异步调用。建议触发方式设为`指定时间`
+        6. 点击创建
      3. 进入函数详情
         1. 打开函数配置
         2. 修改 `环境信息` - `执行超时时间` 为300秒。
@@ -128,7 +130,7 @@ docker-compose logs -f
 
 ## 使用的第三方库
 
-requests: [github](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/)
+requests: [github](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/)  (当httpx无法使用时使用)
 
 httpx: [github](https://github.com/encode/httpx) [pypi](https://pypi.org/project/httpx/)
 
