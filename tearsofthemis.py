@@ -12,7 +12,7 @@ from account import get_account_list
 class Tears_of_themis:
     def __init__(self) -> None:
         self.headers = setting.headers
-        self.headers['DS'] = tools.get_ds(web=True, web_old=True)
+        self.headers['DS'] = tools.get_ds(web=True, web_old=False)
         self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin/nxx/index.html?bbs_auth_required' \
                                   '=true&bbs_presentation_style=fullscreen' \
                                   f'act_id={setting.tearsofthemis_Act_id}'

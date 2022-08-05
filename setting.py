@@ -1,6 +1,6 @@
 # 米游社的Salt
 mihoyobbs_Salt = "dWCcD2FsOUXEstC5f9xubswZxEeoBOTc"
-mihoyobbs_Salt_web = "14bmu1mz0yuljprsfgpvjh3ju2ni468r"
+mihoyobbs_Salt_web = "ulInCDohgEs557j0VsPDYnQaaz6KJcv5"
 mihoyobbs_Salt_web_old = "h8w582wxwgqvahcdkpvdhbh2w9casgfl"
 # 米游社的版本
 mihoyobbs_Version = "2.28.1"  # Slat和Version相互对应
@@ -60,7 +60,7 @@ headers = {
     'Accept': 'application/json, text/plain, */*',
     'DS': "",
     'Origin': 'https://webstatic.mihoyo.com',
-    'x-rpc-app_version': mihoyobbs_Version_old,
+    'x-rpc-app_version': mihoyobbs_Version,
     'User-Agent': 'Mozilla/5.0 (Linux; Android 9; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) '
                   'Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36 miHoYoBBS/2.3.0',
     'x-rpc-client_type': mihoyobbs_Client_type_web,
