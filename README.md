@@ -2,6 +2,8 @@
 
 基于Python3的米游社辅助签到项目
 
+禁止大范围宣传本项目，谢谢配合
+
 本项目米游币部分参考[XiaoMiku01/miyoubiAuto](https://github.com/XiaoMiku01/miyoubiAuto)进行编写
 
 * 此项目的用途
