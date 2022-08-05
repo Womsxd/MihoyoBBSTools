@@ -1,6 +1,4 @@
 #Server Mod
-from code import interact
-from glob import glob
 import os
 import time
 import threading
@@ -31,7 +29,7 @@ def control(time_interval,mod,event):
                     log.info("multi_user start failed")
             last_time=runingtime()
         if event.is_set():
-            log.info("Stoping")
+            log.info("Stoping threading")
             break
         log.info("The Next check time is {}s".format(last_time-now_time+time_interval*60))
         time.sleep(20)
@@ -45,6 +43,7 @@ def command():
         if command=="help" or command=="?" or command=="":
             log.info(help)
         if command=="stop" or command=="exit":
+            log.info("Stoping Server Plase Wait")
             return False
 
         if command=="reload":
@@ -69,7 +68,8 @@ def command():
             if command[i]=="time":
                 if len(command)==2:
                     time_interval=int(command[1])
-                    log.info("switching interval to {} minute".format(mod))
+                    log.info("switching interval to {} minute".format(time_interval))
+                    return True
             if command[i]=="mod":
                 if len(command)==2:
                     
@@ -81,18 +81,19 @@ def command():
                 else:
                     log.info("Error Command")
             if command[i]=="add":
-                if len(command)==2:
-
-                    log.info("adding")
-                    if (mod==1):
-                        name="config"
-                    else:
-                        log.info("Plase input your config name(*.json):")
-                        name=input()
-                    config = {
+                cookie=""
+                for m in range(i,len(command)):
+                    cookie+=command[m]
+                log.info("adding")
+                if (mod==1):
+                    name="config"
+                else:
+                    log.info("Plase input your config name(*.json):")
+                    name=input()
+                config = {
                     'enable': True, 'version': 5,
                     'account': {
-                         'cookie': command[1],
+                         'cookie': cookie,
                          'login_ticket': '',
                          'stuid': '',
                          'stoken': ''
@@ -117,12 +118,11 @@ def command():
                         }
                         
                         
-                    file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/"+name+".json"
-                    file=open(file_path,'w')
-                    file.write(json.dumps(config))
-                    file.close()
-                else:
-                    log.info("Error Command")
+                file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/"+name+".json"
+                file=open(file_path,'w')
+                file.write(json.dumps(config))
+                file.close()
+                log.info("Saving OK")
             if command[i]=="set":
                 if len(command)==4:
                     file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/"+command[1]+".json"
@@ -143,7 +143,7 @@ def command():
                             file=open(file_path,'w')
                             file.write(json.dumps(new_conifg))
                             file.close()
-
+    return True
 
 if __name__=='__main__':
     log.info('Running in Server Mod')
@@ -159,13 +159,16 @@ if __name__=='__main__':
         t1_stop = threading.Event()
         thread1 = threading.Thread(name='time_check',target= control,args=(time_interval,mod,t1_stop))
         thread1.start()
-        
-        if command():
+        try:
+            if command():
+                t1_stop.set()
+                continue
+            else:
+                t1_stop.set()
+                break
+        except:
             t1_stop.set()
             continue
-        else:
-            t1_stop.set()
-            break
                
 
 
