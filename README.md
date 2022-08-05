@@ -37,9 +37,11 @@
         > "cookie": "你复制的cookie"
         > ```
 
-  9. 在命令提示符(cmd)/powershell，输入`python main.py`来进行执行
+  9. 检查`config.json`的`"enable":`的值为true
+
+  10. 在命令提示符(cmd)/powershell，输入`python main.py`来进行执行
   
-  10. 多用户的请使用`python main_multi.py`，多用户在需要自动执行的情况下请使用`python main_multi.py autorun`
+  11. 多用户的请使用`python main_multi.py`，多用户在需要自动执行的情况下请使用`python main_multi.py autorun`
 
 ## 获取米游社Cookie
 
