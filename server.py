@@ -2,7 +2,6 @@
 import os
 import time
 import threading
-from turtle import Turtle
 import main as single
 import main_multi as multi
 from loghelper import log
