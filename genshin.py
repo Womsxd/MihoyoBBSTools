@@ -12,7 +12,7 @@ from account import get_account_list
 class Genshin:
     def __init__(self) -> None:
         self.headers = setting.headers
-        self.headers['DS'] = tools.get_ds(web=True, web_old=False)
+        self.headers['DS'] = tools.get_ds(web=True)
         self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true'\
                                   f'&act_id={setting.genshin_Act_id}&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
         self.headers['Cookie'] = config.config["account"]["cookie"]

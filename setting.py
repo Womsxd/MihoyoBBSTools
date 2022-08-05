@@ -1,10 +1,8 @@
 # 米游社的Salt
 mihoyobbs_Salt = "z8DRIUjNDT7IT5IZXvrUAxyupA1peND9"
 mihoyobbs_Salt_web = "9nQiU3AV0rJSIBWgdynfoGMGKaklfbM7"
-mihoyobbs_Salt_web_old = "h8w582wxwgqvahcdkpvdhbh2w9casgfl"
 # 米游社的版本
 mihoyobbs_Version = "2.34.1"  # Slat和Version相互对应
-mihoyobbs_Version_old = "2.3.0"
 # 米游社的客户端类型
 mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web

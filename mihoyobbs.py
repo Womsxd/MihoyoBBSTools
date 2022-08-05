@@ -15,7 +15,7 @@ Have_coins = 0
 class Mihoyobbs:
     def __init__(self):
         self.headers = {
-            "DS": tools.get_ds(web=False, web_old=False),
+            "DS": tools.get_ds(web=False),
             "cookie": f'stuid={config.config["account"]["stuid"]};stoken={config.config["account"]["stoken"]}',
             "x-rpc-client_type": setting.mihoyobbs_Client_type,
             "x-rpc-app_version": setting.mihoyobbs_Version,

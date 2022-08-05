@@ -12,7 +12,7 @@ from account import get_account_list
 class Honkai3rd:
     def __init__(self) -> None:
         self.headers = setting.headers
-        self.headers['DS'] = tools.get_ds(web=True, web_old=False)
+        self.headers['DS'] = tools.get_ds(web=True)
         self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin/bh3/index.html?bbs_auth_required' \
                                   f'=true&act_id={setting.honkai3rd_Act_id}&bbs_presentation_style=fullscreen' \
                                   '&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
