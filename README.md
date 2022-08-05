@@ -90,22 +90,35 @@ docker-compose logs -f
 每次运行Docker容器后，容器内将自动按照参数执行签到活动，签到完成后容器将默认在每天上午9:30运行一次，如果想自行修改时间可自行编辑`docker-compose.yml`文件中的`CRON_SIGNIN`，将其修改成想运行的时间。
 ## 使用python运行(screen)
 
-将本项目Clone至本地后，安装好依赖直接运行python3 server.py
-在后台运行时请安装screen
-使用screen -S automhy进入后台线程
-Ctrl+A组合键再按下d键回到主线程
-screen -r automhy回到线程
-如果不能回到线程请先screen -d automhy挂起线程
+将本项目Clone至本地后，安装好依赖直接运行python3 server.py  
 
-命令窗口如下
-stop:关闭程序
-mulit:测试多用户签到
-single:测试多用户签到
-reload:重载配置文件
-mod x:mod 1为单用户模式 mod 2为多用户模式
-add 'yourcookie': 直接 add cookie 添加Cookie，根据提示输入用户存档名称
-time x:设置任务巡查时间,默认720分钟(12小时)
-set user enable true(设置user.json 的enable属性为true)
+在后台运行时请安装screen  
+
+使用screen -S automhy进入后台线程  
+
+Ctrl+A组合键再按下d键回到主线程  
+
+screen -r automhy回到线程  
+
+如果不能回到线程请先screen -d automhy挂起线程  
+
+命令窗口如下  
+
+stop:关闭程序  
+
+mulit:测试多用户签到  
+
+single:测试多用户签到  
+
+reload:重载配置文件  
+
+mod x:mod 1为单用户模式 mod 2为多用户模式  
+
+add 'yourcookie': 直接 add cookie 添加Cookie，根据提示输入用户存档名称  
+
+time x:设置任务巡查时间,默认720分钟(12小时)  
+
+set user enable true(设置user.json 的enable属性为true)  
 
 
 ## 使用云函数运行
