@@ -66,19 +66,24 @@ class Genshin:
                         req = http.post(url=setting.genshin_Signurl, headers=self.headers,
                                         json={'act_id': setting.genshin_Act_id, 'region': i[2], 'uid': i[1]})
                         data = req.json()
-                        if data["retcode"] == 0:
+                        if data["retcode"] == 0 and data["data"]["success"] == 0:
                             log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是"
                                      f"{tools.get_item(self.checkin_rewards[0 if sign_days == 0 else sign_days + 1])}")
                             sign_days += 2
                         elif data["retcode"] == -5003:
                             log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days])}")
                         else:
-                            log.warning("账号签到失败！")
+                            s = "账号签到失败！"
+                            if data["data"] != "" and data.get("data").get("success",-1):
+                                s += "原因: 验证码\njson信息:" + req.text
+                            log.warning(s)
                             ok = False
                     if ok:
                         return_data += f"\n{i[0]}已连续签到{sign_days}天\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days - 1])}"
                     else:
                         return_data += f"\n{i[0]}，本次签到失败"
+                        if data["data"] != "" and data["data"]["success"] == 1:
+                            return_data += "，失败原因: 触发验证码"
         else:
             log.warning("账号没有绑定任何原神账号！")
             return_data += "\n并没有绑定任何原神账号"
