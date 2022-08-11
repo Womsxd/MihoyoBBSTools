@@ -112,8 +112,8 @@ docker-compose logs -f
    >mod x: mod 1为单用户模式 mod 2为多用户模式  
    >add 'yourcookie': 直接 add cookie 添加Cookie，根据提示输入用户存档名称  
    >time x: 设置任务巡查时间,默认720分钟(12小时)  
-
-set user enable true(设置user.json 的enable属性为true)  
+   >set user enable true(设置user.json 的enable属性为true)  
+   >show true/false: 开启/关闭20秒的倒计时提示
 
 ## 使用云函数运行
 

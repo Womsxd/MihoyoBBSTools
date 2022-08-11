@@ -10,7 +10,7 @@ time_interval=720   #默认签到间隔时间，单位minute(分钟)
 mod=1  #单用户模式/自动判断
 def runingtime():
     return int(time.time())
-def control(time_interval,mod,event):
+def control(time_interval,mod,event,detal):
     last_time=runingtime()
     while True:
         now_time=runingtime()
@@ -30,12 +30,17 @@ def control(time_interval,mod,event):
         if event.is_set():
             log.info("Stoping threading")
             break
-        log.info("The Next check time is {}s".format(last_time-now_time+time_interval*60))
+        if(detal.is_set()):
+            log.info("The Next check time is {}s".format(last_time-now_time+time_interval*60))
         time.sleep(20)
-def command():
+def command(detal):
     global mod
     global time_interval
-    help="command windows\nstop:stop server\nreload:reload config and refish tiem\nsingle:test single config\nmulit:test mulit conifg\nmod x:x is refer single or multi 1 is single 2 is multi\nadd 'yourcookie'\nset user attribute value: such set username(*.json) enable(attribute) Ture(value)\ntime x:set interval time (minute)"
+    global show
+    show=False #显示倒计时信息
+    if show:
+        detal.set()
+    help="command windows\nstop:stop server\nreload:reload config and refish tiem\nsingle:test single config\nmulit:test mulit conifg\nmod x:x is refer single or multi 1 is single 2 is multi\nadd 'yourcookie'\nset user attribute value: such set username(*.json) enable(attribute) Ture(value)\ntime x:set interval time (minute)\nshow true/false:show the time count"
     log.info(help)
     while True: 
         command=input()
@@ -71,12 +76,28 @@ def command():
                     return True
             if command[i]=="mod":
                 if len(command)==2:
-                    
-                    if mod >2 or mod <0:
+                    mod_new=int(command[1])
+                    if mod_new >2 or mod_new <1:
                         log.info("error mod")
                     else:
-                        mod=int(command[1])
+                        mod=mod_new
                         log.info("switching mod to {}".format(mod))
+                else:
+                    log.info("Error Command")
+            if command[i]=="show":
+                if len(command)==2:
+                    
+                    if command[1]=="true":
+                        show=True
+                        detal.set()
+                        log.info("switching to detail mod")
+                        
+                    if command[1]=="false":
+                        detal.unset()
+                        show=False
+                        log.info("switching to slient mod")
+    
+                        
                 else:
                     log.info("Error Command")
             if command[i]=="add":
@@ -156,10 +177,11 @@ if __name__=='__main__':
     while True:
         log.info("switching to mod {}".format(mod))
         t1_stop = threading.Event()
-        thread1 = threading.Thread(name='time_check',target= control,args=(time_interval,mod,t1_stop))
+        detal = threading.Event()
+        thread1 = threading.Thread(name='time_check',target= control,args=(time_interval,mod,t1_stop,detal))
         thread1.start()
         try:
-            if command():
+            if command(detal):
                 t1_stop.set()
                 continue
             else:
