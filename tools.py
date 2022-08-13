@@ -38,8 +38,7 @@ def get_ds(web: bool) -> str:
 
 # 生成一个device id
 def get_device_id() -> str:
-    return str(uuid.uuid3(uuid.NAMESPACE_URL, config.config["account"]["cookie"])).replace(
-        '-', '').upper()
+    return str(uuid.uuid3(uuid.NAMESPACE_URL, config.config["account"]["cookie"]))
 
 
 # 获取签到的奖励名称
