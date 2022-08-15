@@ -35,3 +35,7 @@ secret=
 [bark]
 api_url=https://api.day.app
 token=ssXXX
+
+[gotify]
+api_url=http://xxx.xxx.cn
+token=AMxxxx
