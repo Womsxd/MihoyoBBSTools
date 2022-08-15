@@ -144,6 +144,18 @@ def bark(status, push_message):
     ).json()
     log.info(f"推送结果：{rep.get('message')}")
 
+# gotify
+def gotify(status, push_message):
+    rep = http.post(
+        url=f'{cfg.get("gotify", "api_url")}/message?token={cfg.get("gotify", "token")}',
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        json={
+            "title": title(status),
+            "message": push_message
+        }
+    ).json()
+    log.info(f"推送结果：{rep.get('errmsg')}")
+
 def push(status, push_message):
     if not load_config():
         return 0
