@@ -57,6 +57,7 @@ mihoyobbs_List_Use = []
 headers = {
     'Accept': 'application/json, text/plain, */*',
     'DS': "",
+    "x-rpc-channel": "miyousheluodi",
     'Origin': 'https://webstatic.mihoyo.com',
     'x-rpc-app_version': mihoyobbs_Version,
     'User-Agent': 'Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) '
