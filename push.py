@@ -27,6 +27,8 @@ def title(status):
         return "「米游社脚本」执行失败!"
     elif status == 2:
         return "「米游社脚本」部分账号执行失败！"
+    elif status == 3:
+        return "「米游社脚本」原神签到触发验证码！"
 
 
 # telegram的推送
@@ -83,7 +85,7 @@ def wecom(status, push_message):
     except:
         # 没有配置时赋默认值
         touser = '@all'
-    
+
     push_token = http.post(
         url=f'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={corpid}&corpsecret={secret}',
         data=""
@@ -112,11 +114,11 @@ def pushdeer(status, push_message):
         }
     )
 
+
 # 钉钉群机器人
 def dingrobot(status, push_message):
     api_url = cfg.get('dingrobot', 'webhook')  # https://oapi.dingtalk.com/robot/send?access_token=XXX
-    secret = cfg.get('dingrobot', 'secret')    # 安全设置 -> 加签 -> 密钥 -> SEC*
-
+    secret = cfg.get('dingrobot', 'secret')  # 安全设置 -> 加签 -> 密钥 -> SEC*
     if secret:
         timestamp = str(round(time.time() * 1000))
         sign_string = f"{timestamp}\n{secret}"
@@ -127,15 +129,16 @@ def dingrobot(status, push_message):
         ).digest()
         sign = urllib.parse.quote_plus(base64.b64encode(hmac_code))
         api_url = f"{api_url}&timestamp={timestamp}&sign={sign}"
-    
+
     rep = http.post(
         url=api_url,
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
-            "msgtype": "text", "text": { "content": title(status) + "\r\n" + push_message }
+            "msgtype": "text", "text": {"content": title(status) + "\r\n" + push_message}
         }
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
+
 
 # Bark
 def bark(status, push_message):
@@ -143,6 +146,7 @@ def bark(status, push_message):
         url=f'{cfg.get("bark", "api_url")}/{cfg.get("bark", "token")}/{title(status)}/{push_message}'
     ).json()
     log.info(f"推送结果：{rep.get('message')}")
+
 
 # gotify
 def gotify(status, push_message):
@@ -155,6 +159,7 @@ def gotify(status, push_message):
         }
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
+
 
 def push(status, push_message):
     if not load_config():
@@ -178,6 +183,7 @@ def push(status, push_message):
         else:
             log.info("推送完毕......")
     return 1
+
 
 if __name__ == "__main__":
     push(0, f'推送验证{int(time.time())}')

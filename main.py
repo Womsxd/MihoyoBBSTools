@@ -9,8 +9,8 @@ import setting
 import mihoyobbs
 import honkai3rd
 import tearsofthemis
+from error import *
 from loghelper import log
-from error import CookieError
 
 
 def main():
@@ -38,6 +38,7 @@ def main():
                 if int(i["id"]) == 5:
                     setting.mihoyobbs_List_Use.append(i)
         # 米游社签到
+        ret_code = 0
         if config.config["mihoyobbs"]["enable"]:
             bbs = mihoyobbs.Mihoyobbs()
             if bbs.Task_do["bbs_Sign"] and bbs.Task_do["bbs_Read_posts"] and bbs.Task_do["bbs_Like_posts"] and \
@@ -88,9 +89,12 @@ def main():
         if config.config["games"]["cn"]["genshin"]["auto_checkin"]:
             log.info("正在进行原神签到")
             genshin_help = genshin.Genshin()
-            return_data += "\n\n" + genshin_help.sign_account()
+            genshin_message = genshin_help.sign_account()
+            if "触发验证码" in genshin_message:
+                ret_code = 3
+            return_data += "\n\n" + genshin_message
             time.sleep(random.randint(2, 8))
-        return 0, return_data
+        return ret_code, return_data
     elif config.config["account"]["cookie"] == "CookieError":
         raise CookieError('Cookie expires')
     else:

@@ -3,17 +3,18 @@ import tools
 import config
 import random
 import setting
+from error import *
 from request import http
 from loghelper import log
-from error import CookieError
 from account import get_account_list
 
 
 class Genshin:
     def __init__(self) -> None:
-        self.headers = setting.headers
+        self.headers = {}
+        self.headers.update(setting.headers)
         self.headers['DS'] = tools.get_ds(web=True)
-        self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true'\
+        self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin-ys/index.html?bbs_auth_required=true' \
                                   f'&act_id={setting.genshin_Act_id}&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
         self.headers['Cookie'] = config.config["account"]["cookie"]
         self.headers['x-rpc-device_id'] = tools.get_device_id()
@@ -43,6 +44,17 @@ class Genshin:
             raise CookieError("BBS Cookie Errror")
         return data["data"]
 
+    def check_in(self, account):
+        for i in range(3):
+            req = http.post(url=setting.genshin_Signurl, headers=self.headers,
+                            json={'act_id': setting.genshin_Act_id, 'region': account[2], 'uid': account[1]})
+            data = req.json()
+            if data["retcode"] == 0 and data["data"]["success"] == 1:
+                time.sleep(random.randint(4, 10))
+            else:
+                break
+        return req
+
     # 签到
     def sign_account(self) -> str:
         return_data = "原神: "
@@ -57,14 +69,13 @@ class Genshin:
                     log.warning(f"旅行者{i[0]}是第一次绑定米游社，请先手动签到一次")
                 else:
                     sign_days = is_data["total_sign_day"] - 1
-                    ok = True 
-                    if is_data["is_sign"]:
+                    ok = True
+                    if not is_data["is_sign"]:
                         log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days])}")
                         sign_days += 1
                     else:
                         time.sleep(random.randint(2, 8))
-                        req = http.post(url=setting.genshin_Signurl, headers=self.headers,
-                                        json={'act_id': setting.genshin_Act_id, 'region': i[2], 'uid': i[1]})
+                        req = self.check_in(i)
                         data = req.json()
                         if data["retcode"] == 0 and data["data"]["success"] == 0:
                             log.info(f"旅行者{i[0]}签到成功~\r\n今天获得的奖励是"
@@ -74,12 +85,13 @@ class Genshin:
                             log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days])}")
                         else:
                             s = "账号签到失败！"
-                            if data["data"] != "" and data.get("data").get("success",-1):
+                            if data["data"] != "" and data.get("data").get("success", -1):
                                 s += "原因: 验证码\njson信息:" + req.text
                             log.warning(s)
                             ok = False
                     if ok:
-                        return_data += f"\n{i[0]}已连续签到{sign_days}天\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days - 1])}"
+                        return_data += f"\n{i[0]}已连续签到{sign_days}天\n" \
+                                       f"今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days - 1])}"
                     else:
                         return_data += f"\n{i[0]}，本次签到失败"
                         if data["data"] != "" and data["data"]["success"] == 1:
