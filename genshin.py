@@ -70,7 +70,7 @@ class Genshin:
                 else:
                     sign_days = is_data["total_sign_day"] - 1
                     ok = True
-                    if not is_data["is_sign"]:
+                    if is_data["is_sign"]:
                         log.info(f"旅行者{i[0]}今天已经签到过了~\r\n今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days])}")
                         sign_days += 1
                     else:
