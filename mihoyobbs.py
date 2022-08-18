@@ -123,7 +123,7 @@ class Mihoyobbs:
         else:
             log.info("正在签到......")
             for i in setting.mihoyobbs_List_Use:
-                req = http.post(url=setting.bbs_Sign_url.format(i["id"]), data={}, headers=self.headers)
+                req = http.post(url=setting.bbs_Sign_url, json={"gids": i["id"]}, headers=self.headers)
                 data = req.json()
                 if "err" not in data["message"]:
                     log.info(str(i["name"] + data["message"]))
