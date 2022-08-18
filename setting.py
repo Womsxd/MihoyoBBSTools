@@ -1,5 +1,6 @@
 # 米游社的Salt
 mihoyobbs_Salt = "z8DRIUjNDT7IT5IZXvrUAxyupA1peND9"
+mihoyobbs_Salt2 = "t0qEgfub6cvueAPgR5m9aQWWVciEer7v"
 mihoyobbs_Salt_web = "9nQiU3AV0rJSIBWgdynfoGMGKaklfbM7"
 # 米游社的版本
 mihoyobbs_Version = "2.34.1"  # Slat和Version相互对应

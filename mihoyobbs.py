@@ -1,3 +1,4 @@
+import json
 import time
 import tools
 import config
@@ -122,8 +123,11 @@ class Mihoyobbs:
             log.info("讨论区任务已经完成过了~")
         else:
             log.info("正在签到......")
+            header = {}
+            header.update(self.headers)
             for i in setting.mihoyobbs_List_Use:
-                req = http.post(url=setting.bbs_Sign_url, json={"gids": i["id"]}, headers=self.headers)
+                header["DS"] = tools.get_ds2("", json.dumps({"gids": i["id"]}))
+                req = http.post(url=setting.bbs_Sign_url, json={"gids": i["id"]}, headers=header)
                 data = req.json()
                 if "err" not in data["message"]:
                     log.info(str(i["name"] + data["message"]))
@@ -159,7 +163,7 @@ class Mihoyobbs:
                 if data["message"] == "OK":
                     log.debug("点赞：{} 成功".format(self.postsList[i][1]))
                 # 判断取消点赞是否打开
-                if config.config["mihoyobbs"]["un_like"] :
+                if config.config["mihoyobbs"]["un_like"]:
                     time.sleep(random.randint(2, 8))
                     req = http.post(url=setting.bbs_Like_url, headers=self.headers,
                                     json={"post_id": self.postsList[i][0], "is_cancel": True})
