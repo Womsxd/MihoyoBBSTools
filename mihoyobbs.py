@@ -20,7 +20,7 @@ class Mihoyobbs:
             "x-rpc-client_type": setting.mihoyobbs_Client_type,
             "x-rpc-app_version": setting.mihoyobbs_Version,
             "x-rpc-sys_version": "6.0.1",
-            "x-rpc-channel": "mihoyo",
+            "x-rpc-channel": "miyousheluodi",
             "x-rpc-device_id": tools.get_device_id(),
             "x-rpc-device_name": tools.random_text(random.randint(1, 10)),
             "x-rpc-device_model": "Mi 10",
