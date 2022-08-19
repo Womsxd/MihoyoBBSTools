@@ -11,7 +11,8 @@ from account import get_account_list
 
 class Tears_of_themis:
     def __init__(self) -> None:
-        self.headers = setting.headers
+        self.headers = {}
+        self.headers.update(setting.headers)
         self.headers['DS'] = tools.get_ds(web=True)
         self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin/nxx/index.html?bbs_auth_required' \
                                   '=true&bbs_presentation_style=fullscreen' \

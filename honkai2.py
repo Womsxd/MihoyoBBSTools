@@ -11,7 +11,8 @@ from account import get_account_list
 
 class Honkai2:
     def __init__(self) -> None:
-        self.headers = setting.headers
+        self.headers = {}
+        self.headers.update(setting.headers)
         self.headers['DS'] = tools.get_ds(web=True)
         self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin/bh2/index.html?bbs_auth_required' \
                                   f'=true&act_id={setting.honkai2_Act_id}&bbs_presentation_style=fullscreen' \
