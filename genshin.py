@@ -45,11 +45,12 @@ class Genshin:
         return data["data"]
 
     def check_in(self, account):
-        for i in range(3):
+        for i in range(4):
             req = http.post(url=setting.genshin_Signurl, headers=self.headers,
                             json={'act_id': setting.genshin_Act_id, 'region': account[2], 'uid': account[1]})
             data = req.json()
             if data["retcode"] == 0 and data["data"]["success"] == 1:
+                log.info(f'触发验证码，即将进行第{i+1}次重试，最多3次')
                 time.sleep(random.randint(4, 10))
             else:
                 break
