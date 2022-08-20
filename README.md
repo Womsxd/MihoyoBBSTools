@@ -89,6 +89,12 @@ docker-compose logs -f
 
 每次运行Docker容器后，容器内将自动按照参数执行签到活动，签到完成后容器将默认在每天上午9:30运行一次，如果想自行修改时间可自行编辑`docker-compose.yml`文件中的`CRON_SIGNIN`，将其修改成想运行的时间。
 
+若想要更新容器镜像，可以参考以下命令
+```text
+docker-compose stop  
+docker-compose pull && docker-compose up -d
+```
+
 ## 使用python运行(screen)
 
 1. 将本项目Clone至本地后，安装好依赖直接运行`python3 server.py`
