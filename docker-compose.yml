@@ -2,7 +2,7 @@ version: "3"
 
 services:
   mihoyo-bbs:
-    image: darkatse/mihoyo-bbs
+    image: womsxd/mihoyo-bbs
     restart: always
     environment:
       - CRON_SIGNIN=30 9 * * *
