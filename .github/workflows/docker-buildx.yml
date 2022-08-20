@@ -44,5 +44,5 @@ jobs:
           platforms: linux/amd64,linux/arm64/v8,linux/arm/v7,linux/arm/v6
           push: true
           tags: |
-            user/app:latest
-            user/app:${{ steps.date.outputs.today }} 
+            ${{ secrets.DOCKERHUB_USERNAME }}/mihoyo-bbs:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/mihoyo-bbs:${{ steps.date.outputs.today }} 
