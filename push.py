@@ -155,7 +155,8 @@ def gotify(status, push_message):
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
             "title": title(status),
-            "message": push_message
+            "message": push_message,
+            "priority": cfg.getint("gotify", "priority")
         }
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
