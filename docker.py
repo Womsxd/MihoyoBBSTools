@@ -31,8 +31,8 @@ def main():
 
     def sign():
         log.info("Starting signing")
-        multi = env["MULTI"]
-        if multi:
+        multi = env["MULTI"].upper()
+        if multi == 'TRUE':
             os.system("python3 ./main_multi.py autorun")
         else:
             os.system("python3 ./main.py")
