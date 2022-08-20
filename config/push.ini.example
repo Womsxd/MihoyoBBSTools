@@ -39,3 +39,4 @@ token=ssXXX
 [gotify]
 api_url=http://xxx.xxx.cn
 token=AMxxxx
+priority=7
