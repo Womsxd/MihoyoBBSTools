@@ -19,6 +19,7 @@ class Honkai3rd:
                                   '&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
         self.headers['Cookie'] = config.config["account"]["cookie"]
         self.headers['x-rpc-device_id'] = tools.get_device_id()
+        self.headers['User-Agent'] = f'{config["games"]["cn"]["useragent"]} miHoYoBBS/{setting.mihoyobbs_Version}'
         self.account_list = get_account_list("bh3_cn", self.headers)
         self.sign_day = 0
         if len(self.account_list) != 0:
