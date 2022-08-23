@@ -177,7 +177,7 @@ httpx: [github](https://github.com/encode/httpx) [pypi](https://pypi.org/project
 
 crontab: [github](https://github.com/josiahcarlson/parse-crontab) [pypi](https://pypi.org/project/crontab/)
 
-ruamel.yaml: [sourceforge](https://sourceforge.net/projects/ruamel-yaml/) [pypi](https://pypi.org/project/ruamel.yaml/)
+PyYAML: [github](https://github.com/yaml/pyyaml) [pypi](https://pypi.org/project/PyYAML/)
 
 ## 关于使用 Github Actions 运行
 
