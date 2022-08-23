@@ -27,7 +27,7 @@ class Tears_of_themis:
 
     def get_checkin_rewards(self) -> list:
         log.info("正在获取签到奖励列表...")
-        req = http.get(setting.honkai2_checkin_rewards, headers=self.headers)
+        req = http.get(setting.tearsofthemis_checkin_rewards, headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
             log.warning("获取签到奖励列表失败")
