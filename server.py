@@ -1,21 +1,26 @@
-#Server Mod
+# Server Mod
 import os
+import json
 import time
 import threading
 import main as single
 import main_multi as multi
 from loghelper import log
-import json
-time_interval=720   #默认签到间隔时间，单位minute(分钟)
-mod=1  #单用户模式/自动判断
+
+time_interval = 720  # 默认签到间隔时间，单位minute(分钟)
+mod = 1  # 单用户模式/自动判断
+
+
 def runingtime():
     return int(time.time())
-def control(time_interval,mod,event,detal):
-    last_time=runingtime()
+
+
+def control(time_interval, mod, event, detal):
+    last_time = runingtime()
     while True:
-        now_time=runingtime()
-        if now_time>last_time+time_interval*60:
-            if mod==1:
+        now_time = runingtime()
+        if now_time > last_time + time_interval * 60:
+            if mod == 1:
                 try:
                     single.main()
                 except:
@@ -26,159 +31,164 @@ def control(time_interval,mod,event,detal):
                     multi.main_multi(True)
                 except:
                     log.info("multi_user start failed")
-            last_time=runingtime()
+            last_time = runingtime()
         if event.is_set():
             log.info("Stoping threading")
             break
-        if(detal.is_set()):
-            log.info("The Next check time is {}s".format(last_time-now_time+time_interval*60))
+        if (detal.is_set()):
+            log.info("The Next check time is {}s".format(last_time - now_time + time_interval * 60))
         time.sleep(20)
+
+
 def command(detal):
     global mod
     global time_interval
     global show
-    show=False #显示倒计时信息
+    show = False  # 显示倒计时信息
     if show:
         detal.set()
-    help="command windows\nstop:stop server\nreload:reload config and refish tiem\nsingle:test single config\nmulit:test mulit conifg\nmod x:x is refer single or multi 1 is single 2 is multi\nadd 'yourcookie'\nset user attribute value: such set username(*.json) enable(attribute) Ture(value)\ntime x:set interval time (minute)\nshow true/false:show the time count"
+    help = "command windows\nstop:stop server\nreload:reload config and refish tiem\nsingle:test single " \
+           "config\nmulit:test mulit conifg\nmod x:x is refer single or multi 1 is single 2 is multi\nadd " \
+           "'yourcookie'\nset user attribute value: such set username(*.json) enable(attribute) Ture(value)\ntime " \
+           "x:set interval time (minute)\nshow true/false:show the time count "
     log.info(help)
-    while True: 
-        command=input()
-        if command=="help" or command=="?" or command=="":
+    while True:
+        command = input()
+        if command == "help" or command == "?" or command == "":
             log.info(help)
-        if command=="stop" or command=="exit":
+        if command == "stop" or command == "exit":
             log.info("Stoping Server Plase Wait")
             return False
 
-        if command=="reload":
+        if command == "reload":
             return True
-        if command=="test":
+        if command == "test":
             try:
                 single.main()
             except:
                 log.info("single_user start failed")
-        if command=="single":
+        if command == "single":
             try:
                 single.main()
             except:
                 log.info("single_user start failed")
-        if command=="mulit":
+        if command == "mulit":
             try:
                 multi.main_multi(True)
             except:
                 log.info("multi_user start failed")
-        command=command.split(' ')
-        for i in range(0,len(command)):
-            if command[i]=="time":
-                if len(command)==2:
-                    time_interval=int(command[1])
+        command = command.split(' ')
+        for i in range(0, len(command)):
+            if command[i] == "time":
+                if len(command) == 2:
+                    time_interval = int(command[1])
                     log.info("switching interval to {} minute".format(time_interval))
                     return True
-            if command[i]=="mod":
-                if len(command)==2:
-                    mod_new=int(command[1])
-                    if mod_new >2 or mod_new <1:
+            if command[i] == "mod":
+                if len(command) == 2:
+                    mod_new = int(command[1])
+                    if mod_new > 2 or mod_new < 1:
                         log.info("error mod")
                     else:
-                        mod=mod_new
+                        mod = mod_new
                         log.info("switching mod to {}".format(mod))
                 else:
                     log.info("Error Command")
-            if command[i]=="show":
-                if len(command)==2:
-                    
-                    if command[1]=="true":
-                        show=True
+            if command[i] == "show":
+                if len(command) == 2:
+
+                    if command[1] == "true":
+                        show = True
                         detal.set()
                         log.info("switching to detail mod")
-                        
-                    if command[1]=="false":
+
+                    if command[1] == "false":
                         detal.unset()
-                        show=False
+                        show = False
                         log.info("switching to slient mod")
-    
-                        
+
+
                 else:
                     log.info("Error Command")
-            if command[i]=="add":
-                cookie=""
-                for m in range(i,len(command)):
-                    cookie+=command[m]
+            if command[i] == "add":
+                cookie = ""
+                for m in range(i, len(command)):
+                    cookie += command[m]
                 log.info("adding")
-                if (mod==1):
-                    name="config"
+                if mod == 1:
+                    name = "config"
                 else:
                     log.info("Plase input your config name(*.json):")
-                    name=input()
+                    name = input()
                 config = {
                     'enable': True, 'version': 5,
                     'account': {
-                         'cookie': cookie,
-                         'login_ticket': '',
-                         'stuid': '',
-                         'stoken': ''
+                        'cookie': cookie,
+                        'login_ticket': '',
+                        'stuid': '',
+                        'stoken': ''
                     },
-                        'mihoyobbs': {
-                            'enable': True, 'checkin': True, 'checkin_multi': True, 'checkin_multi_list': [2, 5],
-                            'read_posts': True, 'like_posts': True, 'un_like': True, 'share_post': True
+                    'mihoyobbs': {
+                        'enable': True, 'checkin': True, 'checkin_multi': True, 'checkin_multi_list': [2, 5],
+                        'read_posts': True, 'like_posts': True, 'un_like': True, 'share_post': True
+                    },
+                    'games': {
+                        'cn': {
+                            'enable': True,
+                            'genshin': {'auto_checkin': True, 'black_list': []},
+                            'hokai2': {'auto_checkin': False, 'black_list': []},
+                            'honkai3rd': {'auto_checkin': False, 'black_list': []},
+                            'tears_of_themis': {'auto_checkin': False, 'black_list': []},
                         },
-                        'games': {
-                            'cn': {
-                                'enable': True,
-                                'genshin': {'auto_checkin': True, 'black_list': []},
-                                'hokai2': {'auto_checkin': False, 'black_list': []},
-                                'honkai3rd': {'auto_checkin': False, 'black_list': []},
-                                'tears_of_themis': {'auto_checkin': False, 'black_list': []},
-                            },
-                            'os': {
-                                'enable': False, 'cookie': '',
-                                'genshin': {'auto_checkin': False, 'black_list': []}
-                            }
+                        'os': {
+                            'enable': False, 'cookie': '',
+                            'genshin': {'auto_checkin': False, 'black_list': []}
                         }
-                        }
-                        
-                        
-                file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/"+name+".json"
-                file=open(file_path,'w')
+                    }
+                }
+
+                file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/" + name + ".json"
+                file = open(file_path, 'w')
                 file.write(json.dumps(config))
                 file.close()
                 log.info("Saving OK")
-            if command[i]=="set":
-                if len(command)==4:
-                    file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/"+command[1]+".json"
-                    if os.path.exists(file_path)==False:
+            if command[i] == "set":
+                if len(command) == 4:
+                    file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/" + command[1] + ".json"
+                    if not os.path.exists(file_path):
                         log.info("User is not exist")
                     else:
                         with open(file_path, "r") as f:
-                            new_conifg=json.load(f)
-                            value=command[3]
-                            if (command[3]=="true"):
-                                value=True
-                            if (command[3]=="false"):
-                                value=False
-                            if (command[3].isdigit()):
-                                value=int(command[3])
-                            new_conifg[command[2]]=value
+                            new_conifg = json.load(f)
+                            value = command[3]
+                            if command[3] == "true":
+                                value = True
+                            if command[3] == "false":
+                                value = False
+                            if command[3].isdigit():
+                                value = int(command[3])
+                            new_conifg[command[2]] = value
 
-                            file=open(file_path,'w')
+                            file = open(file_path, 'w')
                             file.write(json.dumps(new_conifg))
                             file.close()
     return True
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     log.info('Running in Server Mod')
     time_interval = 720
     file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/config.json"
     if os.path.exists(file_path):
-        mod=1
+        mod = 1
     else:
-        mod=2
+        mod = 2
 
     while True:
         log.info("switching to mod {}".format(mod))
         t1_stop = threading.Event()
         detal = threading.Event()
-        thread1 = threading.Thread(name='time_check',target= control,args=(time_interval,mod,t1_stop,detal))
+        thread1 = threading.Thread(name='time_check', target=control, args=(time_interval, mod, t1_stop, detal))
         thread1.start()
         try:
             if command(detal):
@@ -190,9 +200,3 @@ if __name__=='__main__':
         except:
             t1_stop.set()
             continue
-               
-
-
-
-
-    
