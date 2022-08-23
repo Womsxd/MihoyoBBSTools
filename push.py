@@ -1,12 +1,13 @@
 import os
 import time
-import base64
-import hashlib
-import urllib
 import hmac
+import base64
+import urllib
+import hashlib
 from request import http
 from loghelper import log
 from configparser import ConfigParser
+from config import update_config_need
 
 cfg = ConfigParser()
 
@@ -32,52 +33,52 @@ def title(status):
 
 
 # telegram的推送
-def telegram(status, push_message):
+def telegram(send_title, push_message):
     http.post(
         url="https://{}/bot{}/sendMessage".format(cfg.get('telegram', 'api_url'), cfg.get('telegram', 'bot_token')),
         data={
             "chat_id": cfg.get('telegram', 'chat_id'),
-            "text": title(status) + "\r\n" + push_message
+            "text": send_title + "\r\n" + push_message
         }
     )
 
 
 # server酱
-def ftqq(status, push_message):
+def ftqq(send_title, push_message):
     http.post(
         url="https://sctapi.ftqq.com/{}.send".format(cfg.get('setting', 'push_token')),
         data={
-            "title": title(status),
+            "title": send_title,
             "desp": push_message
         }
     )
 
 
 # pushplus
-def pushplus(status, push_message):
+def pushplus(send_title, push_message):
     http.post(
         url="https://www.pushplus.plus/send",
         data={
             "token": cfg.get('setting', 'push_token'),
-            "title": title(status),
+            "title": send_title,
             "content": push_message
         }
     )
 
 
 # cq http协议的推送
-def cqhttp(status, push_message):
+def cqhttp(send_title, push_message):
     http.post(
         url=cfg.get('cqhttp', 'cqhttp_url'),
         json={
             "user_id": cfg.getint('cqhttp', 'cqhttp_qq'),
-            "message": title(status) + "\r\n" + push_message
+            "message": send_title + "\r\n" + push_message
         }
     )
 
 
 # 企业微信 感谢linjie5492@github
-def wecom(status, push_message):
+def wecom(send_title, push_message):
     secret = cfg.get('wecom', 'secret')
     corpid = cfg.get('wecom', 'wechat_id')
     try:
@@ -95,7 +96,7 @@ def wecom(status, push_message):
         "msgtype": "text",
         "touser": touser,
         "text": {
-            "content": title(status) + "\r\n" + push_message
+            "content": send_title + "\r\n" + push_message
         },
         "safe": 0
     }
@@ -103,12 +104,12 @@ def wecom(status, push_message):
 
 
 # pushdeer
-def pushdeer(status, push_message):
+def pushdeer(send_title, push_message):
     http.get(
         url=f'{cfg.get("pushdeer", "api_url")}/message/push',
         params={
             "pushkey": cfg.get("pushdeer", "token"),
-            "text": title(status),
+            "text": send_title,
             "desp": str(push_message).replace("\r\n", "\r\n\r\n"),
             "type": "markdown"
         }
@@ -116,7 +117,7 @@ def pushdeer(status, push_message):
 
 
 # 钉钉群机器人
-def dingrobot(status, push_message):
+def dingrobot(send_title, push_message):
     api_url = cfg.get('dingrobot', 'webhook')  # https://oapi.dingtalk.com/robot/send?access_token=XXX
     secret = cfg.get('dingrobot', 'secret')  # 安全设置 -> 加签 -> 密钥 -> SEC*
     if secret:
@@ -134,27 +135,27 @@ def dingrobot(status, push_message):
         url=api_url,
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
-            "msgtype": "text", "text": {"content": title(status) + "\r\n" + push_message}
+            "msgtype": "text", "text": {"content": send_title + "\r\n" + push_message}
         }
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
 
 
 # Bark
-def bark(status, push_message):
+def bark(send_title, push_message):
     rep = http.get(
-        url=f'{cfg.get("bark", "api_url")}/{cfg.get("bark", "token")}/{title(status)}/{push_message}'
+        url=f'{cfg.get("bark", "api_url")}/{cfg.get("bark", "token")}/{send_title}/{push_message}'
     ).json()
     log.info(f"推送结果：{rep.get('message')}")
 
 
 # gotify
-def gotify(status, push_message):
+def gotify(send_title, push_message):
     rep = http.post(
         url=f'{cfg.get("gotify", "api_url")}/message?token={cfg.get("gotify", "token")}',
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
-            "title": title(status),
+            "title": send_title,
             "message": push_message,
             "priority": cfg.getint("gotify", "priority")
         }
@@ -177,7 +178,11 @@ def push(status, push_message):
         try:
             # eval(push_server[:10] + "(status, push_message)")
             # 与面代码等效 20220508
-            func(status, push_message)
+            if not update_config_need:
+                func(title(status), push_message)
+            else:
+                func('「米游社脚本」config可能需要手动更新',
+                     f'如果您多次收到此消息开头的推送，证明您运行的环境无法自动更新config，请手动更新一下，谢谢\r\n{title(status)}\r\n{push_message}')
         except Exception as r:
             log.warning(f"推送执行错误：{str(r)}")
             return 0
