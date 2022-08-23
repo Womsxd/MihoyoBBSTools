@@ -9,7 +9,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/re
 
 RUN git clone https://github.com/Womsxd/AutoMihoyoBBS app
 WORKDIR /app
-RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt 
+RUN pip3 install -i https://mirrors.cloud.tencent.com/pypi/simple -r requirements.txt 
 
 CMD ["python3", "./docker.py" ]
 
