@@ -136,6 +136,7 @@ dmypy.json
 
 # 避免上传配置文件
 config/*.json
+config/*.yaml
 
 # push配置
 config/push.ini
