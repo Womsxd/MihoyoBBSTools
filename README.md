@@ -23,21 +23,21 @@
 
   4. [requirements.txt](https://raw.githubusercontent.com/Womsxd/AutoMihoyoBBS/master/requirements.txt) 是所需第三方模块，执行 `pip install -r requirements.txt` 安装模块
 
-  5. 打开目录中的**config文件夹**复制`config.json.example`并改名为`config.json`，脚本的多用户功能靠读取不同的配置文件实现，你可以创建无数个`自定义名字.json`，脚本会扫描**config**目录下`json`为拓展名的文件，并按照名称顺序依次执行。
+  5. 打开目录中的**config文件夹**复制`config.yaml.example`并改名为`config.yaml`，脚本的多用户功能靠读取不同的配置文件实现，你可以创建无数个`自定义名字.yaml`，脚本会扫描**config**目录下`yaml`为拓展名的文件，并按照名称顺序依次执行。
 
   6. 请使用vscode/notepad++等文本编辑器打开上一步复制好的配置文件
 
   7. **使用[获取Cookie](#获取米游社Cookie)里面的方法来获取米游社Cookie**
 
-  8. 将复制的Cookie粘贴到`config.json`的`"cookie":" "`中(在`account`里面)
+  8. 将复制的Cookie粘贴到`config.yaml`的`cookie:" "`中(在`account`里面)
 
         例子
 
-        > ```json
-        > "cookie": "你复制的cookie"
+        > ```yaml
+        > cookie: 你复制的cookie
         > ```
 
-  9. 检查`config.json`的`"enable":`的值为true
+  9. 检查`config.yaml`的`enable:`的值为true
 
   10. 在命令提示符(cmd)/powershell，输入`python main.py`来进行执行
   
@@ -90,6 +90,7 @@ docker-compose logs -f
 每次运行Docker容器后，容器内将自动按照参数执行签到活动，签到完成后容器将默认在每天上午9:30运行一次，如果想自行修改时间可自行编辑`docker-compose.yml`文件中的`CRON_SIGNIN`，将其修改成想运行的时间。
 
 若想要更新容器镜像，可以参考以下命令
+
 ```text
 docker-compose stop  
 docker-compose pull && docker-compose up -d
@@ -171,6 +172,8 @@ requests: [github](https://github.com/psf/requests) [pypi](https://pypi.org/proj
 httpx: [github](https://github.com/encode/httpx) [pypi](https://pypi.org/project/httpx/)
 
 crontab: [github](https://github.com/josiahcarlson/parse-crontab) [pypi](https://pypi.org/project/crontab/)
+
+ruamel.yaml: [sourceforge](https://sourceforge.net/projects/ruamel-yaml/) [pypi](https://pypi.org/project/ruamel.yaml/)
 
 ## 关于使用 Github Actions 运行
 
