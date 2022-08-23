@@ -102,7 +102,7 @@ def save_config():
         try:
             f.seek(0)
             f.truncate()
-            f.write(yaml.dump(config, Dumper=yaml.Dumper,sort_keys=False))
+            f.write(yaml.dump(config, Dumper=yaml.Dumper, sort_keys=False))
             f.flush()
         except OSError:
             serverless = True
@@ -115,7 +115,6 @@ def save_config():
 def clear_cookies():
     global config
     global serverless
-    yaml = YAML()
     if serverless:
         log.info("云函数执行，无法保存")
         return None
@@ -128,7 +127,7 @@ def clear_cookies():
         try:
             f.seek(0)
             f.truncate()
-            f.write(yaml.dump(config, Dumper=yaml.Dumper,sort_keys=False))
+            f.write(yaml.dump(config, Dumper=yaml.Dumper, sort_keys=False))
             f.flush()
         except OSError:
             serverless = True
