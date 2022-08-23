@@ -1,12 +1,15 @@
 import os
 import json
 from loghelper import log
+from ruamel.yaml import YAML
 
 # 这个字段现在还没找好塞什么地方好，就先塞config这里了
 serverless = False
+# 提示需要更新config版本
+update_config_need = False
 
 config = {
-    'enable': True, 'version': 5,
+    'enable': True, 'version': 6,
     'account': {
         'cookie': '',
         'login_ticket': '',
@@ -15,11 +18,13 @@ config = {
     },
     'mihoyobbs': {
         'enable': True, 'checkin': True, 'checkin_multi': True, 'checkin_multi_list': [2, 5],
-        'read_posts': True, 'like_posts': True, 'un_like': True, 'share_post': True
+        'read_posts': True, 'like_posts': True, 'cancel_like_posts': True, 'share_post': True
     },
     'games': {
         'cn': {
             'enable': True,
+            'useragent': 'Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) '
+                         'Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36',
             'genshin': {'auto_checkin': True, 'black_list': []},
             'hokai2': {'auto_checkin': False, 'black_list': []},
             'honkai3rd': {'auto_checkin': False, 'black_list': []},
@@ -32,70 +37,74 @@ config = {
     }
 }
 
-
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
-config_Path = f"{path}/config.json"
+config_Path_json = f"{path}/config.json"
+config_Path = f"{path}/config.yaml"
 
 
-def load_v4(data: dict):
-    global config
-    # 配置开关
-    config["enable"] = data["enable_Config"]
-    # 账号 cookie
-    config["account"]["login_ticket"] = data["mihoyobbs_Login_ticket"]
-    config["account"]["stuid"] = data["mihoyobbs_Stuid"]
-    config["account"]["stoken"] = data["mihoyobbs_Stoken"]
-    config["account"]["cookie"] = data["mihoyobbs_Cookies"]
-    # bbs 相关设置(自己之前造的孽)
-    config["mihoyobbs"]["enable"] = data["mihoyobbs"]["bbs_Global"]
-    config["mihoyobbs"]["checkin"] = data["mihoyobbs"]["bbs_Signin"]
-    config["mihoyobbs"]["checkin_multi"] = data["mihoyobbs"]["bbs_Signin_multi"]
-    config["mihoyobbs"]["checkin_multi_list"] = data["mihoyobbs"]["bbs_Signin_multi_list"]
-    config["mihoyobbs"]["read_posts"] = data["mihoyobbs"]["bbs_Read_posts"]
-    config["mihoyobbs"]["like_posts"] = data["mihoyobbs"]["bbs_Like_posts"]
-    config["mihoyobbs"]["un_like"] = data["mihoyobbs"]["bbs_Unlike"]
-    config["mihoyobbs"]["share_post"] = data["mihoyobbs"]["bbs_Share"]
-    # 游戏相关设置 v4只支持原神和崩坏3，所以其他选项默认关闭
-    config["games"]["cn"]["genshin"]["auto_checkin"] = data["genshin_Auto_sign"]
-    config["games"]["cn"]["honkai3rd"]["auto_checkin"] = data["honkai3rd_Auto_sign"]
-
-
-def load_config():
-    global config
-    with open(config_Path, "r") as f:
+def load_config_json():
+    with open(config_Path_json, "r") as f:
         data = json.load(f)
         if data.get('version') == 5:
-            config = data
+            config_json = data
             try:
-                config["mihoyobbs"]["like_post"]
+                config_json["mihoyobbs"]["like_post"]
             except KeyError:
                 pass
             else:
-                config["mihoyobbs"]["read_posts"] = config["mihoyobbs"]["read_post"]
-                config["mihoyobbs"]["like_posts"] = config["mihoyobbs"]["like_post"]
-                del config["mihoyobbs"]["like_post"]
-                del config["mihoyobbs"]["read_post"]
-                save_config()
+                config_json["mihoyobbs"]["read_posts"] = config_json["mihoyobbs"]["read_post"]
+                config_json["mihoyobbs"]["like_posts"] = config_json["mihoyobbs"]["like_post"]
+                del config_json["mihoyobbs"]["like_post"]
+                del config_json["mihoyobbs"]["read_post"]
         else:
-            load_v4(data)
-            log.info("升级v5 config")
-            # 直接升级到v5 config
-            save_config()
-        f.close()
-        log.info("Config加载完毕")
+            log.error("config版本过低，请手动更新到基于yaml版本的新版本配置文件，更新完成后请删除json版的配置文件")
+            exit(1)
+        log.info("v5Config加载完毕")
+        return config_json
+
+
+def update_config():
+    global config
+    global update_config_need
+    update_config_need = True
+    log.info("正在更新config....")
+    config_json = load_config_json()
+    config['account'] = config_json['account']
+    config['mihoyobbs'].update(config_json['mihoyobbs'])
+    del config['mihoyobbs']['un_like']
+    config['mihoyobbs']['cancel_like_posts'] = config_json['mihoyobbs']['un_like']
+    for i in config_json['games']['cn'].keys():
+        if i == 'enable':
+            continue
+        config['games']['cn'][i] = config_json['games']['cn'][i]
+    config['games']['os'] = config_json['games']['os']
+    save_config()
+    log.info('config更新完毕')
+    if not serverless:
+        os.remove(config_Path_json)
+    else:
+        log.error("请本地更新一下config")
+
+
+def load_config():
+    yaml = YAML()
+    global config
+    with open(config_Path, "r", encoding='utf-8') as f:
+        config = yaml.load(f)
+    log.info("Config加载完毕")
 
 
 def save_config():
     global serverless
+    yaml = YAML()
     if serverless:
         log.info("云函数执行，无法保存")
         return None
-    with open(config_Path, "r+") as f:
-        temp_text = json.dumps(config, sort_keys=False, indent=4, separators=(', ', ': '))
+    with open(config_Path, "w+") as f:
         try:
             f.seek(0)
             f.truncate()
-            f.write(temp_text)
+            yaml.dump(config, f)
             f.flush()
         except OSError:
             serverless = True
@@ -103,12 +112,12 @@ def save_config():
             exit(-1)
         else:
             log.info("Config保存完毕")
-        f.close()
 
 
 def clear_cookies():
     global config
     global serverless
+    yaml = YAML()
     if serverless:
         log.info("云函数执行，无法保存")
         return None
@@ -118,18 +127,17 @@ def clear_cookies():
         config["account"]["stuid"] = ""
         config["account"]["stoken"] = ""
         config["account"]["cookie"] = "CookieError"
-        temp_text = json.dumps(config, sort_keys=False, indent=4, separators=(', ', ': '))
         try:
             f.seek(0)
             f.truncate()
-            f.write(temp_text)
+            yaml.dump(config, f)
             f.flush()
         except OSError:
             serverless = True
             log.info("Cookie删除失败")
         else:
             log.info("Cookie删除完毕")
-        f.close()
+
 
 if __name__ == "__main__":
     # 初始化配置文件
@@ -140,4 +148,5 @@ if __name__ == "__main__":
     # except OSError:
     #     pass
     # save_config()
+    # update_config()
     pass

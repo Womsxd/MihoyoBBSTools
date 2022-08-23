@@ -1,3 +1,4 @@
+import os
 import time
 import push
 import login
@@ -103,6 +104,8 @@ def main():
 
 
 if __name__ == "__main__":
+    if not os.path.exists(config.config_Path):
+        config.update_config()
     try:
         status_code, message = main()
     except CookieError:

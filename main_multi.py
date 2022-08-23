@@ -11,10 +11,10 @@ from error import CookieError
 
 
 # 搜索配置文件
-def fund_config() -> list:
+def fund_config(ext: str) -> list:
     file_name = []
     for files in os.listdir(config.path):
-        if os.path.splitext(files)[1] == '.json':
+        if os.path.splitext(files)[1] == ext:
             file_name.append(files)
     return file_name
 
@@ -22,9 +22,20 @@ def fund_config() -> list:
 def main_multi(autorun: bool):
     log.info("AutoMihoyoBBS Multi User mode")
     log.info("正在搜索配置文件！")
-    config_list = fund_config()
+    json_config = fund_config('.json')
+    if len(json_config) != 0:
+        log.info(f'已搜索到{len(json_config)}个旧版config文件，正在进行升级')
+        for i in json_config:
+            log.info(f'开始处理{i}')
+            config.config_Path_json = f"{config.path}/{i}"
+            config.config_Path = f"{config.path}/{i[:-4]}yaml"
+            config.update_config()
+            if config.serverless:
+                push.push(1, "云函数环境请手动执行一下脚本更新config文件！")
+                exit(1)
+    config_list = fund_config('.yaml')
     if len(config_list) == 0:
-        log.warning("未检测到配置文件，请确认config文件夹存在.json后缀名的配置文件！")
+        log.warning("未检测到配置文件，请确认config文件夹存在.yaml后缀名的配置文件！")
         exit(1)
     if autorun:
         log.info(f"已搜索到{len(config_list)}个配置文件，正在开始执行！")
