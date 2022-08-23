@@ -1,7 +1,7 @@
 import os
 import json
+import yaml
 from loghelper import log
-from ruamel.yaml import YAML
 
 # 这个字段现在还没找好塞什么地方好，就先塞config这里了
 serverless = False
@@ -87,16 +87,14 @@ def update_config():
 
 
 def load_config():
-    yaml = YAML()
     global config
     with open(config_Path, "r", encoding='utf-8') as f:
-        config = yaml.load(f)
+        config = yaml.load(f, Loader=yaml.FullLoader)
     log.info("Config加载完毕")
 
 
 def save_config():
     global serverless
-    yaml = YAML()
     if serverless:
         log.info("云函数执行，无法保存")
         return None
@@ -104,7 +102,7 @@ def save_config():
         try:
             f.seek(0)
             f.truncate()
-            yaml.dump(config, f)
+            f.write(yaml.dump(config, Dumper=yaml.Dumper,sort_keys=False))
             f.flush()
         except OSError:
             serverless = True
@@ -130,7 +128,7 @@ def clear_cookies():
         try:
             f.seek(0)
             f.truncate()
-            yaml.dump(config, f)
+            f.write(yaml.dump(config, Dumper=yaml.Dumper,sort_keys=False))
             f.flush()
         except OSError:
             serverless = True
