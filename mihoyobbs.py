@@ -163,7 +163,7 @@ class Mihoyobbs:
                 if data["message"] == "OK":
                     log.debug("点赞：{} 成功".format(self.postsList[i][1]))
                 # 判断取消点赞是否打开
-                if config.config["mihoyobbs"]["un_like"]:
+                if config.config["mihoyobbs"]["cancel_like_posts"]:
                     time.sleep(random.randint(2, 8))
                     req = http.post(url=setting.bbs_Like_url, headers=self.headers,
                                     json={"post_id": self.postsList[i][0], "is_cancel": True})
