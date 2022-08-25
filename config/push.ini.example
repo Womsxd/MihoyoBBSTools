@@ -1,6 +1,6 @@
 [setting]
 enable=false
-#共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot bark
+#共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot bark pushdeer gotify
 push_server=cqhttp
 #server酱 pushplus dingrobot 的推送token
 push_token=123456
