@@ -50,6 +50,9 @@ def get_ds2(q: str, b: str) -> str:
 def get_device_id() -> str:
     return str(uuid.uuid3(uuid.NAMESPACE_URL, config.config["account"]["cookie"]))
 
+# 生成一个device id
+def get_cloud_device_id() -> str:
+    return str(uuid.uuid3(uuid.NAMESPACE_URL, "ai=4;ci=1;oi=74192553;ct=78851ef4251e14fb45659a5276370b819ab9f47b;si=f8bc714db618c290b05c1949c654e6e4fb38edb49831e3a2b75455dfa8812320;bi=hk4e_cn"))
 
 # 获取签到的奖励名称
 def get_item(raw_data: dict) -> str:
