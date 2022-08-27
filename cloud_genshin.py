@@ -14,7 +14,7 @@ class cloud_ys():
             'x-rpc-app_version': setting.cloudgenshin_Version,
             'x-rpc-sys_version': '12',  # Previous version need to convert the type of this var
             'x-rpc-channel': 'mihoyo',
-            'x-rpc-device_id': tools.get_cloud_device_id(),
+            'x-rpc-device_id': tools.get_device_id(),
             'x-rpc-device_name': 'Xiaomi M2012K11AC',
             'x-rpc-device_model': 'M2012K11AC',
             'x-rpc-app_id': '1953439974',
