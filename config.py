@@ -40,7 +40,8 @@ config = {
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
 config_Path_json = f"{path}/config.json"
 config_Path = f"{path}/config.yaml"
-
+def copy_config():
+    return config
 
 def load_config_json():
     with open(config_Path_json, "r") as f:
@@ -86,23 +87,29 @@ def update_config():
         log.error("请本地更新一下config")
 
 
-def load_config():
+def load_config(p_path=None):
     global config
-    with open(config_Path, "r", encoding='utf-8') as f:
+    if not p_path:
+        p_path=config_Path
+    with open(p_path, "r", encoding='utf-8') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
     log.info("Config加载完毕")
+    return config
 
 
-def save_config():
+def save_config(p_path=None,p_config=None):
     global serverless
     if serverless:
         log.info("云函数执行，无法保存")
         return None
-    with open(config_Path, "w+") as f:
+    if not p_path:
+        p_path=config_Path
+        p_config=config
+    with open(p_path, "w+") as f:
         try:
             f.seek(0)
             f.truncate()
-            f.write(yaml.dump(config, Dumper=yaml.Dumper, sort_keys=False))
+            f.write(yaml.dump(p_config, Dumper=yaml.Dumper, sort_keys=False))
             f.flush()
         except OSError:
             serverless = True

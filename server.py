@@ -1,7 +1,8 @@
 # Server Mod
 import os
-import json
+#import json
 import time
+import config
 import threading
 import main as single
 import main_multi as multi
@@ -20,6 +21,7 @@ def control(time_interval, mod, event, detal):
     while True:
         now_time = runingtime()
         if now_time > last_time + time_interval * 60:
+            last_time = runingtime()
             if mod == 1:
                 try:
                     single.main()
@@ -31,7 +33,6 @@ def control(time_interval, mod, event, detal):
                     multi.main_multi(True)
                 except:
                     log.info("multi_user start failed")
-            last_time = runingtime()
         if event.is_set():
             log.info("Stoping threading")
             break
@@ -44,17 +45,17 @@ def command(detal):
     global mod
     global time_interval
     global show
-    show = False  # 显示倒计时信息
-    if show:
-        detal.set()
+    #show = False  # 显示倒计时信息
+    #if show:
+    #    detal.set()
     help = "command windows\nstop:stop server\nreload:reload config and refish tiem\nsingle:test single " \
-           "config\nmulit:test mulit conifg\nmod x:x is refer single or multi 1 is single 2 is multi\nadd " \
-           "'yourcookie'\nset user attribute value: such set username(*.json) enable(attribute) Ture(value)\ntime " \
+           "config\nmulit:test mulit conifg\nmod x:x is refer single or multi, 1 is single, 2 is multi\nadd " \
+           "'yourcookie'\nset user attribute value: such set username(*.yaml) enable(attribute) Ture(value)\ntime " \
            "x:set interval time (minute)\nshow true/false:show the time count "
     log.info(help)
     while True:
         command = input()
-        if command == "help" or command == "?" or command == "":
+        if command == "help" or command == "exit" or command == "?" or command == "":
             log.info(help)
         if command == "stop" or command == "exit":
             log.info("Stoping Server Plase Wait")
@@ -63,10 +64,16 @@ def command(detal):
         if command == "reload":
             return True
         if command == "test":
-            try:
-                single.main()
-            except:
-                log.info("single_user start failed")
+            if mod==1:
+                try:
+                    single.main()
+                except:
+                    log.info("single_user start failed")
+            else:
+                try:
+                    multi.main_multi(True)
+                except:
+                    log.info("multi_user start failed")
         if command == "single":
             try:
                 single.main()
@@ -98,13 +105,11 @@ def command(detal):
                 if len(command) == 2:
 
                     if command[1] == "true":
-                        show = True
                         detal.set()
                         log.info("switching to detail mod")
 
                     if command[1] == "false":
-                        detal.unset()
-                        show = False
+                        detal.clear()
                         log.info("switching to slient mod")
 
 
@@ -112,73 +117,57 @@ def command(detal):
                     log.info("Error Command")
             if command[i] == "add":
                 cookie = ""
-                for m in range(i, len(command)):
+                for m in range(i+1, len(command)):
                     cookie += command[m]
                 log.info("adding")
                 if mod == 1:
                     name = "config"
                 else:
-                    log.info("Plase input your config name(*.json):")
+                    log.info("Plase input your config name(*.yaml):")
                     name = input()
-                config = {
-                    'enable': True, 'version': 5,
-                    'account': {
-                        'cookie': cookie,
-                        'login_ticket': '',
-                        'stuid': '',
-                        'stoken': ''
-                    },
-                    'mihoyobbs': {
-                        'enable': True, 'checkin': True, 'checkin_multi': True, 'checkin_multi_list': [2, 5],
-                        'read_posts': True, 'like_posts': True, 'un_like': True, 'share_post': True
-                    },
-                    'games': {
-                        'cn': {
-                            'enable': True,
-                            'genshin': {'auto_checkin': True, 'black_list': []},
-                            'hokai2': {'auto_checkin': False, 'black_list': []},
-                            'honkai3rd': {'auto_checkin': False, 'black_list': []},
-                            'tears_of_themis': {'auto_checkin': False, 'black_list': []},
-                        },
-                        'os': {
-                            'enable': False, 'cookie': '',
-                            'genshin': {'auto_checkin': False, 'black_list': []}
-                        }
-                    }
-                }
-
-                file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/" + name + ".json"
-                file = open(file_path, 'w')
-                file.write(json.dumps(config))
-                file.close()
-                log.info("Saving OK")
+                new_config = config.copy_config()
+                new_config['account']['cookie']=cookie
+                file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/" + name + ".yaml"
+                try:
+                    config.save_config(file_path,new_config)
+                    log.info("Saving OK")
+                except:
+                    log.info('Saving failed,plase check your file system')
+                #file = open(file_path, 'w')
+                #file.write(json.dumps(config))
+                #file.close()
+                
             if command[i] == "set":
                 if len(command) == 4:
-                    file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/" + command[1] + ".json"
+                    file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/" + command[1] + ".yaml"
                     if not os.path.exists(file_path):
                         log.info("User is not exist")
                     else:
-                        with open(file_path, "r") as f:
-                            new_conifg = json.load(f)
-                            value = command[3]
-                            if command[3] == "true":
-                                value = True
-                            if command[3] == "false":
-                                value = False
-                            if command[3].isdigit():
-                                value = int(command[3])
-                            new_conifg[command[2]] = value
-
-                            file = open(file_path, 'w')
-                            file.write(json.dumps(new_conifg))
-                            file.close()
+                        new_config = config.load_config(file_path)
+                        #json.load(f)
+                        value = command[3]
+                        if command[3] == "true":
+                            value = True
+                        if command[3] == "false":
+                            value = False
+                        if command[3].isdigit():
+                            value = int(command[3])
+                        new_config[command[2]] = value
+                        try:
+                            config.save_config(file_path,new_config)
+                            log.info("Saving OK")
+                        except:
+                            log.info('Saving failed,plase check your file system')
+                        #file = open(file_path, 'w')
+                        #file.write(json.dumps(new_conifg))
+                        #file.close()
     return True
 
 
 if __name__ == '__main__':
     log.info('Running in Server Mod')
-    time_interval = 720
-    file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/config.json"
+    file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/config.yaml"
+    
     if os.path.exists(file_path):
         mod = 1
     else:
