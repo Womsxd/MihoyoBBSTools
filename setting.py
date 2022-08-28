@@ -7,6 +7,9 @@ mihoyobbs_Version = "2.35.2"  # Slat和Version相互对应
 # 米游社的客户端类型
 mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web
+# 云原神版本
+cloudgenshin_Version = "3.0.0"
+
 # 米游社的分区列表
 mihoyobbs_List = [{
     "id": "1",
@@ -110,3 +113,7 @@ genshin_Act_id = "e202009291139501"
 genshin_checkin_rewards = f'{web_Api}/event/bbs_sign_reward/home?act_id={genshin_Act_id}'
 genshin_Is_signurl = web_Api + "/event/bbs_sign_reward/info?act_id={}&region={}&uid={}"
 genshin_Signurl = web_Api + "/event/bbs_sign_reward/sign"
+
+# 云原神相关api
+cloud_genshin_Api = "https://api-cloudgame.mihoyo.com"
+cloud_genshin_Inquire = cloud_genshin_Api + "/hk4e_cg_cn/wallet/wallet/get"
