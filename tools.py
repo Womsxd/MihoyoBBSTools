@@ -50,7 +50,6 @@ def get_ds2(q: str, b: str) -> str:
 def get_device_id() -> str:
     return str(uuid.uuid3(uuid.NAMESPACE_URL, config.config["account"]["cookie"]))
 
-
 # 获取签到的奖励名称
 def get_item(raw_data: dict) -> str:
     temp_name = raw_data["name"]

@@ -132,7 +132,7 @@ docker-compose pull && docker-compose up -d
 
 1. 下载本项目
 
-2. 在脚本目录执行`pip3 install -r requirements.txt -t .`
+2. 在脚本目录执行`pip3 install -r requirements_qcloud.txt -t .`
 
 3. 在本地完整运行一次。
 
@@ -152,7 +152,7 @@ docker-compose pull && docker-compose up -d
 
 * 阿里云
   1. 下载本项目
-  2. 在脚本目录执行`pip3 install -r requirements.txt -t .`
+  2. 在脚本目录执行`pip3 install -r requirements.txt -t .`，如果无法选择`Python3.9`环境请执行`pip3 install -r requirements_qcloud.txt -t .`
   3. 在本地完整运行一次。
   4. 打开并登录[函数计算 FC](https://fcnext.console.aliyun.com/cn-hangzhou/services)。注意左上方显示的地区，可点击切换其他地区。
   5. 创建服务 （日志功能可能产生费用，建议关闭）
