@@ -10,6 +10,7 @@ import setting
 import mihoyobbs
 import honkai3rd
 import tearsofthemis
+import cloud_genshin
 from error import *
 from loghelper import log
 
@@ -95,6 +96,14 @@ def main():
                 ret_code = 3
             return_data += "\n\n" + genshin_message
             time.sleep(random.randint(2, 8))
+        if config.config['cloud_games']['genshin']["enable"]:
+            log.info("正在进行云原神签到")
+            if config.config['cloud_games']['genshin']['token'] == "":
+                log.info("token为空,跳过任务")
+            else:
+                cloud_ys = cloud_genshin.CloudGenshin()
+                data = cloud_ys.sign_account()
+                return_data += "\n\n" + data
         return ret_code, return_data
     elif config.config["account"]["cookie"] == "CookieError":
         raise CookieError('Cookie expires')

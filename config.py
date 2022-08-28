@@ -9,7 +9,7 @@ serverless = False
 update_config_need = False
 
 config = {
-    'enable': True, 'version': 6,
+    'enable': True, 'version': 7,
     'account': {
         'cookie': '',
         'login_ticket': '',
@@ -33,6 +33,12 @@ config = {
         'os': {
             'enable': False, 'cookie': '',
             'genshin': {'auto_checkin': False, 'black_list': []}
+        }
+    },
+    'cloud_games': {
+        "genshin": {
+            'enable': False,
+            'token': ''
         }
     }
 }
@@ -78,6 +84,9 @@ def update_config():
             continue
         config['games']['cn'][i] = config_json['games']['cn'][i]
     config['games']['os'] = config_json['games']['os']
+    config['cloud_genshin']['token'] = config_json['cloud_genshin']['token']
+    config['cloud_genshin']['enable'] = config_json['cloud_genshin']['enable']
+    print(config)
     save_config()
     log.info('config更新完毕')
     if not serverless:
@@ -86,10 +95,24 @@ def update_config():
         log.error("请本地更新一下config")
 
 
+def config_v7_update(data: dict):
+    global update_config_need
+    update_config_need = True
+    data['version'] = 7
+    data['cloud_games'] = {"genshin": {'enable': False, 'token': ''}}
+    log.info("config已升级到: 7")
+    return data
+
+
 def load_config():
     global config
     with open(config_Path, "r", encoding='utf-8') as f:
-        config = yaml.load(f, Loader=yaml.FullLoader)
+        data = yaml.load(f, Loader=yaml.FullLoader)
+    if data['version'] == 7:
+        config = data
+    else:
+        config = config_v7_update(data)
+        save_config()
     log.info("Config加载完毕")
 
 
@@ -136,6 +159,18 @@ def clear_cookies():
             log.info("Cookie删除完毕")
 
 
+def clear_cookie_cloudgame():
+    global config
+    global serverless
+    if serverless:
+        log.info("云函数执行，无法保存")
+        return None
+    config['cloud_games']['genshin']["enable"] = False
+    config['cloud_games']['genshin']['token'] = ""
+    log.info("云原神Cookie删除完毕")
+    save_config()
+
+
 if __name__ == "__main__":
     # 初始化配置文件
     # try:
@@ -146,4 +181,5 @@ if __name__ == "__main__":
     #     pass
     # save_config()
     # update_config()
+    load_config()
     pass
