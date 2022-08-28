@@ -103,7 +103,7 @@ def main():
             else:
                 cloud_ys = cloud_genshin.CloudGenshin()
                 data = cloud_ys.sign_account()
-                return_data += "\n\n" + data
+                return_data += "\n\n云原神:\n" + data
         return ret_code, return_data
     elif config.config["account"]["cookie"] == "CookieError":
         raise CookieError('Cookie expires')
