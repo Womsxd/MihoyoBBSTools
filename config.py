@@ -34,6 +34,10 @@ config = {
             'enable': False, 'cookie': '',
             'genshin': {'auto_checkin': False, 'black_list': []}
         }
+    },
+    'cloud_genshin': {
+        'token': '',
+        'enable': False
     }
 }
 
@@ -78,6 +82,9 @@ def update_config():
             continue
         config['games']['cn'][i] = config_json['games']['cn'][i]
     config['games']['os'] = config_json['games']['os']
+    config['cloud_genshin']['token'] = config_json['cloud_genshin']['token']
+    config['cloud_genshin']['enable'] = config_json['cloud_genshin']['enable']
+    print(config)
     save_config()
     log.info('config更新完毕')
     if not serverless:

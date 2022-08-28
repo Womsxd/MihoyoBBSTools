@@ -7,6 +7,9 @@ mihoyobbs_Version = "2.35.2"  # Slat和Version相互对应
 # 米游社的客户端类型
 mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web
+#云原神版本
+cloudgenshin_Version = "3.0.0"
+
 # 米游社的分区列表
 mihoyobbs_List = [{
     "id": "1",
@@ -75,6 +78,7 @@ headers = {
 # 通用设置
 bbs_Api = "https://bbs-api.mihoyo.com"
 web_Api = "https://api-takumi.mihoyo.com"
+Cloud_Ys_Api = "https://api-cloudgame.mihoyo.com"
 account_Info_url = web_Api + "/binding/api/getUserGameRolesByCookie?game_biz="
 
 # 米游社的API列表
@@ -110,3 +114,7 @@ genshin_Act_id = "e202009291139501"
 genshin_checkin_rewards = f'{web_Api}/event/bbs_sign_reward/home?act_id={genshin_Act_id}'
 genshin_Is_signurl = web_Api + "/event/bbs_sign_reward/info?act_id={}&region={}&uid={}"
 genshin_Signurl = web_Api + "/event/bbs_sign_reward/sign"
+
+# 云原神相关api
+Cloud_Ys_Sgin = Cloud_Ys_Api + "/hk4e_cg_cn/gamer/api/listNotifications?status=NotificationStatusUnread&type=NotificationTypePopup&is_sort=true"
+Cloud_ys_Inquire = Cloud_Ys_Api + "/hk4e_cg_cn/wallet/wallet/get"

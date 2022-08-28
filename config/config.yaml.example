@@ -39,3 +39,6 @@ games:
     genshin:
       auto_checkin: false
       black_list: []
+cloud_genshin:
+  token: ''
+  enable: true
