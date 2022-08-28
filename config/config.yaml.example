@@ -1,5 +1,5 @@
 enable: true #这里控制整个config文件是否启用
-version: 6 #config的版本
+version: 7 #config的版本
 account:
   cookie: "" #登入账号只需要修改这里就行了，下面会自动获取
   login_ticket: ""
@@ -39,6 +39,7 @@ games:
     genshin:
       auto_checkin: false
       black_list: []
-cloud_genshin:
-  token: ''
-  enable: true
+cloud_games: #云游戏专区
+  genshin: #云原神
+    enable: true #开启签到
+    token: "" #这里填入抓包获得的token
