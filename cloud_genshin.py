@@ -29,7 +29,7 @@ class CloudGenshin:
         req = http.get(url=setting.cloud_genshin_Inquire, headers=self.headers)
         data = req.json()
         if data['retcode'] == 0:
-            if req["data"]["free_time"]['free_time'] == '0':
+            if data["data"]["free_time"]['free_time'] == '0':
                 log.info('签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上线')
             else:
                 log.info(f'签到成功，已获得{data["data"]["free_time"]["free_time"]}分钟免费时长')
