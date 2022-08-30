@@ -117,4 +117,3 @@ genshin_Signurl = web_Api + "/event/bbs_sign_reward/sign"
 # 云原神相关api
 cloud_genshin_Api = "https://api-cloudgame.mihoyo.com"
 cloud_genshin_sgin = cloud_genshin_Api + "/hk4e_cg_cn/wallet/wallet/get"
-cloud_genshin_inquire = cloud_genshin_Api + "/hk4e_cg_cn/gamer/api/listNotifications?status=NotificationStatusUnread&type=NotificationTypePopup&is_sort=true"

@@ -35,11 +35,10 @@ class CloudGenshin:
         ret_msg = "云原神:\r\n"
         req = http.get(url=setting.cloud_genshin_sgin, headers=self.headers)
         data = req.json()
-        data2 = http.get(url=setting.cloud_genshin_inquire, headers=self.headers).json()
         if data['retcode'] == 0:
-            if len(data2['data']['list']) >= 1:
-                log.info('签到成功，已获得15分钟免费时长')
-                ret_msg += f'签到成功，已获得15分钟免费时长\n'
+            if int(data["data"]["free_time"]["send_freetime"]) > 0:
+                log.info(f'签到成功，已获得{data["data"]["free_time"]["send_freetime"]}分钟免费时长')
+                ret_msg += f'签到成功，已获得{data["data"]["free_time"]["send_freetime"]}分钟免费时长\n'
             else:
                 log.info('签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上线')
                 ret_msg += '签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上线\n'
