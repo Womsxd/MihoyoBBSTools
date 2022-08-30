@@ -2,12 +2,12 @@ import os
 import time
 import hmac
 import base64
+import config
 import urllib
 import hashlib
 from request import http
 from loghelper import log
 from configparser import ConfigParser
-from config import update_config_need
 
 cfg = ConfigParser()
 
@@ -178,7 +178,7 @@ def push(status, push_message):
         try:
             # eval(push_server[:10] + "(status, push_message)")
             # 与面代码等效 20220508
-            if not update_config_need:
+            if not config.update_config_need:
                 func(title(status), push_message)
             else:
                 func('「米游社脚本」config可能需要手动更新',
