@@ -141,3 +141,4 @@ config/*.yaml
 # push配置
 config/push.ini
 .DS_Store
+yaml/
