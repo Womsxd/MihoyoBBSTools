@@ -101,13 +101,13 @@ class Genshin:
                                 ok = False
                         else:
                             ok = False
-                            data = {"data": {"msg": "429 Too Many Requests"}}
+                            data = {}
                     if ok:
                         return_data += f"\n{i[0]}已连续签到{sign_days}天\n" \
                                        f"今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days - 1])}"
                     else:
                         return_data += f"\n{i[0]}，本次签到失败"
-                        if data["data"] != "" and data["data"]["success"] == 1:
+                        if data.get("data") is not None and data.get("data").get("success", -1) == 1:
                             return_data += "，失败原因: 触发验证码"
         else:
             log.warning("账号没有绑定任何原神账号！")
