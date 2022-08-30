@@ -1,4 +1,3 @@
-import json
 import tools
 import config
 import setting
