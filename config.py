@@ -85,8 +85,7 @@ def update_config():
             continue
         config['games']['cn'][i] = config_json['games']['cn'][i]
     config['games']['os'] = config_json['games']['os']
-    config['cloud_genshin']['token'] = config_json['cloud_genshin']['token']
-    config['cloud_genshin']['enable'] = config_json['cloud_genshin']['enable']
+    config = config_v7_update(config)
     print(config)
     save_config()
     log.info('config更新完毕')
