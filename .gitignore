@@ -137,8 +137,12 @@ dmypy.json
 # 避免上传配置文件
 config/*.json
 config/*.yaml
+config/*.ini
 
 # push配置
 config/push.ini
 .DS_Store
 yaml/
+
+# 日志文件
+*.log
