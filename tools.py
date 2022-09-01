@@ -50,6 +50,7 @@ def get_ds2(q: str, b: str) -> str:
 def get_device_id() -> str:
     return str(uuid.uuid3(uuid.NAMESPACE_URL, config.config["account"]["cookie"]))
 
+
 # 获取签到的奖励名称
 def get_item(raw_data: dict) -> str:
     temp_name = raw_data["name"]
@@ -62,6 +63,18 @@ def next_day() -> int:
     now_time = int(time.time())
     next_day_time = now_time - now_time % 86400 + time.timezone + 86400
     return next_day_time
+
+
+# 获取ua 防止出现多个miHoYoBBS
+def get_useragent() -> str:
+    if config.config["games"]["cn"]["useragent"] == "":  # 没设置自定义ua就返回默认ua
+        return setting.headers['User-Agent']
+    if "miHoYoBBS" in config.config["games"]["cn"]["useragent"]:  # 防止出现多个miHoYoBBS
+        i = config.config["games"]["cn"]["useragent"].index("miHoYoBBS")
+        if config.config["games"]["cn"]["useragent"][i - 1] == " ":
+            i = i-1
+        return f'{config.config["games"]["cn"]["useragent"][:i]} miHoYoBBS/{setting.mihoyobbs_Version}'
+    return f'{config.config["games"]["cn"]["useragent"]} miHoYoBBS/{setting.mihoyobbs_Version}'
 
 
 # 获取Openssl版本
