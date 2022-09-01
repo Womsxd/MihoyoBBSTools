@@ -73,7 +73,7 @@
 
 2. 复制网页内容中的 `客户端获取的UserAgent` 
  
-3. 替换配置文件中 `useragent` 下的原始内容
+3. 替换配置文件中 `useragent` 的原始内容
 
 ## 使用Docker运行
 
