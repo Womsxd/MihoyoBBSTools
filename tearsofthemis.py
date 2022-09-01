@@ -19,7 +19,7 @@ class Tears_of_themis:
                                   f'act_id={setting.tearsofthemis_Act_id}'
         self.headers['Cookie'] = config.config["account"]["cookie"]
         self.headers['x-rpc-device_id'] = tools.get_device_id()
-        self.headers['User-Agent'] = f'{config.config["games"]["cn"]["useragent"]} miHoYoBBS/{setting.mihoyobbs_Version}'
+        self.headers['User-Agent'] = tools.get_useragent()
         self.account_list = get_account_list("nxx_cn", self.headers)
         self.sign_day = 0
         if len(self.account_list) != 0:

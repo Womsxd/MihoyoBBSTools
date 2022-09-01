@@ -18,8 +18,7 @@ class Genshin:
                                   f'&act_id={setting.genshin_Act_id}&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
         self.headers['Cookie'] = config.config["account"]["cookie"]
         self.headers['x-rpc-device_id'] = tools.get_device_id()
-        self.headers[
-            'User-Agent'] = f'{config.config["games"]["cn"]["useragent"]} miHoYoBBS/{setting.mihoyobbs_Version}'
+        self.headers['User-Agent'] = tools.get_useragent()
         self.account_list = get_account_list("hk4e_cn", self.headers)
         if len(self.account_list) != 0:
             self.checkin_rewards = self.get_checkin_rewards()
