@@ -1,6 +1,7 @@
 # 米游社辅助签到
 
 ### 使用Json格式的用户请注意，在版本更新后配置文件格式从json换成yaml了，需要安装`PyYAML`模块脚本才能正常工作
+- 本地运行使用 `pip install PyYAML` 上传云函数运行则使用 `pip install PyYAML -t .`
 
 基于Python3的米游社辅助签到项目
 
@@ -66,6 +67,13 @@
    回车执行，并在确认无误后点击确定。
 
 7. **此时Cookie已经复制到你的粘贴板上了**
+
+## 获取设备UA
+1. 使用常用的移动端设备访问 `https://www.ip138.com/useragent/`
+
+2. 复制网页内容中的 `客户端获取的UserAgent` 
+ 
+3. 替换配置文件中 `useragent` 的原始内容
 
 ## 使用Docker运行
 
