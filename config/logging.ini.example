@@ -14,13 +14,14 @@ handlers=fileHandler,consoleHandler
 
 [logger_AutoMihoyoBBS]
 level=WARNING
+qualname=fileHandler,consoleHandler
 handlers=fileHandler,consoleHandler
 
 ; console
 [handler_consoleHandler]
 class=StreamHandler
 args=(sys.stdout,)
-level=DEBUG
+level=INFO
 formatter=simpleFormatter
 
 ; file
