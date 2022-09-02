@@ -69,10 +69,11 @@
 7. **此时Cookie已经复制到你的粘贴板上了**
 
 ## 获取设备UA
+
 1. 使用常用的移动端设备访问 `https://www.ip138.com/useragent/`
 
-2. 复制网页内容中的 `客户端获取的UserAgent` 
- 
+2. 复制网页内容中的 `客户端获取的UserAgent`
+
 3. 替换配置文件中 `useragent` 的原始内容
 
 ## 使用Docker运行
