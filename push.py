@@ -83,7 +83,7 @@ def smtp(send_title, push_message):
     from email.mime.text import MIMEText
     with open("assets/email_example.html") as f:
         EMAIL_TEMPLATE = f.read()
-    message = EMAIL_TEMPLATE.format(title=send_title, message=push_message)
+    message = EMAIL_TEMPLATE.format(title=send_title, message=push_message.replace("\n", "<br/>"))
     message = MIMEText(message, "html", "utf-8")
     message['Subject'] = cfg["smtp"]["subject"]
     message['To'] = cfg["smtp"]["toaddr"]
