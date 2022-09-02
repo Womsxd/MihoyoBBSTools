@@ -1,7 +1,7 @@
 [setting]
-enable=false
-#共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot bark pushdeer gotify
-push_server=cqhttp
+enable=true
+#共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot bark pushdeer gotify email
+push_server=smtp
 #server酱 pushplus dingrobot 的推送token
 push_token=123456
 
@@ -40,3 +40,15 @@ token=ssXXX
 api_url=http://xxx.xxx.cn
 token=AMxxxx
 priority=7
+
+# 邮件推送
+[smtp]
+mailhost=smtp.qq.com
+port=465
+fromaddr=xxx@example.com
+toaddr=xxx@example.com
+# 邮件标题
+subject=AutoMihoyoBBS
+username=xxx@example.com
+# 授权码
+password=passward

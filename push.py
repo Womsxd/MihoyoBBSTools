@@ -1,13 +1,14 @@
+import base64
+import hashlib
+import hmac
 import os
 import time
-import hmac
-import base64
-import config
 import urllib
-import hashlib
-from request import http
-from loghelper import log
 from configparser import ConfigParser
+
+import config
+from loghelper import log
+from request import http
 
 cfg = ConfigParser()
 
@@ -75,6 +76,22 @@ def cqhttp(send_title, push_message):
             "message": send_title + "\r\n" + push_message
         }
     )
+
+# ssl smtp mail
+def smtp(send_title, push_message):
+    import smtplib
+    from email.mime.text import MIMEText
+    with open("assets/email_example.html") as f:
+        EMAIL_TEMPLATE = f.read()
+    message = EMAIL_TEMPLATE.format(title=send_title, message=push_message)
+    message = MIMEText(message, "html", "utf-8")
+    message['Subject'] = cfg["smtp"]["subject"]
+    message['To'] = cfg["smtp"]["toaddr"]
+    message['From'] = f"{cfg['smtp']['subject']}<{cfg['smtp']['fromaddr']}>"
+    with smtplib.SMTP_SSL(cfg["smtp"]["mailhost"], cfg.getint("smtp", "port")) as server:
+        server.login(cfg["smtp"]["username"], cfg["smtp"]["password"])
+        server.sendmail(cfg["smtp"]["fromaddr"], cfg["smtp"]["toaddr"], message.as_string())
+    log.info("邮件发送成功啦")
 
 
 # 企业微信 感谢linjie5492@github
