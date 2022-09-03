@@ -9,18 +9,21 @@
 </head>
 
 <body>
-	<div class="cover">
+	<div class="cover" style="position: relative;">
 		<!-- 邮箱只解析行内样式 -->
-		<img src="https://iw233.cn/api/Random.php" alt="background" style="width: 100%;
+		<img src="{image_url}" alt="background" style="width: 100%;
 			filter: brightness(50%)">
-		<section style="position: fixed; width: 100%;
-			top: 10%;
-			left: 0;
+		<section style="position: absolute;
+			top: 0px;
+			width: 100%;
 			text-align: center;
 			font-weight: 800;">
 			<!-- 添加阴影防止背景太鲜艳看不清文字 -->
 			<h2 style="color: #fff;text-shadow:0px 0px 10px #000;">{title}</h2>
 			<p style="color: #fff;text-shadow:0px 0px 10px #000;">{message}</p>
+			<br />
+			<p style="color: #fff;text-shadow:0px 0px 10px #000;">背景图片链接</p>
+			<a href="{image_url}" style="color: #fff;text-shadow:0px 0px 10px #000;">{image_url}</a>
 		</section>
 	</div>
 </body>
