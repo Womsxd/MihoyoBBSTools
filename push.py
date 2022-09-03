@@ -81,7 +81,7 @@ def cqhttp(send_title, push_message):
 def smtp(send_title, push_message):
     import smtplib
     from email.mime.text import MIMEText
-    with open("assets/email_example.html") as f:
+    with open("assets/email_example.html", encoding="utf-8") as f:
         EMAIL_TEMPLATE = f.read()
     message = EMAIL_TEMPLATE.format(title=send_title, message=push_message.replace("\n", "<br/>"))
     message = MIMEText(message, "html", "utf-8")
@@ -199,7 +199,7 @@ def push(status, push_message):
                 func(title(status), push_message)
             else:
                 func('「米游社脚本」config可能需要手动更新',
-                     f'如果您多次收到此消息开头的推送，证明您运行的环境无法自动更新config，请手动更新一下，谢谢\r\n{title(status)}\r\n{push_message}')
+                    f'如果您多次收到此消息开头的推送，证明您运行的环境无法自动更新config，请手动更新一下，谢谢\r\n{title(status)}\r\n{push_message}')
         except Exception as r:
             log.warning(f"推送执行错误：{str(r)}")
             return 0
