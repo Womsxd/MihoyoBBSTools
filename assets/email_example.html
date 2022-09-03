@@ -12,14 +12,15 @@
 	<div class="cover">
 		<!-- 邮箱只解析行内样式 -->
 		<img src="https://iw233.cn/api/Random.php" alt="background" style="width: 100%;
-			filter: brightness(80%)">
+			filter: brightness(50%)">
 		<section style="position: fixed; width: 100%;
-		top: 10%;
-		left: 0;
-		text-align: center;
-		font-weight: 800;">
-			<h2>{title}</h2>
-			<p>{message}</p>
+			top: 10%;
+			left: 0;
+			text-align: center;
+			font-weight: 800;">
+			<!-- 添加阴影防止背景太鲜艳看不清文字 -->
+			<h2 style="color: #fff;text-shadow:0px 0px 10px #000;">{title}</h2>
+			<p style="color: #fff;text-shadow:0px 0px 10px #000;">{message}</p>
 		</section>
 	</div>
 </body>
