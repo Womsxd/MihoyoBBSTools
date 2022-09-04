@@ -77,7 +77,7 @@ def cqhttp(send_title, push_message):
         }
     )
 
-# ssl smtp mail
+# smtp mail(电子邮件)
 # 感谢 @islandwind 提供的随机壁纸api 个人主页：https://space.bilibili.com/7600422
 def smtp(send_title, push_message):
     import smtplib
@@ -95,9 +95,13 @@ def smtp(send_title, push_message):
     message['Subject'] = cfg["smtp"]["subject"]
     message['To'] = cfg["smtp"]["toaddr"]
     message['From'] = f"{cfg['smtp']['subject']}<{cfg['smtp']['fromaddr']}>"
-    with smtplib.SMTP_SSL(cfg["smtp"]["mailhost"], cfg.getint("smtp", "port")) as server:
-        server.login(cfg["smtp"]["username"], cfg["smtp"]["password"])
-        server.sendmail(cfg["smtp"]["fromaddr"], cfg["smtp"]["toaddr"], message.as_string())
+    if cfg.getboolean("smtp","ssl_enable"):
+        server = smtplib.SMTP_SSL(cfg["smtp"]["mailhost"], cfg.getint("smtp", "port"))
+    else:
+        server = smtplib.SMTP(cfg["smtp"]["mailhost"], cfg.getint("smtp", "port"))
+    server.login(cfg["smtp"]["username"], cfg["smtp"]["password"])
+    server.sendmail(cfg["smtp"]["fromaddr"], cfg["smtp"]["toaddr"], message.as_string())
+    server.close()
     log.info("邮件发送成功啦")
 
 
