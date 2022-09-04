@@ -43,11 +43,15 @@ priority=7
 
 # 邮件推送
 [smtp]
+# 一般情况下，465端口会使用ssl加密默认465端口，不加密走25端口。
+# 例如qq邮箱为465端口，ssl加密;163邮箱不加密，使用25端口。
+# 请根据你的发送者邮箱配置端口和是否加密。
 mailhost=smtp.qq.com
 port=465
+ssl_enable=true
 fromaddr=xxx@example.com
 toaddr=xxx@example.com
-# 邮件标题
+# 邮件主题
 subject=AutoMihoyoBBS
 username=xxx@example.com
 # 授权码
