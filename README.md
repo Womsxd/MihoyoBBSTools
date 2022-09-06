@@ -125,7 +125,7 @@ docker-compose pull && docker-compose up -d
 
    >stop: 关闭程序  
    >mulit: 测试多用户签到  
-   >single: 测试多用户签到  
+   >single: 测试单用户签到  
    >reload: 重载配置文件  
    >mod x: mod 1为单用户模式 mod 2为多用户模式  
    >add 'yourcookie': 直接 add cookie 添加Cookie，根据提示输入用户存档名称  
