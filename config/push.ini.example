@@ -35,6 +35,8 @@ secret=
 [bark]
 api_url=https://api.day.app
 token=ssXXX
+#bark通知图标，可选genshin,mihoyobbs,hokai2,honkai3rd,tears_of_themis
+icon=genshin
 
 [gotify]
 api_url=http://xxx.xxx.cn
