@@ -174,7 +174,7 @@ def dingrobot(send_title, push_message):
 # Bark
 def bark(send_title, push_message):
     rep = http.get(
-        url=f'{cfg.get("bark", "api_url")}/{cfg.get("bark", "token")}/{send_title}/{push_message}'
+        url=f'{cfg.get("bark", "api_url")}/{cfg.get("bark", "token")}/{send_title}/{push_message}?icon=https://cdn.jsdelivr.net/gh/tanmx/pic@main/mihoyo/{cfg.get("bark", "icon")}.png'
     ).json()
     log.info(f"推送结果：{rep.get('message')}")
 
