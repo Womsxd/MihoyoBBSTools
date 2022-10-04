@@ -44,6 +44,8 @@ config = {
 }
 
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
+if os.getenv("AutoMihoyoBBS_path") != "":
+    path = os.getenv("AutoMihoyoBBS_path")
 config_Path_json = f"{path}/config.json"
 config_Path = f"{path}/config.yaml"
 def copy_config():
