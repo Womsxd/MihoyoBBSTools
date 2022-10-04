@@ -44,12 +44,15 @@ config = {
 }
 
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
-if os.getenv("AutoMihoyoBBS_config_path") != "":
+if os.getenv("AutoMihoyoBBS_config_path") is not None:
     path = os.getenv("AutoMihoyoBBS_config_path")
 config_Path_json = f"{path}/config.json"
 config_Path = f"{path}/config.yaml"
+
+
 def copy_config():
     return config
+
 
 def load_config_json():
     with open(config_Path_json, "r") as f:
@@ -109,7 +112,7 @@ def config_v7_update(data: dict):
 def load_config(p_path=None):
     global config
     if not p_path:
-        p_path=config_Path
+        p_path = config_Path
     with open(p_path, "r", encoding='utf-8') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
     if data['version'] == 7:
@@ -121,14 +124,14 @@ def load_config(p_path=None):
     return config
 
 
-def save_config(p_path=None,p_config=None):
+def save_config(p_path=None, p_config=None):
     global serverless
     if serverless:
         log.info("云函数执行，无法保存")
         return None
     if not p_path:
-        p_path=config_Path
-        p_config=config
+        p_path = config_Path
+        p_config = config
     with open(p_path, "w+") as f:
         try:
             f.seek(0)
