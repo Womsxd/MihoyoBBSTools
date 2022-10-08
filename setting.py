@@ -89,6 +89,8 @@ bbs_List_url = bbs_Api + "/post/api/getForumPostList?forum_id={}&is_good=false&i
 bbs_Detail_url = bbs_Api + "/post/api/getPostFull?post_id={}"
 bbs_Share_url = bbs_Api + "/apihub/api/getShareConf?entity_id={}&entity_type=1"
 bbs_Like_url = bbs_Api + "/apihub/sapi/upvotePost"  # post json
+bbs_get_captcha = bbs_Api + "/misc/api/createVerification?is_high=true"
+bbs_captcha_verify = bbs_Api + "/misc/api/verifyVerification"
 
 # 崩坏2自动签到相关的相关设置
 honkai2_Act_id = "e202203291431091"
