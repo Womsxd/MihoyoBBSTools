@@ -3,6 +3,7 @@ import time
 import tools
 import config
 import random
+import captcha
 import setting
 from request import http
 from loghelper import log
@@ -46,6 +47,22 @@ class Mihoyobbs:
 
     def refresh_list(self) -> None:
         self.postsList = self.get_list()
+
+    def get_pass_challenge(self):
+        req = http.get(url=setting.bbs_get_captcha, headers=self.headers)
+        data = req.json()
+        if data["retcode"] != 0:
+            return None
+        validate = captcha.bbs_captcha(data["data"]["gt"], data["data"]["challenge"])
+        if validate is not None:
+            check_req = http.post(url=setting.bbs_captcha_verify, headers=self.headers,
+                                  json={"geetest_challenge": data["data"]["challenge"],
+                                        "geetest_seccode": validate+"|jordan",
+                                        "geetest_validate": validate})
+            check = check_req.json()
+            if check["retcode"] == 0:
+                return check["data"]["challenge"]
+        return None
 
     # 获取任务列表，用来判断做了哪些任务
     def get_tasks_list(self):
@@ -152,17 +169,28 @@ class Mihoyobbs:
 
     # 点赞
     def like_posts(self):
+        header = {}
+        header.update(self.headers)
+        challenge = None
         if self.Task_do["bbs_Like_posts"]:
             log.info("点赞任务已经完成过了~")
         else:
             log.info("正在点赞......")
             for i in range(self.Task_do["bbs_Like_posts_num"]):
-                req = http.post(url=setting.bbs_Like_url, headers=self.headers,
+                req = http.post(url=setting.bbs_Like_url, headers=header,
                                 json={"post_id": self.postsList[i][0], "is_cancel": False})
                 data = req.json()
                 if data["message"] == "OK":
                     log.debug("点赞：{} 成功".format(self.postsList[i][1]))
-                # 判断取消点赞是否打开
+                    if challenge is not None:
+                        challenge = None
+                        header.pop("x-rpc-challenge")
+                elif data["retcode"] == 1034:
+                    log.warning("点赞触发验证码")
+                    challenge = self.get_pass_challenge()
+                    if challenge is not None:
+                        header["x-rpc-challenge"] = challenge
+                    # 判断取消点赞是否打开
                 if config.config["mihoyobbs"]["cancel_like_posts"]:
                     time.sleep(random.randint(2, 8))
                     req = http.post(url=setting.bbs_Like_url, headers=self.headers,
