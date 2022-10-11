@@ -180,6 +180,54 @@ docker-compose pull && docker-compose up -d
      2. 点击`测试函数`
   7. 完成
 
+## 使用青龙面板运行（V2.12+）
+
+### 1.拉取仓库
+
+方式1：订阅管理
+
+```
+名称：米游社签到
+类型：公开仓库
+链接：https://github.com/Womsxd/AutoMihoyoBBS.git
+定时类型：crontab
+定时规则：2 2 28 * *
+白名单：ql_main.py
+依赖文件：error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main
+```
+
+方式2：指令拉取
+
+```sh
+ql repo https://github.com/Womsxd/AutoMihoyoBBS.git "ql_main.py" "" "error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main"
+```
+
+### 2.环境变量添加
+
+在config.sh中添加
+
+```sh
+export AutoMihoyoBBS_config_path="/ql/data/config/"
+```
+
+### 3.复制配置文件
+
+**进入容器后运行以下命令**（docker exec -it ql bash）修改ql为你的青龙容器名字
+
+```sh
+cp /ql/data/repo/Womsxd_AutoMihoyoBBS/config/config.yaml.example /ql/data/config/config.yaml
+```
+
+### 4.添加依赖
+
+在青龙面板依赖管理中添加httpx及PyYAML
+
+### 5.编辑配置文件
+
+在配置文件内config.yaml中编辑信息
+
+*注：通知配置为青龙config.sh中配置*
+
 ## 使用的第三方库
 
 requests: [github](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/)  (当httpx无法使用时使用)
