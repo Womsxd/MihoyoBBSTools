@@ -18,10 +18,10 @@ def login():
                 config.config["account"]["login_ticket"] = i.split("=")[1]
                 break
         # 这里获取Stuid，但是实际是可以直接拿cookie里面的Uid
-        data = http.get(url=setting.bbs_Cookie_url.format(config.config["account"]["login_ticket"])).json()
+        data = http.get(url=setting.bbs_cookie_url.format(config.config["account"]["login_ticket"])).json()
         if "成功" in data["data"]["msg"]:
             config.config["account"]["stuid"] = str(data["data"]["cookie_info"]["account_id"])
-            data = http.get(url=setting.bbs_Cookie_url2.format(
+            data = http.get(url=setting.bbs_cookie_url2.format(
                 config.config["account"]["login_ticket"], config.config["account"]["stuid"])).json()
             config.config["account"]["stoken"] = data["data"]["list"][0]["token"]
             log.info("登录成功！")
