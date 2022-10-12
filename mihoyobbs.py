@@ -164,7 +164,6 @@ class Mihoyobbs:
                             challenge = None
                             header.pop("x-rpc-challenge")
                         time.sleep(random.randint(2, 8))
-
                     else:
                         log.error("签到失败，你的cookie可能已过期，请重新设置cookie。")
                         config.clear_cookies()
