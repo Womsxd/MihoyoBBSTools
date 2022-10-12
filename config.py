@@ -42,6 +42,8 @@ config = {
         }
     }
 }
+config_raw = {}
+config_raw.update(config)
 
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
 if os.getenv("AutoMihoyoBBS_config_path") is not None:
@@ -51,7 +53,7 @@ config_Path = f"{path}/config.yaml"
 
 
 def copy_config():
-    return config
+    return config_raw
 
 
 def load_config_json():
