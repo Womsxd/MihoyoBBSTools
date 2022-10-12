@@ -142,17 +142,33 @@ class Mihoyobbs:
             log.info("正在签到......")
             header = {}
             header.update(self.headers)
+            challenge = None
             for i in setting.mihoyobbs_List_Use:
-                header["DS"] = tools.get_ds2("", json.dumps({"gids": i["id"]}))
-                req = http.post(url=setting.bbs_Sign_url, json={"gids": i["id"]}, headers=header)
-                data = req.json()
-                if "err" not in data["message"]:
-                    log.info(str(i["name"] + data["message"]))
-                    time.sleep(random.randint(2, 8))
-                else:
-                    log.error("签到失败，你的cookie可能已过期，请重新设置cookie。")
-                    config.clear_cookies()
-                    raise CookieError('Cookie expires')
+                challenge = None
+                check_pass = False
+                for i2 in range(2):
+                    if check_pass:
+                        continue
+                    header["DS"] = tools.get_ds2("", json.dumps({"gids": i["id"]}))
+                    req = http.post(url=setting.bbs_Sign_url, json={"gids": i["id"]}, headers=header)
+                    data = req.json()
+                    if data["retcode"] == 1034:
+                        log.warning("社区签到触发验证码")
+                        challenge = self.get_pass_challenge()
+                        if challenge is not None:
+                            header["x-rpc-challenge"] = challenge
+                    elif "err" not in data["message"] and data["retcode"] == 0:
+                        log.info(str(i["name"] + data["message"]))
+                        check_pass = True
+                        if challenge is not None:
+                            challenge = None
+                            header.pop("x-rpc-challenge")
+                        time.sleep(random.randint(2, 8))
+
+                    else:
+                        log.error("签到失败，你的cookie可能已过期，请重新设置cookie。")
+                        config.clear_cookies()
+                        raise CookieError('Cookie expires')
 
     # 看帖子
     def read_posts(self):
