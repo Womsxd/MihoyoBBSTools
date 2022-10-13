@@ -170,6 +170,17 @@ def dingrobot(send_title, push_message):
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
 
+# 飞书机器人
+def feishubot(send_title, push_message):
+    api_url = cfg.get('feishubot', 'webhook')  # https://open.feishu.cn/open-apis/bot/v2/hook/XXX
+    rep = http.post(
+        url=api_url,
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        json={
+            "msg_type": "text", "content": {"text": send_title + "\r\n" + push_message}
+        }
+    ).json()
+    log.info(f"推送结果：{rep.get('msg')}")
 
 # Bark
 def bark(send_title, push_message):
