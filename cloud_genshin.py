@@ -25,9 +25,9 @@ class CloudGenshin:
         }
 
     # 分钟转小时
-    def time_conversion(self,minute : int) -> str:
-        h = minute//60
-        s = minute%60
+    def time_conversion(self, minute: int) -> str:
+        h = minute // 60
+        s = minute % 60
         return f"{h}小时{s}分钟"
 
     def sign_account(self) -> str:
@@ -42,7 +42,7 @@ class CloudGenshin:
                 log.info('签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上线')
                 ret_msg += '签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上线\n'
             ret_msg += f'你当前拥有免费时长 {self.time_conversion(int(data["data"]["free_time"]["free_time"]))} ,' \
-                      f'畅玩卡状态为 {data["data"]["play_card"]["short_msg"]}，拥有米云币 {data["data"]["coin"]["coin_num"]} 枚'
+                       f'畅玩卡状态为 {data["data"]["play_card"]["short_msg"]}，拥有米云币 {data["data"]["coin"]["coin_num"]} 枚'
             log.info(ret_msg)
         elif data['retcode'] == -100:
             ret_msg = "云原神token失效/防沉迷"

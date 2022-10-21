@@ -2,6 +2,7 @@ import time
 import tools
 import config
 import random
+import captcha
 import setting
 from error import *
 from request import http
@@ -46,10 +47,12 @@ class Genshin:
         return data["data"]
 
     def check_in(self, account):
+        header = {}
+        header.update(self.headers)
         for i in range(4):
             if i != 0:
                 log.info(f'触发验证码，即将进行第{i}次重试，最多3次')
-            req = http.post(url=setting.genshin_Signurl, headers=self.headers,
+            req = http.post(url=setting.genshin_Signurl, headers=header,
                             json={'act_id': setting.genshin_Act_id, 'region': account[2], 'uid': account[1]})
             if req.status_code == 429:
                 time.sleep(10)  # 429同ip请求次数过多，尝试sleep10s进行解决
@@ -57,6 +60,11 @@ class Genshin:
                 continue
             data = req.json()
             if data["retcode"] == 0 and data["data"]["success"] == 1:
+                validate = captcha.game_captcha(data["data"]["gt"], data["data"]["challenge"])
+                if validate is not None:
+                    header["x-rpc-challenge"] = data["data"]["challenge"]
+                    header["x-rpc-validate"] = validate
+                    header["x-rpc-seccode"] = f'{validate}|jordan'
                 time.sleep(random.randint(6, 15))
             else:
                 break
