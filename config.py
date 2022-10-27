@@ -1,5 +1,4 @@
 import os
-import json
 import yaml
 from loghelper import log
 
@@ -48,58 +47,11 @@ config_raw.update(config)
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
 if os.getenv("AutoMihoyoBBS_config_path") is not None:
     path = os.getenv("AutoMihoyoBBS_config_path")
-config_Path_json = f"{path}/config.json"
 config_Path = f"{path}/config.yaml"
 
 
 def copy_config():
     return config_raw
-
-
-def load_config_json():
-    with open(config_Path_json, "r") as f:
-        data = json.load(f)
-        if data.get('version') == 5:
-            config_json = data
-            try:
-                config_json["mihoyobbs"]["like_post"]
-            except KeyError:
-                pass
-            else:
-                config_json["mihoyobbs"]["read_posts"] = config_json["mihoyobbs"]["read_post"]
-                config_json["mihoyobbs"]["like_posts"] = config_json["mihoyobbs"]["like_post"]
-                del config_json["mihoyobbs"]["like_post"]
-                del config_json["mihoyobbs"]["read_post"]
-        else:
-            log.error("config版本过低，请手动更新到基于yaml版本的新版本配置文件，更新完成后请删除json版的配置文件")
-            exit(1)
-        log.info("v5Config加载完毕")
-        return config_json
-
-
-def update_config():
-    global config
-    global update_config_need
-    update_config_need = True
-    log.info("正在更新config....")
-    config_json = load_config_json()
-    config['account'] = config_json['account']
-    config['mihoyobbs'].update(config_json['mihoyobbs'])
-    del config['mihoyobbs']['un_like']
-    config['mihoyobbs']['cancel_like_posts'] = config_json['mihoyobbs']['un_like']
-    for i in config_json['games']['cn'].keys():
-        if i == 'enable':
-            continue
-        config['games']['cn'][i] = config_json['games']['cn'][i]
-    config['games']['os'] = config_json['games']['os']
-    config = config_v7_update(config)
-    print(config)
-    save_config()
-    log.info('config更新完毕')
-    if not serverless:
-        os.remove(config_Path_json)
-    else:
-        log.error("请本地更新一下config")
 
 
 def config_v7_update(data: dict):
