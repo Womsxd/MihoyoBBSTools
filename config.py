@@ -85,6 +85,7 @@ def save_config(p_path=None, p_config=None):
         return None
     if not p_path:
         p_path = config_Path
+    if not p_config:
         p_config = config
     with open(p_path, "w+") as f:
         try:
@@ -102,26 +103,16 @@ def save_config(p_path=None, p_config=None):
 
 def clear_cookies():
     global config
-    global serverless
     if serverless:
         log.info("云函数执行，无法保存")
         return None
-    with open(config_Path, "r+") as f:
-        config["enable"] = False
-        config["account"]["login_ticket"] = ""
-        config["account"]["stuid"] = ""
-        config["account"]["stoken"] = ""
-        config["account"]["cookie"] = "CookieError"
-        try:
-            f.seek(0)
-            f.truncate()
-            f.write(yaml.dump(config, Dumper=yaml.Dumper, sort_keys=False))
-            f.flush()
-        except OSError:
-            serverless = True
-            log.info("Cookie删除失败")
-        else:
-            log.info("Cookie删除完毕")
+    config["enable"] = False
+    config["account"]["login_ticket"] = ""
+    config["account"]["stuid"] = ""
+    config["account"]["stoken"] = ""
+    config["account"]["cookie"] = "CookieError"
+    log.info("Cookie已删除")
+    save_config()
 
 
 def clear_cookie_cloudgame():
@@ -146,5 +137,4 @@ if __name__ == "__main__":
     #     pass
     # save_config()
     # update_config()
-    load_config()
     pass
