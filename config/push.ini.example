@@ -1,9 +1,9 @@
 [setting]
 enable=true
-#共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot bark pushdeer gotify smtp(邮件推送)
-push_server=cqhttp
-#server酱 pushplus dingrobot 的推送token
-push_token=123456
+# 共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot feishubot bark pushdeer gotify smtp(邮件推送)
+push_server=pushplus
+# server酱 pushplus dingrobot 的推送token
+push_token=XXXXXX
 
 [cqhttp]
 #cqhttp的服务端地址
@@ -31,6 +31,9 @@ token=
 [dingrobot]
 webhook=https://oapi.dingtalk.com/robot/send?access_token=XXX
 secret=
+
+[feishubot]
+webhook=https://open.feishu.cn/open-apis/bot/v2/hook/XXX
 
 [bark]
 api_url=https://api.day.app
