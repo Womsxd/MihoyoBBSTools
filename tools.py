@@ -9,9 +9,9 @@ import setting
 
 # md5计算
 def md5(text: str) -> str:
-    md5 = hashlib.md5()
-    md5.update(text.encode())
-    return md5.hexdigest()
+    _md5 = hashlib.md5()
+    _md5.update(text.encode())
+    return _md5.hexdigest()
 
 
 # 随机文本
