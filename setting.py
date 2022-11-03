@@ -54,6 +54,13 @@ game_id2name = {
     "nxx_cn": "未定事件簿",
     "hk4e_cn": "原神",
 }
+
+game_id2config = {
+    "bh2_cn": "hokai2",
+    "bh3_cn": "honkai3rd",
+    "nxx_cn": "tears_of_themis",
+    "hk4e_cn": "genshin",
+}
 # Config Load之后run里面进行列表的选择
 mihoyobbs_List_Use = []
 

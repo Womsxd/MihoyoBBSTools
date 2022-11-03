@@ -1,5 +1,6 @@
 import os
 import yaml
+import setting
 from loghelper import log
 
 # 这个字段现在还没找好塞什么地方好，就先塞config这里了
@@ -115,9 +116,19 @@ def clear_cookies():
     save_config()
 
 
+def clear_cookie_game(game_id: str):
+    global config
+    if serverless:
+        log.info("云函数执行，无法保存")
+        return None
+    config["account"]["cookie"] = "GameCookieError"
+    config["games"]["cn"][setting.game_id2config[game_id]]["auto_checkin"] = False
+    log.info(f"游戏签到Cookie已删除")
+    save_config()
+
+
 def clear_cookie_cloudgame():
     global config
-    global serverless
     if serverless:
         log.info("云函数执行，无法保存")
         return None
