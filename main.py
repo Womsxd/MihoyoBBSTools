@@ -46,8 +46,8 @@ def main():
             if bbs.Task_do["bbs_Sign"] and bbs.Task_do["bbs_Read_posts"] and bbs.Task_do["bbs_Like_posts"] and \
                     bbs.Task_do["bbs_Share"]:
                 return_data += "\n" + f"今天已经全部完成了！\n" \
-                                      f"一共获得{mihoyobbs.today_have_get_coins}个米游币\n目前有{mihoyobbs.Have_coins}个米游币"
-                log.info(f"今天已经全部完成了！一共获得{mihoyobbs.today_have_get_coins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+                                      f"一共获得{mihoyobbs.today_have_get_coins}个米游币\n目前有{mihoyobbs.have_coins}个米游币"
+                log.info(f"今天已经全部完成了！一共获得{mihoyobbs.today_have_get_coins}个米游币，目前有{mihoyobbs.have_coins}个米游币")
             else:
                 i = 0
                 while mihoyobbs.today_get_coins != 0 and i < 3:
@@ -64,9 +64,9 @@ def main():
                     bbs.get_tasks_list()
                     i += 1
                 return_data += "\n" + f"今天已经获得{mihoyobbs.today_have_get_coins}个米游币\n" \
-                                      f"还能获得{mihoyobbs.today_get_coins}个米游币\n目前有{mihoyobbs.Have_coins}个米游币"
+                                      f"还能获得{mihoyobbs.today_get_coins}个米游币\n目前有{mihoyobbs.have_coins}个米游币"
                 log.info(f"今天已经获得{mihoyobbs.today_have_get_coins}个米游币，"
-                         f"还能获得{mihoyobbs.today_get_coins}个米游币，目前有{mihoyobbs.Have_coins}个米游币")
+                         f"还能获得{mihoyobbs.today_get_coins}个米游币，目前有{mihoyobbs.have_coins}个米游币")
                 time.sleep(random.randint(2, 8))
         else:
             return_data += "\n" + "米游社功能未启用！"
@@ -113,8 +113,6 @@ def main():
 
 
 if __name__ == "__main__":
-    if not os.path.exists(config.config_Path):
-        config.update_config()
     try:
         status_code, message = main()
     except CookieError:
@@ -122,4 +120,3 @@ if __name__ == "__main__":
         message = "账号Cookie出错！"
         log.error("账号Cookie有问题！")
     push.push(status_code, message)
-pass

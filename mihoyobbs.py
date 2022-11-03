@@ -11,7 +11,7 @@ from error import CookieError
 
 today_get_coins = 0
 today_have_get_coins = 0  # 这个变量以后可能会用上，先留着了
-Have_coins = 0
+have_coins = 0
 
 
 class Mihoyobbs:
@@ -68,7 +68,7 @@ class Mihoyobbs:
     def get_tasks_list(self):
         global today_get_coins
         global today_have_get_coins
-        global Have_coins
+        global have_coins
         log.info("正在获取任务列表")
         req = http.get(url=setting.bbs_tasks_list, headers=self.headers)
         data = req.json()
@@ -79,7 +79,7 @@ class Mihoyobbs:
         else:
             today_get_coins = data["data"]["can_get_points"]
             today_have_get_coins = data["data"]["already_received_points"]
-            Have_coins = data["data"]["total_points"]
+            have_coins = data["data"]["total_points"]
             # 如果当日可获取米游币数量为0直接判断全部任务都完成了
             if today_get_coins == 0:
                 self.Task_do["bbs_Sign"] = True
