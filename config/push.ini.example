@@ -46,6 +46,12 @@ api_url=http://xxx.xxx.cn
 token=AMxxxx
 priority=7
 
+[ifttt]
+# If (Receive a web request) Then (Send a rich notification from the IFTTT app)
+# 使用value1(标题),value2(内容)
+event=mihoyo_push
+key=xxxxxxxxxxxxxxxxxxxxxx
+
 # 邮件推送
 [smtp]
 # 一般情况下，465端口会使用ssl加密默认465端口，不加密走25端口。
