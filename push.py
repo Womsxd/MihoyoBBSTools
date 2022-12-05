@@ -1,14 +1,13 @@
-import base64
-import hashlib
-import hmac
 import os
+import hmac
 import time
-import urllib
-from configparser import ConfigParser
-
+import base64
 import config
-from loghelper import log
+import urllib
+import hashlib
 from request import http
+from loghelper import log
+from configparser import ConfigParser, NoOptionError
 
 cfg = ConfigParser()
 
@@ -77,6 +76,7 @@ def cqhttp(send_title, push_message):
         }
     )
 
+
 # smtp mail(电子邮件)
 # 感谢 @islandwind 提供的随机壁纸api 个人主页：https://space.bilibili.com/7600422
 def smtp(send_title, push_message):
@@ -113,7 +113,7 @@ def wecom(send_title, push_message):
     corpid = cfg.get('wecom', 'wechat_id')
     try:
         touser = cfg.get('wecom', 'touser')
-    except:
+    except NoOptionError:
         # 没有配置时赋默认值
         touser = '@all'
 
@@ -170,6 +170,7 @@ def dingrobot(send_title, push_message):
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
 
+
 # 飞书机器人
 def feishubot(send_title, push_message):
     api_url = cfg.get('feishubot', 'webhook')  # https://open.feishu.cn/open-apis/bot/v2/hook/XXX
@@ -182,10 +183,12 @@ def feishubot(send_title, push_message):
     ).json()
     log.info(f"推送结果：{rep.get('msg')}")
 
+
 # Bark
 def bark(send_title, push_message):
     rep = http.get(
-        url=f'{cfg.get("bark", "api_url")}/{cfg.get("bark", "token")}/{send_title}/{push_message}?icon=https://cdn.jsdelivr.net/gh/tanmx/pic@main/mihoyo/{cfg.get("bark", "icon")}.png'
+        url=f'{cfg.get("bark", "api_url")}/{cfg.get("bark", "token")}/{send_title}/{push_message}?icon=https://cdn'
+            f'.jsdelivr.net/gh/tanmx/pic@main/mihoyo/{cfg.get("bark", "icon")}.png'
     ).json()
     log.info(f"推送结果：{rep.get('message')}")
 
@@ -217,13 +220,11 @@ def push(status, push_message):
             return 0
         log.debug(f"推送所用的服务为：{func_name}")
         try:
-            # eval(push_server[:10] + "(status, push_message)")
-            # 与面代码等效 20220508
             if not config.update_config_need:
                 func(title(status), push_message)
             else:
                 func('「米游社脚本」config可能需要手动更新',
-                    f'如果您多次收到此消息开头的推送，证明您运行的环境无法自动更新config，请手动更新一下，谢谢\r\n{title(status)}\r\n{push_message}')
+                     f'如果您多次收到此消息开头的推送，证明您运行的环境无法自动更新config，请手动更新一下，谢谢\r\n{title(status)}\r\n{push_message}')
         except Exception as r:
             log.warning(f"推送执行错误：{str(r)}")
             return 0
