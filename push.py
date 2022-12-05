@@ -82,9 +82,9 @@ def cqhttp(send_title, push_message):
 def smtp(send_title, push_message):
     import smtplib
     from email.mime.text import MIMEText
-
+    
     IMAGE_API = "http://api.iw233.cn/api.php?sort=random&type=json"
-
+    
     try:
         image_url = http.get(IMAGE_API).json()["pic"][0]
     except:
@@ -116,7 +116,7 @@ def wecom(send_title, push_message):
     except NoOptionError:
         # 没有配置时赋默认值
         touser = '@all'
-
+    
     push_token = http.post(
         url=f'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={corpid}&corpsecret={secret}',
         data=""
@@ -160,7 +160,7 @@ def dingrobot(send_title, push_message):
         ).digest()
         sign = urllib.parse.quote_plus(base64.b64encode(hmac_code))
         api_url = f"{api_url}&timestamp={timestamp}&sign={sign}"
-
+    
     rep = http.post(
         url=api_url,
         headers={"Content-Type": "application/json; charset=utf-8"},
@@ -205,6 +205,26 @@ def gotify(send_title, push_message):
         }
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
+
+# ifttt
+def ifttt(send_title, push_message):
+    ifttt_event = cfg.get('ifttt', 'event')
+    ifttt_key = cfg.get('ifttt', 'key')
+    rep = http.post(
+        url=f'https://maker.ifttt.com/trigger/{ifttt_event}/with/key/{ifttt_key}',
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        json={
+            "value1": send_title,
+            "value2": push_message
+        }
+    )
+    if 'errors' in rep.text:
+        log.warning(f"推送执行错误：{rep.json()['errors']}")
+        return 0
+    else:
+        log.info("推送完毕......")
+    return 1
+    
 
 
 def push(status, push_message):
