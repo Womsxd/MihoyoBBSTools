@@ -8,20 +8,13 @@ from loghelper import log
 class CloudGenshin:
     def __init__(self) -> None:
         self.headers = {
-            'x-rpc-combo_token': config.config['cloud_games']['genshin']['token'],
-            'x-rpc-client_type': setting.mihoyobbs_Client_type,
-            'x-rpc-app_version': setting.cloudgenshin_Version,
-            'x-rpc-sys_version': '12',
-            'x-rpc-channel': 'mihoyo',
-            'x-rpc-device_id': tools.get_device_id(),
-            'x-rpc-device_name': 'Xiaomi M2012K11AC',
-            'x-rpc-device_model': 'M2012K11AC',
-            'x-rpc-app_id': '1953439974',
-            'Referer': 'https://app.mihoyo.com',
             'Host': 'api-cloudgame.mihoyo.com',
-            'Connection': 'Keep-Alive',
-            'Accept-Encoding': 'gzip',
-            'User-Agent': 'okhttp/4.9.0'
+            'Accept': '*/*',
+            'Referer': 'https://app.mihoyo.com',
+            'x-rpc-combo_token': config.config['cloud_games']['genshin']['token'],
+            'Accept-Encoding': 'gzip, deflate',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 HBPC/12.1.1.301',
+        
         }
 
     # 分钟转小时
