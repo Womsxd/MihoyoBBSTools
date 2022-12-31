@@ -1,9 +1,10 @@
 # 米游社的Salt
-mihoyobbs_Salt = "PVeGWIZACpxXZ1ibMVJPi9inCY4Nd4y2"
-mihoyobbs_Salt2 = "t0qEgfub6cvueAPgR5m9aQWWVciEer7v"
-mihoyobbs_Salt_web = "yUZ3s0Sna1IrSNfk29Vo6vRapdOyqyhB"
+mihoyobbs_salt = "TsmyHpZg8gFAVKTtlPaL6YwMldzxZJxQ"
+mihoyobbs_salt_x4 = "xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs"
+mihoyobbs_salt_x6 = "t0qEgfub6cvueAPgR5m9aQWWVciEer7v"
+mihoyobbs_salt_web = "osgT0DljLarYxgebPPHJFjdaxPfoiHGt"
 # 米游社的版本
-mihoyobbs_Version = "2.38.1"  # Salt和Version相互对应
+mihoyobbs_version = "2.41.2"  # Salt和Version相互对应
 # 米游社的客户端类型
 mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web
@@ -70,9 +71,9 @@ headers = {
     'DS': "",
     "x-rpc-channel": "miyousheluodi",
     'Origin': 'https://webstatic.mihoyo.com',
-    'x-rpc-app_version': mihoyobbs_Version,
+    'x-rpc-app_version': mihoyobbs_version,
     'User-Agent': 'Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) '
-                  f'Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36 miHoYoBBS/{mihoyobbs_Version}',
+                  f'Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36 miHoYoBBS/{mihoyobbs_version}',
     'x-rpc-client_type': mihoyobbs_Client_type_web,
     'Referer': '',
     'Accept-Encoding': 'gzip, deflate',

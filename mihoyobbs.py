@@ -20,7 +20,7 @@ class Mihoyobbs:
             "DS": tools.get_ds(web=False),
             "cookie": f'stuid={config.config["account"]["stuid"]};stoken={config.config["account"]["stoken"]}',
             "x-rpc-client_type": setting.mihoyobbs_Client_type,
-            "x-rpc-app_version": setting.mihoyobbs_Version,
+            "x-rpc-app_version": setting.mihoyobbs_version,
             "x-rpc-sys_version": "12",
             "x-rpc-channel": "miyousheluodi",
             "x-rpc-device_id": tools.get_device_id(),

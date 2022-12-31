@@ -27,9 +27,9 @@ def timestamp() -> int:
 # 获取请求Header里的DS 当web为true则生成网页端的DS
 def get_ds(web: bool) -> str:
     if web:
-        n = setting.mihoyobbs_Salt_web
+        n = setting.mihoyobbs_salt_web
     else:
-        n = setting.mihoyobbs_Salt
+        n = setting.mihoyobbs_salt
     i = str(timestamp())
     r = random_text(6)
     c = md5("salt=" + n + "&t=" + i + "&r=" + r)
@@ -38,7 +38,7 @@ def get_ds(web: bool) -> str:
 
 # 获取请求Header里的DS(版本2) 这个版本ds之前见到都是查询接口里的
 def get_ds2(q: str, b: str) -> str:
-    n = setting.mihoyobbs_Salt2
+    n = setting.mihoyobbs_salt_x6
     i = str(timestamp())
     r = str(random.randint(100001, 200000))
     add = f'&b={b}&q={q}'
@@ -73,8 +73,8 @@ def get_useragent() -> str:
         i = config.config["games"]["cn"]["useragent"].index("miHoYoBBS")
         if config.config["games"]["cn"]["useragent"][i - 1] == " ":
             i = i-1
-        return f'{config.config["games"]["cn"]["useragent"][:i]} miHoYoBBS/{setting.mihoyobbs_Version}'
-    return f'{config.config["games"]["cn"]["useragent"]} miHoYoBBS/{setting.mihoyobbs_Version}'
+        return f'{config.config["games"]["cn"]["useragent"][:i]} miHoYoBBS/{setting.mihoyobbs_version}'
+    return f'{config.config["games"]["cn"]["useragent"]} miHoYoBBS/{setting.mihoyobbs_version}'
 
 
 # 获取Openssl版本
