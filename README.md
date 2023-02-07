@@ -4,6 +4,8 @@
 
 禁止大范围宣传本项目，谢谢配合
 
+也请不要滥用本项目(
+
 本项目米游币部分参考[XiaoMiku01/miyoubiAuto](https://github.com/XiaoMiku01/miyoubiAuto)进行编写
 
 - 此项目的用途
@@ -15,13 +17,13 @@
 
 - **部署方法**
 
-  1. 使用[Git](https://git-scm.com/)或[点击此处](https://github.com/Womsxd/AutoMihoyoBBS/archive/refs/heads/master.zip)下载本项目
+  1. 使用[Git](https://git-scm.com/)或[点击此处](https://github.com/Womsxd/MihoyoBBSTools/archive/refs/heads/master.zip)下载本项目
 
   2. 下载[Python3](https://www.python.org/downloads/)
 
   3. 解压本项目压缩包,在解压目录中**Shift+右键** 打开你的命令提示符 cmd 或 powershell
 
-  4. [requirements.txt](https://raw.githubusercontent.com/Womsxd/AutoMihoyoBBS/master/requirements.txt) 是所需第三方模块，执行 `pip install -r requirements.txt` 安装模块
+  4. [requirements.txt](https://raw.githubusercontent.com/Womsxd/MihoyoBBSTools/master/requirements.txt) 是所需第三方模块，执行 `pip install -r requirements.txt` 安装模块
 
   5. 打开目录中的**config 文件夹**复制`config.yaml.example`并改名为`config.yaml`，脚本的多用户功能靠读取不同的配置文件实现，你可以创建无数个`自定义名字.yaml`，脚本会扫描**config**目录下`yaml`为拓展名的文件，并按照名称顺序依次执行。
 
@@ -205,7 +207,7 @@ docker-compose pull && docker-compose up -d
 ```
 名称：米游社签到
 类型：公开仓库
-链接：https://github.com/Womsxd/AutoMihoyoBBS.git
+链接：https://github.com/Womsxd/MihoyoBBSTools.git
 定时类型：crontab
 定时规则：2 2 28 * *
 白名单：ql_main.py
@@ -215,7 +217,7 @@ docker-compose pull && docker-compose up -d
 方式 2：指令拉取
 
 ```sh
-ql repo https://github.com/Womsxd/AutoMihoyoBBS.git "ql_main.py" "" "error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main"
+ql repo https://github.com/Womsxd/MihoyoBBSTools.git "ql_main.py" "" "error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main"
 ```
 
 ### 2.环境变量添加
@@ -264,11 +266,11 @@ PyYAML: [github](https://github.com/yaml/pyyaml) [pypi](https://pypi.org/project
 
 ## Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/Womsxd/AutoMihoyoBBS.svg)](https://starchart.cc/Womsxd/AutoMihoyoBBS)
+[![Stargazers over time](https://starchart.cc/Womsxd/MihoyoBBSTools.svg)](https://starchart.cc/Womsxd/MihoyoBBSTools)
 
 ## License
 
-[MIT License](https://github.com/Womsxd/AutoMihoyoBBS/blob/master/LICENSE)
+[MIT License](https://github.com/Womsxd/MihoyoBBSTools/blob/master/LICENSE)
 
 ## 鸣谢
 

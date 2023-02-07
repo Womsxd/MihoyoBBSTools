@@ -8,7 +8,7 @@ ENV TZ=Asia/Shanghai
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories \
 	&& apk add --no-cache tzdata git
 
-RUN git clone https://github.com/Womsxd/AutoMihoyoBBS app
+RUN git clone https://github.com/Womsxd/MihoyoBBSTools app
 WORKDIR /app
 RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt 
 
