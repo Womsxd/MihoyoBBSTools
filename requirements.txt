@@ -1,4 +1,4 @@
 httpx>=0.21.1
 requests>=2.26.0
-crontab~=0.23.0
+crontab~=1.0.0
 PyYAML~=6.0
