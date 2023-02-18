@@ -49,7 +49,8 @@ class Genshin:
     def check_in(self, account):
         header = {}
         header.update(self.headers)
-        for i in range(4):
+        max = 3
+        for i in range(max+1):
             if i != 0:
                 log.info(f'触发验证码，即将进行第{i}次重试，最多3次')
             req = http.post(url=setting.genshin_Signurl, headers=header,
@@ -59,7 +60,7 @@ class Genshin:
                 log.warning(f'429 Too Many Requests ，即将进入下一次请求')
                 continue
             data = req.json()
-            if data["retcode"] == 0 and data["data"]["success"] == 1:
+            if data["retcode"] == 0 and data["data"]["success"] == 1 and i < max:
                 validate = captcha.game_captcha(data["data"]["gt"], data["data"]["challenge"])
                 if validate is not None:
                     header["x-rpc-challenge"] = data["data"]["challenge"]
