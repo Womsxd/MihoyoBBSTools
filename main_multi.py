@@ -18,11 +18,20 @@ def fund_config(ext: str) -> list:
             file_name.append(files)
     return file_name
 
+# 筛选青龙多用户配置文件（头部匹配）
+def ql_config(config_list: list):
+    config_list_ql = []
+    for files in config_list:
+        if 'mhy_' == files[:4]:
+            config_list_ql.append(files)
+    return(config_list_ql)
 
 def main_multi(autorun: bool):
     log.info("AutoMihoyoBBS Multi User mode")
     log.info("正在搜索配置文件！")
     config_list = fund_config('.yaml')
+    if os.getenv("AutoMihoyoBBS_config_multi") == '1':
+        config_list = ql_config(config_list)
     if len(config_list) == 0:
         log.warning("未检测到配置文件，请确认config文件夹存在.yaml后缀名的配置文件！")
         exit(1)
@@ -66,6 +75,7 @@ def main_multi(autorun: bool):
     elif len(results["captcha"]) != 0:
         status = 3
     push.push(status, push_message)
+    return(status, push_message)
 
 
 if __name__ == "__main__":
