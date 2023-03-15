@@ -222,18 +222,33 @@ ql repo https://github.com/Womsxd/MihoyoBBSTools.git "ql_main.py" "" "error|miho
 
 ### 2.环境变量添加
 
-在 config.sh 中添加
+在青龙面板环境变量中添加以下变量
 
-```sh
-export AutoMihoyoBBS_config_path="/ql/data/config/"
-```
+| 名称 | 值 | 功能 |
+| --- | --- | --- |
+| AutoMihoyoBBS_config_path | /ql/data/config/ | 设置配置文件路径（必选） |
+| AutoMihoyoBBS_config_multi | 1 | 开启多用户（可选） |
+
+**注意！仅多用户需添加变量```AutoMihoyoBBS_config_multi```**
 
 ### 3.复制配置文件
 
 **进入容器后运行以下命令**（docker exec -it ql bash）修改 ql 为你的青龙容器名字
 
+单用户请使用以下命令复制配置文件
+
 ```sh
-cp /ql/data/repo/Womsxd_AutoMihoyoBBS/config/config.yaml.example /ql/data/config/config.yaml
+cp /ql/data/repo/Womsxd_MihoyoBBSTools/config/config.yaml.example /ql/data/config/config.yaml
+```
+
+多用户需要注意，配置文件的名字必须以```mhy_```开头，之后的```[config*]```可以为任意字符
+
+```sh
+cp /ql/data/repo/Womsxd_MihoyoBBSTools/config/config.yaml.example /ql/data/config/mhy_[config1].yaml
+cp /ql/data/repo/Womsxd_MihoyoBBSTools/config/config.yaml.example /ql/data/config/mhy_[config2].yaml
+cp /ql/data/repo/Womsxd_MihoyoBBSTools/config/config.yaml.example /ql/data/config/mhy_[config3].yaml
+……
+cp /ql/data/repo/Womsxd_MihoyoBBSTools/config/config.yaml.example /ql/data/config/mhy_[config*].yaml
 ```
 
 ### 4.添加依赖
@@ -242,9 +257,11 @@ cp /ql/data/repo/Womsxd_AutoMihoyoBBS/config/config.yaml.example /ql/data/config
 
 ### 5.编辑配置文件
 
-在配置文件内 config.yaml 中编辑信息
+单用户在配置文件内 config.yaml 中编辑信息
 
-_注：通知配置为青龙 config.sh 中配置_
+多用户在配置文件内 mhy_[config*].yaml 中编辑信息
+
+_***注：通知配置为青龙 config.sh 中配置***_
 
 ## 使用的第三方库
 
