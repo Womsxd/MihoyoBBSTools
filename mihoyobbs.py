@@ -88,7 +88,7 @@ class Mihoyobbs:
                 self.Task_do["bbs_Share"] = True
             else:
                 # 如果第0个大于或等于62则直接判定任务没做
-                if data["data"]["states"][0]["mission_id"] >= 62:
+                if data["data"]["can_get_points"] != 0 or data["data"]["states"][0]["mission_id"] >= 62:
                     log.info(f"新的一天，今天可以获得{today_get_coins}个米游币")
                     pass
                 else:
