@@ -43,14 +43,14 @@ def main():
         ret_code = 0
         if config.config["mihoyobbs"]["enable"]:
             bbs = mihoyobbs.Mihoyobbs()
-            if bbs.Task_do["bbs_Sign"] and bbs.Task_do["bbs_Read_posts"] and bbs.Task_do["bbs_Like_posts"] and \
-                    bbs.Task_do["bbs_Share"]:
+            if bbs.task_do["bbs_sign"] and bbs.task_do["bbs_read"] and bbs.task_do["bbs_like"] and \
+                    bbs.task_do["bbs_share"]:
                 return_data += "\n" + f"今天已经全部完成了！\n" \
-                                      f"一共获得{mihoyobbs.today_have_get_coins}个米游币\n目前有{mihoyobbs.have_coins}个米游币"
-                log.info(f"今天已经全部完成了！一共获得{mihoyobbs.today_have_get_coins}个米游币，目前有{mihoyobbs.have_coins}个米游币")
+                                      f"一共获得{bbs.today_have_get_coins}个米游币\n目前有{bbs.have_coins}个米游币"
+                log.info(f"今天已经全部完成了！一共获得{bbs.today_have_get_coins}个米游币，目前有{bbs.have_coins}个米游币")
             else:
                 i = 0
-                while mihoyobbs.today_get_coins != 0 and i < 3:
+                while bbs.today_get_coins != 0 and i < 3:
                     if i > 0:
                         bbs.refresh_list()
                     if config.config["mihoyobbs"]["checkin"]:
@@ -63,10 +63,10 @@ def main():
                         bbs.share_post()
                     bbs.get_tasks_list()
                     i += 1
-                return_data += "\n" + f"今天已经获得{mihoyobbs.today_have_get_coins}个米游币\n" \
-                                      f"还能获得{mihoyobbs.today_get_coins}个米游币\n目前有{mihoyobbs.have_coins}个米游币"
-                log.info(f"今天已经获得{mihoyobbs.today_have_get_coins}个米游币，"
-                         f"还能获得{mihoyobbs.today_get_coins}个米游币，目前有{mihoyobbs.have_coins}个米游币")
+                return_data += "\n" + f"今天已经获得{bbs.today_have_get_coins}个米游币\n" \
+                                      f"还能获得{bbs.today_get_coins}个米游币\n目前有{bbs.have_coins}个米游币"
+                log.info(f"今天已经获得{bbs.today_have_get_coins}个米游币，"
+                         f"还能获得{bbs.today_get_coins}个米游币，目前有{bbs.have_coins}个米游币")
                 time.sleep(random.randint(2, 8))
         else:
             return_data += "\n" + "米游社功能未启用！"
