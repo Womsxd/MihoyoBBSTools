@@ -100,23 +100,19 @@ bbs_like_url = bbs_api + "/apihub/sapi/upvotePost"  # post json
 bbs_get_captcha = bbs_api + "/misc/api/createVerification?is_high=true"
 bbs_captcha_verify = bbs_api + "/misc/api/verifyVerification"
 
+# 通用游戏签到API
+any_checkin_rewards = web_api + '/event/luna/home?lang=zh-cn&act_id={}'
+any_is_signurl = web_api + "/event/luna/info?lang=zh-cn&act_id={}&region={}&uid={}"
+any_sign_url = web_api + "/event/luna/sign"
+
 # 崩坏2自动签到相关的相关设置
 honkai2_Act_id = "e202203291431091"
-honkai2_checkin_rewards = f'{web_api}/event/luna/home?lang=zh-cn&act_id={honkai2_Act_id}'
-honkai2_Is_signurl = web_api + "/event/luna/info?lang=zh-cn&act_id={}&region={}&uid={}"
-honkai2_Sign_url = web_api + "/event/luna/sign"
 
 # 崩坏3自动签到相关的设置
 honkai3rd_Act_id = "e202207181446311"
-honkai3rd_checkin_rewards = f'{web_api}/event/luna/home?lang=zh-cn&act_id={honkai3rd_Act_id}'
-honkai3rd_Is_signurl = web_api + "/event/luna/info?lang=zh-cn&act_id={}&region={}&uid={}"
-honkai3rd_Sign_url = web_api + "/event/luna/sign"
 
 # 未定事件簿自动签到相关设置
 tearsofthemis_Act_id = "e202202251749321"
-tearsofthemis_checkin_rewards = f'{web_api}/event/luna/home?lang=zh-cn&act_id={tearsofthemis_Act_id}'
-tearsofthemis_Is_signurl = honkai2_Is_signurl
-tearsofthemis_Sign_url = honkai2_Sign_url  # 和二崩完全一致
 
 # 原神自动签到相关的设置
 genshin_Act_id = "e202009291139501"
