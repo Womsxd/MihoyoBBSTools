@@ -80,7 +80,7 @@ def config_v8_update(data: dict):
             continue
         returns['games']['cn'][i] = data['games']['cn'][i]
     log.info("config已升级到: 8")
-    return data
+    return returns
 
 
 def load_config(p_path=None):

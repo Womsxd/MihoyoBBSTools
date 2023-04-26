@@ -98,7 +98,7 @@ def main():
             return_data += "\n\n" + genshin_message
             time.sleep(random.randint(2, 8))
         if config.config["games"]["cn"]["honkai_sr"]["auto_checkin"]:
-            log.info("正在进行原神签到")
+            log.info("正在进行崩坏:星穹铁道签到")
             honkaisr_help = honkaisr.Honkaisr()
             honkaisr_message = honkaisr_help.sign_account()
             if "触发验证码" in honkaisr_message:
