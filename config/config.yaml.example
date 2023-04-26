@@ -34,7 +34,7 @@ games:
       auto_checkin: false
       black_list: []
     honkai_sr: # 铁道
-      auto_checkin: flase
+      auto_checkin: false
       black_list: []
   os: #外服控制区域，现在暂时无用
     enable: false
