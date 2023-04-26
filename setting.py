@@ -54,6 +54,7 @@ game_id2name = {
     "bh3_cn": "崩坏3",
     "nxx_cn": "未定事件簿",
     "hk4e_cn": "原神",
+    "hkrpg_cn": "崩坏： 星穹铁道"
 }
 
 game_id2config = {
@@ -61,6 +62,7 @@ game_id2config = {
     "bh3_cn": "honkai3rd",
     "nxx_cn": "tears_of_themis",
     "hk4e_cn": "genshin",
+    "hkrpg_cn": "honkaisr"
 }
 # Config Load之后run里面进行列表的选择
 mihoyobbs_List_Use = []
@@ -119,6 +121,10 @@ genshin_Act_id = "e202009291139501"
 genshin_checkin_rewards = f'{web_api}/event/bbs_sign_reward/home?act_id={genshin_Act_id}'
 genshin_Is_signurl = web_api + "/event/bbs_sign_reward/info?act_id={}&region={}&uid={}"
 genshin_Signurl = web_api + "/event/bbs_sign_reward/sign"
+
+# 星穹铁道自动签到相关设置
+honkai_sr_Act_id = "e202304121516551"
+honkai_sr_checkin_rewards = web_api + f'/event/luna/extra_award?lang=zh-cn&act_id={honkai_sr_Act_id}'
 
 # 云原神相关api
 cloud_genshin_Api = "https://api-cloudgame.mihoyo.com"
