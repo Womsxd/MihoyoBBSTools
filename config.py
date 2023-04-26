@@ -9,7 +9,7 @@ serverless = False
 update_config_need = False
 
 config = {
-    'enable': True, 'version': 7,
+    'enable': True, 'version': 8,
     'account': {
         'cookie': '',
         'login_ticket': '',
@@ -26,9 +26,10 @@ config = {
             'useragent': 'Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36',
             'genshin': {'auto_checkin': True, 'black_list': []},
-            'hokai2': {'auto_checkin': False, 'black_list': []},
+            'honkai2': {'auto_checkin': False, 'black_list': []},
             'honkai3rd': {'auto_checkin': False, 'black_list': []},
             'tears_of_themis': {'auto_checkin': False, 'black_list': []},
+            'honkai_sr': {'auto_checkin': False, 'black_list': []},
         },
         'os': {
             'enable': False, 'cookie': '',
@@ -64,16 +65,37 @@ def config_v7_update(data: dict):
     return data
 
 
+def config_v8_update(data: dict):
+    global update_config_need
+    update_config_need = True
+    returns = config.copy()
+    returns["enable"] = data["enable"]
+    returns["account"].update(data["account"])
+    returns["mihoyobbs"].update(data["mihoyobbs"])
+    returns["cloud_games"].update(data["cloud_games"])
+    returns["games"]["os"].update(data["games"]["os"])
+    for i in data['games']['cn'].keys():
+        if i == "hokai2":
+            returns['games']['cn']['honkai2'].update(data['games']['cn']['hokai2'])
+            continue
+        returns['games']['cn'][i] = data['games']['cn'][i]
+    log.info("config已升级到: 8")
+    return data
+
+
 def load_config(p_path=None):
     global config
     if not p_path:
         p_path = config_Path
     with open(p_path, "r", encoding='utf-8') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
-    if data['version'] == 7:
+    if data['version'] == 8:
         config = data
     else:
-        config = config_v7_update(data)
+        if data['version'] == 6:
+            data = config_v7_update(data)
+        if data['version'] == 7:
+            config = config_v8_update(data)
         save_config()
     log.info("Config加载完毕")
     return config

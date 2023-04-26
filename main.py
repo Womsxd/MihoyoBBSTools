@@ -7,6 +7,7 @@ import random
 import honkai2
 import genshin
 import setting
+import honkaisr
 import mihoyobbs
 import honkai3rd
 import tearsofthemis
@@ -72,7 +73,7 @@ def main():
             return_data += "\n" + "米游社功能未启用！"
             log.info("米游社功能未启用！")
         # 崩坏2签到 config这里少了个n，下回config v6的时候再修复吧
-        if config.config["games"]["cn"]["hokai2"]["auto_checkin"]:
+        if config.config["games"]["cn"]["honkai2"]["auto_checkin"]:
             log.info("正在进行崩坏2签到")
             honkai2_help = honkai2.Honkai2()
             return_data += "\n\n" + honkai2_help.sign_account()
@@ -95,6 +96,14 @@ def main():
             if "触发验证码" in genshin_message:
                 ret_code = 3
             return_data += "\n\n" + genshin_message
+            time.sleep(random.randint(2, 8))
+        if config.config["games"]["cn"]["honkai_sr"]["auto_checkin"]:
+            log.info("正在进行原神签到")
+            honkaisr_help = honkaisr.Honkaisr()
+            honkaisr_message = honkaisr_help.sign_account()
+            if "触发验证码" in honkaisr_message:
+                ret_code = 3
+            return_data += "\n\n" + honkaisr_message
             time.sleep(random.randint(2, 8))
         if config.config['cloud_games']['genshin']["enable"]:
             log.info("正在进行云原神签到")
