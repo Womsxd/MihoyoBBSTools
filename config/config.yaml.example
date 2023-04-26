@@ -1,5 +1,5 @@
 enable: true #这里控制整个config文件是否启用
-version: 7 #config的版本
+version: 8 #config的版本
 account:
   cookie: "" #登入账号只需要修改这里就行了，下面会自动获取
   login_ticket: ""
@@ -24,7 +24,7 @@ games:
     genshin: #原神自动签到
       auto_checkin: true #控制是否启用签到，下面一致
       black_list: [] #这里是不签到的账号，填入文本型数据 示例["114514","1919810"](也许你这边是和checkin_multi_list那块一样) 下面的一样
-    hokai2: #崩坏2
+    honkai2: #崩坏2
       auto_checkin: false
       black_list: []
     honkai3rd: #崩坏3
@@ -33,6 +33,9 @@ games:
     tears_of_themis: #未定事件簿
       auto_checkin: false
       black_list: []
+    honkai_sr: # 铁道
+      auto_checkin: flase
+      black_list []
   os: #外服控制区域，现在暂时无用
     enable: false
     cookie: ""

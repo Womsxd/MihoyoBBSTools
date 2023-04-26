@@ -9,5 +9,5 @@ class Honkai2(GameCheckin):
                                   f'=true&act_id={setting.honkai2_Act_id}&bbs_presentation_style=fullscreen' \
                                   '&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
         self.act_id = setting.honkai2_Act_id
-        self.game_mid = "hokai2"
+        self.game_mid = "honkai2"
         self.game_name = "崩坏学园2"

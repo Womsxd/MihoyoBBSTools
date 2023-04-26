@@ -58,7 +58,7 @@ game_id2name = {
 }
 
 game_id2config = {
-    "bh2_cn": "hokai2",
+    "bh2_cn": "honkai2",
     "bh3_cn": "honkai3rd",
     "nxx_cn": "tears_of_themis",
     "hk4e_cn": "genshin",
