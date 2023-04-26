@@ -204,14 +204,14 @@ docker-compose pull && docker-compose up -d
 
 方式 1：订阅管理
 
-```
+```text
 名称：米游社签到
 类型：公开仓库
 链接：https://github.com/Womsxd/MihoyoBBSTools.git
 定时类型：crontab
 定时规则：2 2 28 * *
 白名单：ql_main.py
-依赖文件：error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main
+依赖文件：error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main|gamecheckin|honkaisr
 ```
 
 方式 2：指令拉取
@@ -261,7 +261,7 @@ cp /ql/data/repo/Womsxd_MihoyoBBSTools/config/config.yaml.example /ql/data/confi
 
 多用户在配置文件内 mhy_[config*].yaml 中编辑信息
 
-_***注：通知配置为青龙 config.sh 中配置***_
+***注：通知配置为青龙 config.sh 中配置**
 
 ## 使用的第三方库
 
