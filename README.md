@@ -217,7 +217,7 @@ docker-compose pull && docker-compose up -d
 方式 2：指令拉取
 
 ```sh
-ql repo https://github.com/Womsxd/MihoyoBBSTools.git "ql_main.py" "" "error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main"
+ql repo https://github.com/Womsxd/MihoyoBBSTools.git "ql_main.py" "" "error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main|gamecheckin|honkaisr"
 ```
 
 ### 2.环境变量添加
