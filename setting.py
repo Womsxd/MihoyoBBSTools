@@ -124,7 +124,6 @@ genshin_Signurl = web_api + "/event/bbs_sign_reward/sign"
 
 # 星穹铁道自动签到相关设置
 honkai_sr_Act_id = "e202304121516551"
-honkai_sr_checkin_rewards = web_api + f'/event/luna/extra_award?lang=zh-cn&act_id={honkai_sr_Act_id}'
 
 # 云原神相关api
 cloud_genshin_Api = "https://api-cloudgame.mihoyo.com"
