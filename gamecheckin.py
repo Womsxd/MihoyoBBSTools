@@ -60,7 +60,7 @@ class GameCheckin:
             raise CookieError("BBS Cookie Errror")
         return data["data"]
 
-    def check_in(self, account: tuple[str, str, str]):
+    def check_in(self, account: tuple([str, str, str])):
         header = self.headers.copy()
         retries = 3
         for i in range(1, retries + 1):
