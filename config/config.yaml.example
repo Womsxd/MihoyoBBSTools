@@ -36,10 +36,13 @@ games:
     honkai_sr: # 铁道
       auto_checkin: false
       black_list: []
-  os: #外服控制区域，现在暂时无用
+  os: #外服控制区域
     enable: false
     cookie: ""
     genshin:
+      auto_checkin: false
+      black_list: []
+    starrail:
       auto_checkin: false
       black_list: []
 cloud_games: #云游戏专区

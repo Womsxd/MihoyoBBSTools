@@ -8,6 +8,8 @@ import honkai2
 import genshin
 import setting
 import honkaisr
+import hoyo_sr
+import hoyo_gs
 import mihoyobbs
 import honkai3rd
 import tearsofthemis
@@ -113,6 +115,15 @@ def main():
                 cloud_ys = cloud_genshin.CloudGenshin()
                 data = cloud_ys.sign_account()
                 return_data += "\n\n" + data
+        if config.config['games']['os']["enable"]:
+            log.info("海外版:")
+            if config.config['games']['os']['genshin']["auto_checkin"]:
+                log.info("正在进行原神签到")
+                hoyo_gs.run()
+            if config.config['games']['os']['starrail']["auto_checkin"]:
+                log.info("正在进行崩坏:星穹铁道签到")
+                hoyo_sr.run()
+
         return ret_code, return_data
     elif config.config["account"]["cookie"] == "CookieError":
         raise CookieError('Cookie expires')
