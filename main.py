@@ -117,12 +117,15 @@ def main():
                 return_data += "\n\n" + data
         if config.config['games']['os']["enable"]:
             log.info("海外版:")
+            return_data += "\n\n" + "海外版:"
             if config.config['games']['os']['genshin']["auto_checkin"]:
                 log.info("正在进行原神签到")
-                hoyo_gs.run()
+                data = hoyo_gs.run()
+                return_data += "\n\n" + data
             if config.config['games']['os']['starrail']["auto_checkin"]:
                 log.info("正在进行崩坏:星穹铁道签到")
-                hoyo_sr.run()
+                data = hoyo_sr.run()
+                return_data += "\n\n" + data
 
         return ret_code, return_data
     elif config.config["account"]["cookie"] == "CookieError":

@@ -14,6 +14,7 @@ def hoyo_checkin(
     act_id: str,
     cookie_str: str
 ):
+
     lang = 'zh_cn'
     referer_url = "https://act.hoyolab.com/"
     reward_url = f"{event_base_url}/home?lang={lang}" \
@@ -37,11 +38,13 @@ def hoyo_checkin(
 
     if already_signed_in:
         logging.info("今天已经签到过")
-        return
+        ret_msg = "今天已经签到过"
+        return ret_msg
 
     if first_bind:
         logging.info("请手动签到一次")
-        return
+        ret_msg = "请手动签到一次"
+        return ret_msg
 
     awards_data = http_get_json(reward_url)
 
@@ -66,14 +69,18 @@ def hoyo_checkin(
 
     if code == RET_CODE_ALREADY_SIGNED_IN:
         logging.info("今天已经签到过")
-        return
+        ret_msg = "今天已经签到过"
+        return ret_msg
     elif code != 0:
         logging.error(response['message'])
-        return
+        ret_msg = response['message']
+        return ret_msg
 
     reward = awards[total_sign_in_day - 1]
 
     logging.info("签到成功")
     logging.info(f"\t已连续签到{total_sign_in_day + 1}天")
     logging.info(f"\t今天获得的奖励是: {reward['cnt']}x {reward['name']}")
+    ret_msg = f"\t今天获得的奖励是: {reward['cnt']}x {reward['name']}"
+    return ret_msg
     # logging.info(f"\tMessage: {response['message']}")
