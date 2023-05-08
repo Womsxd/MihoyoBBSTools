@@ -15,7 +15,7 @@ def hoyo_checkin(
     cookie_str: str
 ):
 
-    lang = 'zh_cn'
+    lang = 'zh-cn'
     referer_url = "https://act.hoyolab.com/"
     reward_url = f"{event_base_url}/home?lang={lang}" \
                  f"&act_id={act_id}"
