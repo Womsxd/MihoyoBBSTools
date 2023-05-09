@@ -1,5 +1,5 @@
 enable: true #这里控制整个config文件是否启用
-version: 8 #config的版本
+version: 9 #config的版本
 account:
   cookie: "" #登入账号只需要修改这里就行了，下面会自动获取
   login_ticket: ""
@@ -33,7 +33,7 @@ games:
     tears_of_themis: #未定事件簿
       auto_checkin: false
       black_list: []
-    honkai_sr: # 铁道
+    honkai_sr: # 崩坏: 星穹铁道
       auto_checkin: false
       black_list: []
   os: #外服控制区域
@@ -42,7 +42,7 @@ games:
     genshin:
       auto_checkin: false
       black_list: []
-    starrail:
+    honkai_sr: # 崩坏: 星穹铁道
       auto_checkin: false
       black_list: []
 cloud_games: #云游戏专区

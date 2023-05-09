@@ -122,7 +122,7 @@ def main():
                 log.info("正在进行原神签到")
                 data = hoyo_gs.run()
                 return_data += "\n\n" + data
-            if config.config['games']['os']['starrail']["auto_checkin"]:
+            if config.config['games']['os']['honkai_sr']["auto_checkin"]:
                 log.info("正在进行崩坏:星穹铁道签到")
                 data = hoyo_sr.run()
                 return_data += "\n\n" + data

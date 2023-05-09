@@ -128,3 +128,8 @@ honkai_sr_Act_id = "e202304121516551"
 # 云原神相关api
 cloud_genshin_Api = "https://api-cloudgame.mihoyo.com"
 cloud_genshin_sgin = cloud_genshin_Api + "/hk4e_cg_cn/wallet/wallet/get"
+
+# 接下来是国际服的内容
+
+os_lang = 'zh-cn'
+os_referer_url = "https://act.hoyolab.com/"
