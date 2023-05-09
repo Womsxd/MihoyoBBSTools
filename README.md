@@ -86,6 +86,21 @@ var cookie=document.cookie;var ask=confirm('Cookie:'+cookie+'\n\nDo you want to 
 
 14. **此时 Cookie 已经获取完毕了**
 
+## 海外版获取Cookie
+
+1. 打开你的浏览器,进入**无痕/隐身模式**
+
+2. 打开`https://act.hoyolab.com/bbs/event/signin/hkrpg/index.html?act_id=e202303301540311`并进行登入操作
+
+3. 按下键盘上的`F12`或右键检查,打开开发者工具,在控制台输入:
+
+    ```javascript
+    document.cookie
+    ```
+4. 从`ltoken=....`开始复制到结尾
+
+5. 将获取到的 Cookie 粘贴到之前获取到 OS 的 Cookie 里面
+
 ## 获取设备 UA
 
 1. 使用常用的移动端设备访问 `https://www.ip138.com/useragent/`
