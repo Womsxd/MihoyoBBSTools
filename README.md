@@ -10,8 +10,8 @@
 
 - 此项目的用途
 
-  这是一个米游社的辅助签到项目，包含了米游币、崩坏 2、崩坏 3、原神、未定事件簿
-  已经支持米哈游国内正在运营的全部游戏的米游社签到(2022-7-19)
+  这是一个米游社的辅助签到项目，包含了米游币、崩坏学院2、崩坏3、原神、未定事件簿、崩坏:星穹铁道
+  已经支持米哈游国内正在运营的全部游戏的米游社签到(2022-4-26)
 
 ## 如何使用程序
 
@@ -292,3 +292,7 @@ PyYAML: [github](https://github.com/yaml/pyyaml) [pypi](https://pypi.org/project
 ## 鸣谢
 
 [JetBrains](https://jb.gg/OpenSource)
+
+[本项目的Contributors](https://github.com/Womsxd/MihoyoBBSTools/graphs/contributors)
+
+还有正在使用这份程序的你
