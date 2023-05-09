@@ -9,7 +9,7 @@ serverless = False
 update_config_need = False
 
 config = {
-    'enable': True, 'version': 8,
+    'enable': True, 'version': 9,
     'account': {
         'cookie': '',
         'login_ticket': '',
@@ -33,7 +33,8 @@ config = {
         },
         'os': {
             'enable': False, 'cookie': '',
-            'genshin': {'auto_checkin': False, 'black_list': []}
+            'genshin': {'auto_checkin': False, 'black_list': []},
+            'honkai_sr': {'auto_checkin': False, 'black_list': []}
         }
     },
     'cloud_games': {
@@ -83,19 +84,34 @@ def config_v8_update(data: dict):
     return returns
 
 
+def config_v9_update(data: dict):
+    global update_config_need
+    update_config_need = True
+    data['version'] = 9
+    data['games']['os'] = {
+            'enable': False, 'cookie': '',
+            'genshin': {'auto_checkin': False, 'black_list': []},
+            'honkai_sr': {'auto_checkin': False, 'black_list': []}
+        }
+    log.info("config已升级到: 9")
+    return data
+
+
 def load_config(p_path=None):
     global config
     if not p_path:
         p_path = config_Path
     with open(p_path, "r", encoding='utf-8') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
-    if data['version'] == 8:
+    if data['version'] == 9:
         config = data
     else:
         if data['version'] == 6:
             data = config_v7_update(data)
         if data['version'] == 7:
             config = config_v8_update(data)
+        if data['version'] == 8:
+            config = config_v9_update(data)
         save_config()
     log.info("Config加载完毕")
     return config
