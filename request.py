@@ -3,7 +3,7 @@ def get_new_session():
         # 优先使用httpx，在httpx无法使用的环境下使用requests
         import httpx
 
-        http = httpx.Client(timeout=20, transport=httpx.HTTPTransport(retries=10))
+        http = httpx.Client(timeout=300, transport=httpx.HTTPTransport(retries=10))
         # 当openssl版本小于1.0.2的时候直接进行一个空请求让httpx报错
         import tools
 
