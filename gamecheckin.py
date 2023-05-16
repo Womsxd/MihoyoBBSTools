@@ -125,7 +125,7 @@ class GameCheckin:
                             if data["data"] != "" and data.get("data").get("success", -1):
                                 s += "原因: 验证码\njson信息:" + req.text
                             log.warning(s)
-                            return_data += f"\n{account[0]}，本次签到失败"
+                            return_data += f"\n{account[0]}，触发验证码，本次签到失败"
                             continue
                     else:
                         return_data += f"\n{account[0]}，本次签到失败"
