@@ -225,7 +225,17 @@ def ifttt(send_title, push_message):
         log.info("推送完毕......")
     return 1
     
-
+# webhook
+def webhook(send_title, push_message):
+    rep = http.post(
+        url=f'{cfg.get("webhook", "webhook_url")}',
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        json={
+            "title": send_title,
+            "message": push_message
+        }
+    ).json()
+    log.info(f"推送结果：{rep.get('errmsg')}")
 
 def push(status, push_message):
     if not load_config():
