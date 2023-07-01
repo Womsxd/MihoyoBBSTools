@@ -29,7 +29,7 @@ def title(status):
     elif status == 2:
         return "「米游社脚本」部分账号执行失败！"
     elif status == 3:
-        return "「米游社脚本」原神签到触发验证码！"
+        return "「米游社脚本」游戏道具签到触发验证码！"
 
 
 # telegram的推送
@@ -82,15 +82,16 @@ def cqhttp(send_title, push_message):
 def smtp(send_title, push_message):
     import smtplib
     from email.mime.text import MIMEText
-    
-    IMAGE_API = "http://api.iw233.cn/api.php?sort=random&type=json"
-    
+
+    IMAGE_API = "https://api.iw233.cn/api.php?sort=random&type=json"
+    path = os.path.dirname(os.path.realpath(__file__)) + '/assets/email_example.html'
     try:
         image_url = http.get(IMAGE_API).json()["pic"][0]
     except:
         image_url = "unable to get the image"
         log.warning("获取随机背景图失败，请检查图片api")
-    with open("assets/email_example.html", encoding="utf-8") as f:
+    # with open("assets/email_example.html", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         EMAIL_TEMPLATE = f.read()
     message = EMAIL_TEMPLATE.format(title=send_title, message=push_message.replace("\n", "<br/>"), image_url=image_url)
     message = MIMEText(message, "html", "utf-8")
@@ -116,7 +117,7 @@ def wecom(send_title, push_message):
     except NoOptionError:
         # 没有配置时赋默认值
         touser = '@all'
-    
+
     push_token = http.post(
         url=f'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid={corpid}&corpsecret={secret}',
         data=""
@@ -160,7 +161,7 @@ def dingrobot(send_title, push_message):
         ).digest()
         sign = urllib.parse.quote_plus(base64.b64encode(hmac_code))
         api_url = f"{api_url}&timestamp={timestamp}&sign={sign}"
-    
+
     rep = http.post(
         url=api_url,
         headers={"Content-Type": "application/json; charset=utf-8"},
@@ -206,6 +207,7 @@ def gotify(send_title, push_message):
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
 
+
 # ifttt
 def ifttt(send_title, push_message):
     ifttt_event = cfg.get('ifttt', 'event')
@@ -224,7 +226,8 @@ def ifttt(send_title, push_message):
     else:
         log.info("推送完毕......")
     return 1
-    
+
+
 # webhook
 def webhook(send_title, push_message):
     rep = http.post(
@@ -236,6 +239,7 @@ def webhook(send_title, push_message):
         }
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
+
 
 def push(status, push_message):
     if not load_config():
