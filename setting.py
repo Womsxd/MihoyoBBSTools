@@ -111,7 +111,7 @@ any_sign_url = web_api + "/event/luna/sign"
 honkai2_Act_id = "e202203291431091"
 
 # 崩坏3自动签到相关的设置
-honkai3rd_Act_id = "e202207181446311"
+honkai3rd_Act_id = "e202306201626331"
 
 # 未定事件簿自动签到相关设置
 tearsofthemis_Act_id = "e202202251749321"
