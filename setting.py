@@ -1,10 +1,10 @@
 # 米游社的Salt
-mihoyobbs_salt = "egBrFMO1BPBG0UX5XOuuwMRLZKwTVKRV"
+mihoyobbs_salt = "xc1lzZFOBGU0lz8ZkPgcrWZArZzEVMbA"
 mihoyobbs_salt_x4 = "xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs"
 mihoyobbs_salt_x6 = "t0qEgfub6cvueAPgR5m9aQWWVciEer7v"
-mihoyobbs_salt_web = "DG8lqMyc9gquwAUFc7zBS62ijQRX9XF7"
+mihoyobbs_salt_web = "F6tsiCZEIcL9Mor64OXVJEKRRQ6BpOZa"
 # 米游社的版本
-mihoyobbs_version = "2.49.1"  # Salt和Version相互对应
+mihoyobbs_version = "2.55.1"  # Salt和Version相互对应
 # 米游社的客户端类型
 mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web
@@ -86,8 +86,8 @@ headers = {
 }
 
 # 通用设置
-bbs_api = "https://bbs-api.mihoyo.com"
-web_api = "https://api-takumi.mihoyo.com"
+bbs_api = "https://bbs-api.miyoushe.com"
+web_api = "https://api-takumi.miyoushe.com"
 account_Info_url = web_api + "/binding/api/getUserGameRolesByCookie?game_biz="
 
 # 米游社的API列表
