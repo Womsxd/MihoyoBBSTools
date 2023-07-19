@@ -29,7 +29,7 @@ def title(status):
     elif status == 2:
         return "「米游社脚本」部分账号执行失败！"
     elif status == 3:
-        return "「米游社脚本」原神签到触发验证码！"
+        return "「米游社脚本」游戏道具签到触发验证码！"
 
 
 # telegram的推送
