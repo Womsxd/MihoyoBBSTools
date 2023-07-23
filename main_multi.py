@@ -65,7 +65,7 @@ def main_multi(autorun: bool):
     push_message = f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，' \
                    f'没执行{len(results["close"])}个，失败{len(results["error"])}个' \
                    f'\r\n没执行的配置文件: {results["close"]}\r\n执行失败的配置文件: {results["error"]}\r\n' \
-                   f'触发原神验证码的配置文件: {results["captcha"]} '
+                   f'触发游戏签到验证码的配置文件: {results["captcha"]} '
     log.info(push_message)
     status = 0
     if len(results["error"]) == len(config_list):
