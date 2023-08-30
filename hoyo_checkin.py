@@ -1,10 +1,8 @@
-import json
-import random
 import time
-from loghelper import log
+import random
 import setting
-
-from hoyo_http import http_get_json, http_post_json
+from request import http
+from loghelper import log
 
 RET_CODE_ALREADY_SIGNED_IN = -5003
 
@@ -26,7 +24,7 @@ def hoyo_checkin(
         "Cookie": cookie_str,
     }
 
-    info_list = http_get_json(info_url, headers=headers)
+    info_list = http.get(info_url, headers=headers).json()
 
     today = info_list.get("data", {}).get("today")
     total_sign_in_day = info_list.get("data", {}).get("total_sign_day")
@@ -43,7 +41,7 @@ def hoyo_checkin(
         ret_msg = "请手动签到一次"
         return ret_msg
 
-    awards_data = http_get_json(reward_url)
+    awards_data = http.get(reward_url, headers=headers).json()
 
     awards = awards_data.get("data", {}).get("awards")
 
@@ -54,11 +52,7 @@ def hoyo_checkin(
     log.debug(f"等待 {sleep_time}")
     time.sleep(sleep_time)
 
-    request_data = json.dumps({
-        "act_id": act_id,
-    }, ensure_ascii=False)
-
-    response = http_post_json(sign_url, headers=headers, data=request_data)
+    response = http.post(sign_url, headers=headers, json={"act_id": act_id}).json()
 
     code = response.get("retcode", 99999)
 
