@@ -1,4 +1,3 @@
-import os
 import time
 import push
 import login
@@ -95,16 +94,12 @@ def main():
             log.info("正在进行原神签到")
             genshin_help = genshin.Genshin()
             genshin_message = genshin_help.sign_account()
-            if "触发验证码" in genshin_message:
-                ret_code = 3
             return_data += "\n\n" + genshin_message
             time.sleep(random.randint(2, 8))
         if config.config["games"]["cn"]["honkai_sr"]["auto_checkin"]:
             log.info("正在进行崩坏:星穹铁道签到")
             honkaisr_help = honkaisr.Honkaisr()
             honkaisr_message = honkaisr_help.sign_account()
-            if "触发验证码" in honkaisr_message:
-                ret_code = 3
             return_data += "\n\n" + honkaisr_message
             time.sleep(random.randint(2, 8))
         if config.config['cloud_games']['genshin']["enable"]:
@@ -126,7 +121,8 @@ def main():
                 log.info("正在进行崩坏:星穹铁道签到")
                 data = hoyo_sr.run()
                 return_data += "\n\n" + data
-
+        if "触发验证码" in return_data:
+            ret_code = 3
         return ret_code, return_data
     elif config.config["account"]["cookie"] == "CookieError":
         raise CookieError('Cookie expires')
