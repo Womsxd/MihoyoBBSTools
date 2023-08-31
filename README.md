@@ -241,13 +241,13 @@ docker-compose pull && docker-compose up -d
 定时类型：crontab
 定时规则：2 2 28 * *
 白名单：ql_main.py
-依赖文件：error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main|gamecheckin|honkaisr|hoyo_checkin|hoyo_gs|hoyo_http|hoyo_sr
+依赖文件：error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main|gamecheckin|honkaisr|hoyo_checkin|hoyo_gs|hoyo_sr
 ```
 
 方式 2：指令拉取
 
 ```sh
-ql repo https://github.com/Womsxd/MihoyoBBSTools.git "ql_main.py" "" "error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main|gamecheckin|honkaisr|hoyo_checkin|hoyo_gs|hoyo_http|hoyo_sr"
+ql repo https://github.com/Womsxd/MihoyoBBSTools.git "ql_main.py" "" "error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main|gamecheckin|honkaisr|hoyo_checkin|hoyo_gs|hoyo_sr"
 ```
 
 ### 2.环境变量添加
