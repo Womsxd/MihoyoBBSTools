@@ -2,7 +2,7 @@
 Author: Night-stars-1 nujj1042633805@gmail.com
 Date: 2023-08-26 00:42:54
 LastEditors: Night-stars-1 nujj1042633805@gmail.com
-LastEditTime: 2023-08-31 16:05:29
+LastEditTime: 2023-08-31 17:15:13
 Description: 
 
 Copyright (c) 2023 by Night-stars-1, All Rights Reserved. 
@@ -23,6 +23,8 @@ _conf = ConfigManager.data_obj
 
 ACCOUNT_INFO_URL = "https://api-takumi.miyoushe.com/binding/api/getUserGameRolesByStoken?game_biz="
 LTOKEN_BY_STOKEN_URL = "https://passport-api.mihoyo.com/account/auth/api/getLTokenBySToken"
+TOKENBYGTOKEN_URL = "https://passport-api.mihoyo.com/account/ma-cn-session/app/getTokenByGameToken"
+GETCOOKIE_URL = "https://api-takumi.mihoyo.com/auth/api/getCookieAccountInfoByGameToken?game_token={game_token}&account_id={account_id}"
 
 # 游戏账号相关API的请求头
 headers = {
@@ -85,3 +87,27 @@ async def get_ltoken_by_stoken(cookies: BBSCookies) -> Tuple[bool, Optional[BBSC
     except RetryError as e:
         log.exception("通过 stoken 获取 ltoken: 网络请求失败")
         return False, None
+
+async def get_stoken(data: dict = None, retry: bool = True):
+    if data is None:
+        data = {}
+    for attempt in Retrying(stop=stop_after_attempt(3)):
+        with attempt:
+            async with httpx.AsyncClient() as client:
+                res = await client.post(TOKENBYGTOKEN_URL,headers=headers,json=data)
+            api_result = ApiResultHandler(res.json())
+            if api_result.retcode == 0:
+                return api_result.data
+            else:
+                raise Exception("获取stoken失败")
+
+async def get_cookie_token(game_token: dict, retry: bool = True):
+    for attempt in Retrying(stop=stop_after_attempt(3)):
+        with attempt:
+            res = await get(GETCOOKIE_URL.format(game_token=game_token['token'], 
+                                                 account_id=game_token['uid']))
+            api_result = ApiResultHandler(res.json())
+            if api_result.retcode == 0:
+                return api_result.data.get("cookie_token")
+            else:
+                raise Exception("获取cookie_token失败")

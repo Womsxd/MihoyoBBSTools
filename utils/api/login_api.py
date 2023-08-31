@@ -1,9 +1,7 @@
 import asyncio
-import random
 from io import BytesIO
 from string import ascii_letters, digits
 
-import httpx
 import uuid
 import qrcode
 from tenacity import Retrying, stop_after_attempt
@@ -13,13 +11,12 @@ from ..data_model import (ApiResultHandler, BBSCookies, CheckLoginHandler,
                           QrcodeLoginData)
 from ..request import *
 from ..utils import log
-from .account_api import get_ltoken_by_stoken
+from .account_api import get_ltoken_by_stoken, get_cookie_token, get_stoken
 
 _conf = ConfigManager.data_obj
 
 QRCODE_FETCH_URL = "https://hk4e-sdk.mihoyo.com/hk4e_cn/combo/panda/qrcode/fetch"
 QRCODE_QUERY_URL = "https://hk4e-sdk.mihoyo.com/hk4e_cn/combo/panda/qrcode/query"
-GETCOOKIE_URL = "https://api-takumi.mihoyo.com/auth/api/getCookieAccountInfoByGameToken?game_token={game_token}&account_id={account_id}"
 
 headers = {
     'x-rpc-app_version': _conf.salt.mihoyobbs_version,
@@ -74,7 +71,6 @@ async def create_login_data():
             else:
                 raise Exception("二维码生成失败")
 
-
 async def check_login(login_data: QrcodeLoginData, retry: bool = True):
     data = {
         'app_id': login_data.app_id,
@@ -83,33 +79,11 @@ async def check_login(login_data: QrcodeLoginData, retry: bool = True):
     }
     for attempt in Retrying(stop=stop_after_attempt(3)):
         with attempt:
-            res = await post(QRCODE_QUERY_URL,
+            response = await post(QRCODE_QUERY_URL,
                     json=data)
-            return CheckLoginHandler(res.json())
-
-async def get_stoken(data: dict = None, retry: bool = True):
-    if data is None:
-        data = {}
-    for attempt in Retrying(stop=stop_after_attempt(3)):
-        with attempt:
-            async with httpx.AsyncClient() as client:
-                res = await client.post('https://passport-api.mihoyo.com/account/ma-cn-session/app/getTokenByGameToken',headers=headers,json=data)
-            api_result = ApiResultHandler(res.json())
-            if api_result.retcode == 0:
-                return api_result.data
-            else:
-                raise Exception("获取stoken失败")
-            
-async def get_cookie_token(game_token: dict, retry: bool = True):
-    for attempt in Retrying(stop=stop_after_attempt(3)):
-        with attempt:
-            res = await get(GETCOOKIE_URL.format(game_token=game_token['token'], 
-                                                 account_id=game_token['uid']))
-            api_result = ApiResultHandler(res.json())
-            if api_result.retcode == 0:
-                return api_result.data.get("cookie_token")
-            else:
-                raise Exception("获取cookie_token失败")
+            log.info(response.headers)
+            log.info(response.headers.get_list("Set-Cookie"))
+            return CheckLoginHandler(response.json())
 
 async def check_qrcode(login_data):
     while True:
