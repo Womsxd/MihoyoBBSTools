@@ -1,0 +1,5 @@
+loguru>=0.7.0
+pydantic>=1.10.12
+httpx>=0.24.1
+orjson>=3.9.1
+tenacity>=8.2.2
