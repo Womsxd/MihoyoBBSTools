@@ -1,3 +1,8 @@
+
+# Created by https://www.toptal.com/developers/gitignore/api/python
+# Edit at https://www.toptal.com/developers/gitignore?templates=python
+
+### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -50,6 +55,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+pytestdebug.log
 
 # Translations
 *.mo
@@ -70,6 +76,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+doc/_build/
 
 # PyBuilder
 target/
@@ -128,21 +135,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# VSCode
-.vscode/
+# pytype static type analyzer
+.pytype/
 
-# idea
-.idea/
-
-# 避免上传配置文件
-config/*.json
-config/*.yaml
-config/*.ini
-
-# push配置
-config/push.ini
-.DS_Store
-yaml/
-
-# 日志文件
-*.log
+# End of https://www.toptal.com/developers/gitignore/api/python
+logs
+data
