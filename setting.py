@@ -10,7 +10,7 @@ mihoyobbs_version = "2.58.2"  # Salt和Version相互对应
 # 米游社的客户端类型
 mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web
-# 云原神版本
+# 云原神相关数据
 cloudgenshin_Version = "3.0.0"
 
 # 米游社的分区列表
@@ -110,26 +110,26 @@ any_is_signurl = web_api + "/event/luna/info?lang=zh-cn&act_id={}&region={}&uid=
 any_sign_url = web_api + "/event/luna/sign"
 
 # 崩坏2自动签到相关的相关设置
-honkai2_Act_id = "e202203291431091"
+honkai2_act_id = "e202203291431091"
 
 # 崩坏3自动签到相关的设置
-honkai3rd_Act_id = "e202306201626331"
+honkai3rd_act_id = "e202306201626331"
 
 # 未定事件簿自动签到相关设置
-tearsofthemis_Act_id = "e202202251749321"
+tearsofthemis_act_id = "e202202251749321"
 
 # 原神自动签到相关的设置
-genshin_Act_id = "e202009291139501"
-genshin_checkin_rewards = f'{web_api}/event/bbs_sign_reward/home?act_id={genshin_Act_id}'
-genshin_Is_signurl = web_api + "/event/bbs_sign_reward/info?act_id={}&region={}&uid={}"
-genshin_Signurl = web_api + "/event/bbs_sign_reward/sign"
+genshin_act_id = "e202009291139501"
+genshin_checkin_rewards = f'{web_api}/event/bbs_sign_reward/home?act_id={genshin_act_id}'
+genshin_is_signurl = web_api + "/event/bbs_sign_reward/info?act_id={}&region={}&uid={}"
+genshin_signurl = web_api + "/event/bbs_sign_reward/sign"
 
 # 星穹铁道自动签到相关设置
-honkai_sr_Act_id = "e202304121516551"
+honkai_sr_act_id = "e202304121516551"
 
 # 云原神相关api
-cloud_genshin_Api = "https://api-cloudgame.mihoyo.com"
-cloud_genshin_sgin = cloud_genshin_Api + "/hk4e_cg_cn/wallet/wallet/get"
+cloud_genshin_api = "https://api-cloudgame.mihoyo.com"
+cloud_genshin_sgin = cloud_genshin_api + "/hk4e_cg_cn/wallet/wallet/get"
 
 # 接下来是国际服的内容
 
