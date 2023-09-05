@@ -30,7 +30,7 @@ def checkin_game(game_name, game_module, game_print_name=""):
 
 def main():
     # 初始化，加载配置
-    return_data = "\n米游社: "
+    return_data = "\n"
     config.load_config()
     if config.config["enable"]:
         # 检测参数是否齐全，如果缺少就进行登入操作
@@ -55,6 +55,7 @@ def main():
         # 米游社签到
         ret_code = 0
         if config.config["mihoyobbs"]["enable"]:
+            return_data += "米游社: "
             bbs = mihoyobbs.Mihoyobbs()
             if bbs.task_do["bbs_sign"] and bbs.task_do["bbs_read"] and bbs.task_do["bbs_like"] and \
                     bbs.task_do["bbs_share"]:
@@ -81,24 +82,20 @@ def main():
                 log.info(f"今天已经获得{bbs.today_have_get_coins}个米游币，"
                          f"还能获得{bbs.today_get_coins}个米游币，目前有{bbs.have_coins}个米游币")
                 time.sleep(random.randint(2, 8))
-        else:
-            return_data += "\n" + "米游社功能未启用！"
-            log.info("米游社功能未启用！")
-        # 崩坏2签到
-        return_data += checkin_game("honkai2", honkai2.Honkai2, "崩坏学园2")
-        # 崩坏3签到
-        return_data += checkin_game("honkai3rd", honkai3rd.Honkai3rd, "崩坏3rd")
-        # 未定事件簿签到
-        return_data += checkin_game("tears_of_themis", tearsofthemis.Tears_of_themis, "未定事件簿")
-        # 原神签到
-        return_data += checkin_game("genshin", genshin.Genshin, "原神")
-        # 崩铁
-        return_data += checkin_game("honkai_sr", honkaisr.Honkaisr, "崩坏: 星穹铁道")
-        if config.config['cloud_games']['genshin']["enable"]:
-            log.info("正在进行云原神签到")
-            if config.config['cloud_games']['genshin']['token'] == "":
-                log.info("token为空,跳过任务")
-            else:
+        if config.config['games']['cn']["enable"]:
+            # 崩坏2签到
+            return_data += checkin_game("honkai2", honkai2.Honkai2, "崩坏学园2")
+            # 崩坏3签到
+            return_data += checkin_game("honkai3rd", honkai3rd.Honkai3rd, "崩坏3rd")
+            # 未定事件簿签到
+            return_data += checkin_game("tears_of_themis", tearsofthemis.Tears_of_themis, "未定事件簿")
+            # 原神签到
+            return_data += checkin_game("genshin", genshin.Genshin, "原神")
+            # 崩铁
+            return_data += checkin_game("honkai_sr", honkaisr.Honkaisr, "崩坏: 星穹铁道")
+            if config.config['cloud_games']['genshin']["enable"] \
+                    and config.config['cloud_games']['genshin']['token'] != "":
+                log.info("正在进行云原神签到")
                 cloud_ys = cloud_genshin.CloudGenshin()
                 data = cloud_ys.sign_account()
                 return_data += "\n\n" + data
