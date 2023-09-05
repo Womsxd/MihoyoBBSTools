@@ -11,7 +11,7 @@ mihoyobbs_version = "2.58.2"  # Salt和Version相互对应
 mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web
 # 云原神相关数据
-cloudgenshin_Version = "3.0.0"
+cloudgenshin_Version = "4.0.0"
 
 # 米游社的分区列表
 mihoyobbs_List = [{
