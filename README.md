@@ -110,7 +110,7 @@ var cookie=document.cookie;var ask=confirm('Cookie:'+cookie+'\n\nDo you want to 
 
 3. 替换配置文件中 `useragent` 的原始内容
 
-## 关于如何获取云原神的 token（本方案由 [Anye](https://github.com/anye1844) 提供）
+## 关于如何获取云原神的 token（本方案由 [Anye](https://github.com/Anyexyz) 提供）
 
 1. 建议使用windows电脑获取云原神token
 
