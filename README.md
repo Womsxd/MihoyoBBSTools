@@ -110,19 +110,17 @@ var cookie=document.cookie;var ask=confirm('Cookie:'+cookie+'\n\nDo you want to 
 
 3. 替换配置文件中 `useragent` 的原始内容
 
-## 关于如何获取云原神的 token（本方案由 [Anye](https://github.com/anye1844) 提供）
+## 获取云原神的 token
 
-1. 建议使用windows电脑获取云原神token
+1. 建议使用打开浏览器的无痕/隐私/InPrivate模式
 
-2. 下载安装 [云原神PC客户端](https://mhyy.mihoyo.com/)
+2. 下载 [云原神网页版](https://ys.mihoyo.com/cloud/#/)
 
-3. 下载安装 [Http Debugger Pro](https://www.httpdebugger.com/)
+3. 按下键盘上的`F12`或右键检查,打开开发者工具,在打开后登入账号
 
-4. 打开 Http Debugger Pro，点击```Decrypt SSL```安装证书以解析HTTPS流量
-![](./img/1.png)
+4. 在filter里面输入`wallet/wallet/get`,选择`status`为`200`的记录
 
-5. 在```Http Debugger Pro```中点击```Start```，启动```云原神```，登录账号，返回```Http Debugger Pro```中```Ctrl+F```搜索x-rpc-combo_token，如图顺序操作，获取到 ```token```，形如```bi=xxx;ai=xxx;ci=xxx;ct=xxx;oi=xxx;si=xxx```
-![](./img/2.png)
+5. 点击记录，往下拉，找到`X-Rpc-Combo_token`,复制对应的值,成功获取token
 
 ## 使用 Docker 运行
 
