@@ -26,13 +26,12 @@ def timestamp() -> int:
 
 # 获取请求Header里的DS 当web为true则生成网页端的DS
 def get_ds(web: bool) -> str:
+    n = setting.mihoyobbs_salt
     if web:
-        n = setting.mihoyobbs_salt_web
-    else:
-        n = setting.mihoyobbs_salt
+        n = setting.mihoyobbs_salt_web   
     i = str(timestamp())
     r = random_text(6)
-    c = md5("salt=" + n + "&t=" + i + "&r=" + r)
+    c = md5(f'salt={n}&t={i}&r={r}')
     return f"{i},{r},{c}"
 
 
@@ -41,8 +40,7 @@ def get_ds2(q: str, b: str) -> str:
     n = setting.mihoyobbs_salt_x6
     i = str(timestamp())
     r = str(random.randint(100001, 200000))
-    add = f'&b={b}&q={q}'
-    c = md5("salt=" + n + "&t=" + i + "&r=" + r + add)
+    c = md5(f'salt=salt={n}&t={i}&r={r}&b={b}&q={q}')
     return f"{i},{r},{c}"
 
 
