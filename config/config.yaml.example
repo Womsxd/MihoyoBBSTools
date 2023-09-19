@@ -47,5 +47,5 @@ games:
       black_list: []
 cloud_games: #云游戏专区
   genshin: #云原神
-    enable: true #开启签到
+    enable: false #开启签到
     token: "" #这里填入抓包获得的token
