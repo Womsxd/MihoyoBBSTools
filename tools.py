@@ -40,7 +40,7 @@ def get_ds2(q: str, b: str) -> str:
     n = setting.mihoyobbs_salt_x6
     i = str(timestamp())
     r = str(random.randint(100001, 200000))
-    c = md5(f'salt=salt={n}&t={i}&r={r}&b={b}&q={q}')
+    c = md5(f'salt={n}&t={i}&r={r}&b={b}&q={q}')
     return f"{i},{r},{c}"
 
 
