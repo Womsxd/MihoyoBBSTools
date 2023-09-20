@@ -1,3 +1,4 @@
+import re
 import config
 import setting
 from request import http
@@ -17,12 +18,10 @@ def login():
             if i.split("=")[0] == " login_ticket":
                 config.config["account"]["login_ticket"] = i.split("=")[1]
                 break
-        # 这里获取Stuid，但是实际是可以直接拿cookie里面的Uid
-        data = http.get(url=setting.bbs_cookie_url.format(config.config["account"]["login_ticket"])).json()
-        if "成功" in data["data"]["msg"]:
-            config.config["account"]["stuid"] = str(data["data"]["cookie_info"]["account_id"])
-            data = http.get(url=setting.bbs_cookie_url2.format(
-                config.config["account"]["login_ticket"], config.config["account"]["stuid"])).json()
+        uid = get_uid()
+        if uid is not None:
+            config.config["account"]["stuid"] = uid
+            data = http.get(url=setting.bbs_cookie_url2.format(config.config["account"]["login_ticket"], uid)).json()
             config.config["account"]["stoken"] = data["data"]["list"][0]["token"]
             log.info("登录成功！")
             log.info("正在保存Config！")
@@ -35,3 +34,16 @@ def login():
         log.error("cookie中没有'login_ticket'字段,请重新登录米游社，重新抓取cookie!")
         config.clear_cookies()
         raise CookieError('Cookie lost login_ticket')
+
+
+def get_uid() -> str:
+    uid = None
+    uid_match = re.search(r"(account_id|ltuid|login_uid)=(\d+)", config.config["account"]["cookie"])
+    if uid_match is None:
+        # 这里获取Stuid，但是实际是可以直接拿cookie里面的Uid
+        data = http.get(url=setting.bbs_cookie_url.format(config.config["account"]["login_ticket"])).json()
+        if "成功" in data["data"]["msg"]:
+            uid = str(data["data"]["cookie_info"]["account_id"])
+    else:
+        uid = uid_match.group(2)
+    return uid
