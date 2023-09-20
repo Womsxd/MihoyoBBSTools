@@ -1,12 +1,12 @@
 # 米游社的Salt
 # java提取，会跟随版本更新
-mihoyobbs_salt = "kzTvKGDHumYf6h1Ia5txMjxAJuTtD0ol"
-mihoyobbs_salt_web = "KTJQGN2a2Trqk0tcQZS6JV3rU7CnV8Q6"
+mihoyobbs_salt = "awFeNNTsLYcK20LSO60Es8CRVZOjCB1b"
+mihoyobbs_salt_web = "6pNd5NnDnbwKxewrPwEoWlSYwhualS2H"
 # so提取 一般不会变
 mihoyobbs_salt_x4 = "xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs"
 mihoyobbs_salt_x6 = "t0qEgfub6cvueAPgR5m9aQWWVciEer7v"
 # 米游社的版本
-mihoyobbs_version = "2.58.2"  # Salt和Version相互对应
+mihoyobbs_version = "2.59.1"  # Salt和Version相互对应
 # 米游社的客户端类型
 mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web
