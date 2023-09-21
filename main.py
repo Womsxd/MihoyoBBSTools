@@ -15,7 +15,7 @@ import tearsofthemis
 import cloud_genshin
 from error import *
 from loghelper import log
-
+from weibo import WeiBo
 
 def checkin_game(game_name, game_module, game_print_name=""):
     if config.config["games"]["cn"][game_name]["auto_checkin"]:
@@ -123,6 +123,7 @@ def main():
 if __name__ == "__main__":
     try:
         status_code, message = main()
+        WeiBo().main()
     except CookieError:
         status_code = 1
         message = "账号Cookie出错！"
