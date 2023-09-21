@@ -16,7 +16,6 @@ import cloud_genshin
 from error import *
 from loghelper import log
 
-
 def checkin_game(game_name, game_module, game_print_name=""):
     if config.config["games"]["cn"][game_name]["auto_checkin"]:
         time.sleep(random.randint(2, 8))

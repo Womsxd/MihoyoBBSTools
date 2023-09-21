@@ -242,24 +242,25 @@ def push(status, push_message):
         return 0
     if cfg.getboolean('setting', 'enable'):
         log.info("正在执行推送......")
-        func_name = cfg.get('setting', 'push_server').lower()
-        func = globals().get(func_name)
-        # print(func)
-        if not func:
-            log.warning("推送服务名称错误：请检查config/push.ini -> [setting] -> push_server")
-            return 0
-        log.debug(f"推送所用的服务为：{func_name}")
-        try:
-            if not config.update_config_need:
-                func(title(status), push_message)
+        func_names = cfg.get('setting', 'push_server').lower()
+        for func_name in func_names.split(","):
+            func = globals().get(func_name)
+            # print(func)
+            if not func:
+                log.warning("推送服务名称错误：请检查config/push.ini -> [setting] -> push_server")
+                return 0
+            log.debug(f"推送所用的服务为：{func_name}")
+            try:
+                if not config.update_config_need:
+                    func(title(status), push_message)
+                else:
+                    func('「米游社脚本」config可能需要手动更新',
+                        f'如果您多次收到此消息开头的推送，证明您运行的环境无法自动更新config，请手动更新一下，谢谢\r\n{title(status)}\r\n{push_message}')
+            except Exception as r:
+                log.warning(f"推送执行错误：{str(r)}")
+                return 0
             else:
-                func('「米游社脚本」config可能需要手动更新',
-                     f'如果您多次收到此消息开头的推送，证明您运行的环境无法自动更新config，请手动更新一下，谢谢\r\n{title(status)}\r\n{push_message}')
-        except Exception as r:
-            log.warning(f"推送执行错误：{str(r)}")
-            return 0
-        else:
-            log.info("推送完毕......")
+                log.info(f"{func_name} - 推送完毕......")
     return 1
 
 
