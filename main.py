@@ -15,7 +15,6 @@ import tearsofthemis
 import cloud_genshin
 from error import *
 from loghelper import log
-from weibo import WeiBo
 
 def checkin_game(game_name, game_module, game_print_name=""):
     if config.config["games"]["cn"][game_name]["auto_checkin"]:
