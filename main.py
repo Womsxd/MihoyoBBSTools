@@ -123,7 +123,6 @@ def main():
 if __name__ == "__main__":
     try:
         status_code, message = main()
-        WeiBo().main()
     except CookieError:
         status_code = 1
         message = "账号Cookie出错！"
