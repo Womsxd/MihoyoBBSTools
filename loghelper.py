@@ -13,4 +13,8 @@ else:
         level=logging.INFO,
         format='%(asctime)s %(levelname)s %(message)s',
         datefmt='%Y-%m-%dT%H:%M:%S')
-    log = logger = logging
+    log = logging
+
+# 获取httpx的日志记录器，并将其级别设置为CRITICAL，让日志不再输出httpx的相关日志
+httpx_log = logging.getLogger("httpx")
+httpx_log.setLevel(logging.CRITICAL)
