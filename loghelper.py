@@ -15,6 +15,6 @@ else:
         datefmt='%Y-%m-%dT%H:%M:%S')
     log = logging
 
-# 获取httpx的日志记录器，并将其级别设置为CRITICAL，让日志不再输出httpx的相关日志
+# 获取httpx的日志记录器，并将其级别设置为DEBUG，让httpx只在debug下输出日志
 httpx_log = logging.getLogger("httpx")
-httpx_log.setLevel(logging.CRITICAL)
+httpx_log.setLevel(logging.DEBUG)
