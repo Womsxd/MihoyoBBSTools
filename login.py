@@ -42,7 +42,7 @@ def get_uid() -> str:
     uid_match = re.search(r"(account_id|ltuid|login_uid)=(\d+)", config.config["account"]["cookie"])
     if uid_match is None:
         # stuid就是uid，先搜索cookie里面的，搜不到再用api获取
-        data = http.get(url=setting.bbs_cookie_url.format(config.config["account"]["login_ticket"])).json()
+        data = http.get(url=setting.bbs_account_info.format(config.config["account"]["login_ticket"])).json()
         if "成功" in data["data"]["msg"]:
             uid = str(data["data"]["cookie_info"]["account_id"])
     else:
