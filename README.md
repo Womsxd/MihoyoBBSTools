@@ -11,7 +11,7 @@
 - 此项目的用途
 
   这是一个米游社的辅助签到项目，包含了米游币、崩坏学院2、崩坏3、原神、未定事件簿、崩坏:星穹铁道
-  已经支持米哈游国内正在运营的全部游戏的米游社签到(2022-4-26)
+  已经支持米哈游国内在运营的全部游戏的米游社签到，以及米游币自动获取
 
 ## 如何使用程序
 
@@ -256,6 +256,7 @@ ql repo https://github.com/Womsxd/MihoyoBBSTools.git "ql_main.py" "" "error|miho
 | --- | --- | --- |
 | AutoMihoyoBBS_config_path | /ql/data/config/ | 设置配置文件路径（必选） |
 | AutoMihoyoBBS_config_multi | 1 | 开启多用户（可选） |
+| AutoMihoyoBBS_config_prefix | mhy_ | 自定义文件开头(单用户可选，多用户推荐) |
 
 **注意！仅多用户需添加变量```AutoMihoyoBBS_config_multi```**
 
@@ -270,6 +271,7 @@ cp /ql/data/repo/Womsxd_MihoyoBBSTools/config/config.yaml.example /ql/data/confi
 ```
 
 多用户需要注意，配置文件的名字必须以```mhy_```开头，之后的```[config*]```可以为任意字符
+或通过环境变量```AutoMihoyoBBS_config_prefix```来自定义开头，如果不配置则默认```mhy_```开头
 
 ```sh
 cp /ql/data/repo/Womsxd_MihoyoBBSTools/config/config.yaml.example /ql/data/config/mhy_[config1].yaml
