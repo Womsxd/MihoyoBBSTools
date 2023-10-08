@@ -15,7 +15,8 @@ def fund_config(ext: str) -> list:
     file_name = []
     for files in os.listdir(config.path):
         if os.path.splitext(files)[1] == ext:
-            file_name.append(files)
+            if config.config_prefix == "" or files.startswith(config.config_prefix):
+                file_name.append(files)
     return file_name
 
 # 筛选青龙多用户配置文件（头部匹配）
@@ -30,8 +31,10 @@ def main_multi(autorun: bool):
     log.info("AutoMihoyoBBS Multi User mode")
     log.info("正在搜索配置文件！")
     config_list = fund_config('.yaml')
-    if os.getenv("AutoMihoyoBBS_config_multi") == '1':
-        config_list = ql_config(config_list)
+    if os.getenv("AutoMihoyoBBS_config_prefix") is None and os.getenv("AutoMihoyoBBS_config_multi") == '1':
+        # 判断通过读取青龙目录环境变量来判断用户是否使用青龙面板
+        if os.getenv("QL_DIR") is not None:
+            config_list = ql_config(config_list)
     if len(config_list) == 0:
         log.warning("未检测到配置文件，请确认config文件夹存在.yaml后缀名的配置文件！")
         exit(1)
