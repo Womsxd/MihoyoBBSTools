@@ -55,7 +55,7 @@ def run_bbs():
         log.info(f"今天已经获得{bbs.today_have_get_coins}个米游币，"
                  f"还能获得{bbs.today_get_coins}个米游币，目前有{bbs.have_coins}个米游币")
         time.sleep(random.randint(2, 8))
-        return return_data
+    return return_data
 
 
 def main():
