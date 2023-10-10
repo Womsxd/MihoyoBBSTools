@@ -93,8 +93,8 @@ web_api = "https://api-takumi.miyoushe.com"
 account_Info_url = web_api + "/binding/api/getUserGameRolesByCookie?game_biz="
 
 # 米游社的API列表
-bbs_account_info = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket?login_ticket={}"
-bbs_cookie_url2 = web_api + "/auth/api/getMultiTokenByLoginTicket?login_ticket={}&token_types=3&uid={}"
+bbs_account_info = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket"
+bbs_get_multi_token_by_login_ticket = web_api + "/auth/api/getMultiTokenByLoginTicket"
 bbs_get_cookie_token_by_stoken = web_api + "/auth/api/getCookieAccountInfoBySToken"
 bbs_tasks_list = bbs_api + "/apihub/sapi/getUserMissionsState"  # 获取任务列表
 bbs_sign_url = bbs_api + "/apihub/app/api/signIn"  # post

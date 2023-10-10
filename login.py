@@ -26,7 +26,9 @@ def login():
     uid = get_uid()
     if uid is not None:
         config.config["account"]["stuid"] = uid
-        data = http.get(url=setting.bbs_cookie_url2.format(login_ticket, uid), headers=headers).json()
+        data = http.get(url=setting.bbs_get_multi_token_by_login_ticket,
+                        params={"login_ticket": login_ticket, "token_types": "1", "uid": uid},
+                        headers=headers).json()
         config.config["account"]["stoken"] = data["data"]["list"][0]["token"]
         log.info("登录成功！")
         log.info("正在保存Config！")
@@ -47,7 +49,8 @@ def get_uid() -> str:
     uid_match = re.search(r"(account_id|ltuid|login_uid)=(\d+)", config.config["account"]["cookie"])
     if uid_match is None:
         # stuid就是uid，先搜索cookie里面的，搜不到再用api获取
-        data = http.get(url=setting.bbs_account_info.format(config.config["account"]["login_ticket"]),
+        data = http.get(url=setting.bbs_account_info,
+                        params={"bbs_account_info": config.config["account"]["login_ticket"]},
                         headers=headers).json()
         if "成功" in data["data"]["msg"]:
             uid = str(data["data"]["cookie_info"]["account_id"])
