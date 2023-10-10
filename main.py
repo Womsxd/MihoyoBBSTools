@@ -16,6 +16,7 @@ import cloud_genshin
 from error import *
 from loghelper import log
 
+
 def checkin_game(game_name, game_module, game_print_name=""):
     if config.config["games"]["cn"][game_name]["auto_checkin"]:
         time.sleep(random.randint(2, 8))
@@ -25,6 +26,36 @@ def checkin_game(game_name, game_module, game_print_name=""):
         return_data = f"\n\n{game_module().sign_account()}"
         return return_data
     return ""
+
+def run_bbs():
+    return_data = "米游社: "
+    bbs = mihoyobbs.Mihoyobbs()
+    if bbs.task_do["bbs_sign"] and bbs.task_do["bbs_read"] and bbs.task_do["bbs_like"] and \
+            bbs.task_do["bbs_share"]:
+        return_data += "\n" + f"今天已经全部完成了！\n" \
+                              f"一共获得{bbs.today_have_get_coins}个米游币\n目前有{bbs.have_coins}个米游币"
+        log.info(f"今天已经全部完成了！一共获得{bbs.today_have_get_coins}个米游币，目前有{bbs.have_coins}个米游币")
+    else:
+        i = 0
+        while bbs.today_get_coins != 0 and i < 3:
+            if i > 0:
+                bbs.refresh_list()
+            if config.config["mihoyobbs"]["checkin"]:
+                bbs.signing()
+            if config.config["mihoyobbs"]["read_posts"]:
+                bbs.read_posts()
+            if config.config["mihoyobbs"]["like_posts"]:
+                bbs.like_posts()
+            if config.config["mihoyobbs"]["share_post"]:
+                bbs.share_post()
+            bbs.get_tasks_list()
+            i += 1
+        return_data += "\n" + f"今天已经获得{bbs.today_have_get_coins}个米游币\n" \
+                              f"还能获得{bbs.today_get_coins}个米游币\n目前有{bbs.have_coins}个米游币"
+        log.info(f"今天已经获得{bbs.today_have_get_coins}个米游币，"
+                 f"还能获得{bbs.today_get_coins}个米游币，目前有{bbs.have_coins}个米游币")
+        time.sleep(random.randint(2, 8))
+        return return_data
 
 
 def main():
@@ -54,33 +85,7 @@ def main():
         # 米游社签到
         ret_code = 0
         if config.config["mihoyobbs"]["enable"]:
-            return_data += "米游社: "
-            bbs = mihoyobbs.Mihoyobbs()
-            if bbs.task_do["bbs_sign"] and bbs.task_do["bbs_read"] and bbs.task_do["bbs_like"] and \
-                    bbs.task_do["bbs_share"]:
-                return_data += "\n" + f"今天已经全部完成了！\n" \
-                                      f"一共获得{bbs.today_have_get_coins}个米游币\n目前有{bbs.have_coins}个米游币"
-                log.info(f"今天已经全部完成了！一共获得{bbs.today_have_get_coins}个米游币，目前有{bbs.have_coins}个米游币")
-            else:
-                i = 0
-                while bbs.today_get_coins != 0 and i < 3:
-                    if i > 0:
-                        bbs.refresh_list()
-                    if config.config["mihoyobbs"]["checkin"]:
-                        bbs.signing()
-                    if config.config["mihoyobbs"]["read_posts"]:
-                        bbs.read_posts()
-                    if config.config["mihoyobbs"]["like_posts"]:
-                        bbs.like_posts()
-                    if config.config["mihoyobbs"]["share_post"]:
-                        bbs.share_post()
-                    bbs.get_tasks_list()
-                    i += 1
-                return_data += "\n" + f"今天已经获得{bbs.today_have_get_coins}个米游币\n" \
-                                      f"还能获得{bbs.today_get_coins}个米游币\n目前有{bbs.have_coins}个米游币"
-                log.info(f"今天已经获得{bbs.today_have_get_coins}个米游币，"
-                         f"还能获得{bbs.today_get_coins}个米游币，目前有{bbs.have_coins}个米游币")
-                time.sleep(random.randint(2, 8))
+            return_data += run_bbs()
         if config.config['games']['cn']["enable"]:
             # 崩坏2签到
             return_data += checkin_game("honkai2", honkai2.Honkai2, "崩坏学园2")
