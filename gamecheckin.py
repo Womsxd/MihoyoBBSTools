@@ -16,14 +16,17 @@ class GameCheckin:
         self.game_id = game_id
         self.rewards_api = setting.cn_game_checkin_rewards
         self.account_list = get_account_list(self.game_id, self.headers)
-        if len(self.account_list) != 0:
-            self.checkin_rewards = self.get_checkin_rewards()
         self.is_sign_api = setting.cn_game_is_signurl
         self.game_mid = ""
         self.game_name = ""
         self.sign_api = setting.cn_game_sign_url
         self.act_id = ""
         self.player_name = "玩家"
+        self.checkin_rewards = []
+
+    def init(self):
+        if len(self.account_list) != 0:
+            self.checkin_rewards = self.get_checkin_rewards()
 
     def _get_headers(self) -> dict:
         headers = setting.headers.copy()
