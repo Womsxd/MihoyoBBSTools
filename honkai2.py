@@ -11,3 +11,4 @@ class Honkai2(GameCheckin):
         self.act_id = setting.honkai2_act_id
         self.game_mid = "honkai2"
         self.game_name = "崩坏学园2"
+        self.init()

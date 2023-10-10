@@ -12,3 +12,4 @@ class Honkaisr(GameCheckin):
         self.game_mid = "honkai_sr"
         self.game_name = "崩坏: 星穹铁道"
         self.player_name = "开拓者"
+        self.init()

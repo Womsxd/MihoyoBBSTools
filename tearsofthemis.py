@@ -12,4 +12,5 @@ class Tears_of_themis(GameCheckin):
         self.game_mid = "tears_of_themis"
         self.game_name = "未定事件簿"
         self.player_name = "律师"
+        self.init()
         

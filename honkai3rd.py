@@ -12,3 +12,4 @@ class Honkai3rd(GameCheckin):
         self.game_mid = "honkai3rd"
         self.game_name = "崩坏3"
         self.player_name = "舰长"
+        self.init()

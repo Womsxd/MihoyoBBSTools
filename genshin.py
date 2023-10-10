@@ -10,7 +10,8 @@ class Genshin(GameCheckin):
         self.act_id = setting.genshin_act_id
         self.sign_api = setting.genshin_signurl
         self.is_sign_api = setting.genshin_is_signurl
-        self.checkin_rewards = setting.genshin_checkin_rewards
+        self.rewards_api = setting.genshin_checkin_rewards
         self.game_mid = "genshin"
         self.game_name = "原神"
         self.player_name = "旅行者"
+        self.init()
