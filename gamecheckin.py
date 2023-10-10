@@ -11,17 +11,17 @@ from account import get_account_list
 
 
 class GameCheckin:
-    def __init__(self, game_id, rewards_api) -> None:
+    def __init__(self, game_id) -> None:
         self.headers = self._get_headers()
         self.game_id = game_id
-        self.rewards_api = rewards_api
+        self.rewards_api = setting.cn_game_checkin_rewards
         self.account_list = get_account_list(self.game_id, self.headers)
         if len(self.account_list) != 0:
             self.checkin_rewards = self.get_checkin_rewards()
-        self.is_sign_api = setting.any_is_signurl
+        self.is_sign_api = setting.cn_game_is_signurl
         self.game_mid = ""
         self.game_name = ""
-        self.sign_api = setting.any_sign_url
+        self.sign_api = setting.cn_game_sign_url
         self.act_id = ""
         self.player_name = "玩家"
 
@@ -38,7 +38,7 @@ class GameCheckin:
         log.info("正在获取签到奖励列表...")
         max_retry = 3
         for i in range(max_retry):
-            req = http.get(self.rewards_api, headers=self.headers)
+            req = http.get(self.rewards_api, params={"act_id": self.act_id}, headers=self.headers)
             data = req.json()
             if data["retcode"] == 0:
                 return data["data"]["awards"]
@@ -50,7 +50,8 @@ class GameCheckin:
 
     # 判断签到
     def is_sign(self, region: str, uid: str) -> dict:
-        req = http.get(self.is_sign_api.format(self.act_id, region, uid), headers=self.headers)
+        req = http.get(self.is_sign_api, params={"act_id": self.act_id, "region": region, "uid": uid},
+                       headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
             log.warning("获取账号签到信息失败！")
