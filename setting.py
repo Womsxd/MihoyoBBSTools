@@ -90,25 +90,26 @@ headers = {
 # 通用设置
 bbs_api = "https://bbs-api.miyoushe.com"
 web_api = "https://api-takumi.miyoushe.com"
-account_Info_url = web_api + "/binding/api/getUserGameRolesByCookie?game_biz="
+account_Info_url = web_api + "/binding/api/getUserGameRolesByCookie"
 
 # 米游社的API列表
 bbs_account_info = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket"
-bbs_get_multi_token_by_login_ticket = web_api + "/auth/api/getMultiTokenByLoginTicket"
-bbs_get_cookie_token_by_stoken = web_api + "/auth/api/getCookieAccountInfoBySToken"
-bbs_tasks_list = bbs_api + "/apihub/sapi/getUserMissionsState"  # 获取任务列表
-bbs_sign_url = bbs_api + "/apihub/app/api/signIn"  # post
-bbs_post_list_url = bbs_api + "/post/api/getForumPostList?forum_id={}&is_good=false&is_hot=false&page_size=20&sort_type=1"
-bbs_detail_url = bbs_api + "/post/api/getPostFull?post_id={}"
-bbs_share_url = bbs_api + "/apihub/api/getShareConf?entity_id={}&entity_type=1"
-bbs_like_url = bbs_api + "/apihub/sapi/upvotePost"  # post json
-bbs_get_captcha = bbs_api + "/misc/api/createVerification?is_high=true"
-bbs_captcha_verify = bbs_api + "/misc/api/verifyVerification"
+bbs_get_multi_token_by_login_ticket = f"{web_api}/auth/api/getMultiTokenByLoginTicket"
+bbs_get_cookie_token_by_stoken = f"{web_api}/auth/api/getCookieAccountInfoBySToken"
+bbs_tasks_list = f"{bbs_api}/apihub/sapi/getUserMissionsState"  # 获取任务列表
+bbs_sign_url = f"{bbs_api}/apihub/app/api/signIn"  # post
+bbs_post_list_url = f"{bbs_api}/post/api/getForumPostList"
+bbs_detail_url = f"{bbs_api}/post/api/getPostFull"
+bbs_share_url = f"{bbs_api}/apihub/api/getShareConf"
+bbs_like_url = f"{bbs_api}/apihub/sapi/upvotePost"  # post json
+bbs_get_captcha = f"{bbs_api}/misc/api/createVerification?is_high=true"
+bbs_captcha_verify = f"{bbs_api}/misc/api/verifyVerification"
 
-# 通用游戏签到API
-any_checkin_rewards = web_api + '/event/luna/home?lang=zh-cn&act_id={}'
-any_is_signurl = web_api + "/event/luna/info?lang=zh-cn&act_id={}&region={}&uid={}"
-any_sign_url = web_api + "/event/luna/sign"
+# 通用游戏签到API和设置
+cn_game_lang = "zh-cn"
+cn_game_checkin_rewards = f"{web_api}/event/luna/home?lang={cn_game_lang}"
+cn_game_is_signurl = f"{web_api}/event/luna/info?lang={cn_game_lang}"
+cn_game_sign_url = f"{web_api}/event/luna/sign"
 
 # 崩坏2自动签到相关的相关设置
 honkai2_act_id = "e202203291431091"
@@ -121,16 +122,16 @@ tearsofthemis_act_id = "e202202251749321"
 
 # 原神自动签到相关的设置
 genshin_act_id = "e202009291139501"
-genshin_checkin_rewards = f'{web_api}/event/bbs_sign_reward/home?act_id={genshin_act_id}'
-genshin_is_signurl = web_api + "/event/bbs_sign_reward/info?act_id={}&region={}&uid={}"
-genshin_signurl = web_api + "/event/bbs_sign_reward/sign"
+genshin_checkin_rewards = f'{web_api}/event/bbs_sign_reward/home'
+genshin_is_signurl = f"{web_api}/event/bbs_sign_reward/info"
+genshin_signurl = f"{web_api}/event/bbs_sign_reward/sign"
 
 # 星穹铁道自动签到相关设置
 honkai_sr_act_id = "e202304121516551"
 
 # 云原神相关api
 cloud_genshin_api = "https://api-cloudgame.mihoyo.com"
-cloud_genshin_sgin = cloud_genshin_api + "/hk4e_cg_cn/wallet/wallet/get"
+cloud_genshin_sgin = f"{cloud_genshin_api}/hk4e_cg_cn/wallet/wallet/get"
 
 # 接下来是国际服的内容
 
