@@ -76,5 +76,6 @@ def update_cookie_token() -> bool:
         new_token = get_cookie_token_by_stoken()
         config.config["account"]["cookie"] = config.config["account"]["cookie"].replace(
             old_token_match.group(1), new_token)
+        config.save_config()
         return True
     return False
