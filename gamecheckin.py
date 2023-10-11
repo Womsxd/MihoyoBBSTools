@@ -1,4 +1,5 @@
 import time
+import login
 import tools
 import config
 import random
@@ -52,11 +53,13 @@ class GameCheckin:
         return []
 
     # 判断签到
-    def is_sign(self, region: str, uid: str) -> dict:
+    def is_sign(self, region: str, uid: str, update: bool = False) -> dict:
         req = http.get(self.is_sign_api, params={"act_id": self.act_id, "region": region, "uid": uid},
                        headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
+            if not update and login.update_cookie_token():
+                return self.is_sign(region, uid, True)
             log.warning("获取账号签到信息失败！")
             print(req.text)
             config.config["games"]["cn"][self.game_mid]["auto_checkin"] = False

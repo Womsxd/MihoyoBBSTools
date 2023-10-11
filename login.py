@@ -68,3 +68,13 @@ def get_cookie_token_by_stoken():
         config.clear_cookies()
         raise CookieError('Cookie expires')
     return data["data"]["cookie_token"]
+
+
+def update_cookie_token() -> bool:
+    old_token_match = re.search(r'cookie_token=(.*?)(?:;|$)', config.config["account"]["cookie"])
+    if old_token_match:
+        new_token = get_cookie_token_by_stoken()
+        config.config["account"]["cookie"] = config.config["account"]["cookie"].replace(
+            old_token_match.group(1), new_token)
+        return True
+    return False
