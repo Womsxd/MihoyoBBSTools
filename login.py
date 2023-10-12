@@ -27,7 +27,7 @@ def login():
     if uid is not None:
         config.config["account"]["stuid"] = uid
         data = http.get(url=setting.bbs_get_multi_token_by_login_ticket,
-                        params={"login_ticket": login_ticket, "token_types": "1", "uid": uid},
+                        params={"login_ticket": login_ticket, "token_types": "3", "uid": uid},
                         headers=headers).json()
         config.config["account"]["stoken"] = data["data"]["list"][0]["token"]
         log.info("登录成功！")
