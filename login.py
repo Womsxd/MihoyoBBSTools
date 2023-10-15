@@ -71,9 +71,11 @@ def get_cookie_token_by_stoken():
 
 
 def update_cookie_token() -> bool:
+    log.info("CookieToken失效，尝试刷新")
     old_token_match = re.search(r'cookie_token=(.*?)(?:;|$)', config.config["account"]["cookie"])
     if old_token_match:
         new_token = get_cookie_token_by_stoken()
+        log.info("CookieToken刷新成功")
         config.config["account"]["cookie"] = config.config["account"]["cookie"].replace(
             old_token_match.group(1), new_token)
         config.save_config()
