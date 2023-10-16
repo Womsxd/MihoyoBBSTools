@@ -59,6 +59,7 @@ class GameCheckin:
         data = req.json()
         if data["retcode"] != 0:
             if not update and login.update_cookie_token():
+                self._get_headers()
                 return self.is_sign(region, uid, True)
             log.warning("获取账号签到信息失败！")
             print(req.text)
