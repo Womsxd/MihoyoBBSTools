@@ -31,7 +31,7 @@ class Mihoyobbs:
             "x-rpc-device_model": "Mi 10",
             "Referer": "https://app.mihoyo.com",
             "Host": "bbs-api.mihoyo.com",
-            "User-Agent": "okhttp/4.8.0"
+            "User-Agent": "okhttp/4.9.3"
         }
         self.task_do = {
             "bbs_sign": False,
