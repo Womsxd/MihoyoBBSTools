@@ -133,6 +133,7 @@ class Mihoyobbs:
                 for retry_count in range(2):
                     header["DS"] = tools.get_ds2("", json.dumps({"gids": forum["id"]}))
                     req = http.post(url=setting.bbs_sign_url, json={"gids": forum["id"]}, headers=header)
+                    log.debug(req.text)
                     data = req.json()
                     if data["retcode"] == 1034:
                         log.warning("社区签到触发验证码")
@@ -159,6 +160,7 @@ class Mihoyobbs:
             for i in range(self.task_do["bbs_read_num"]):
                 req = http.get(url=setting.bbs_detail_url, params={"post_id": self.postsList[i][0]},
                                headers=self.headers)
+                log.debug(req.text)
                 data = req.json()
                 if data["message"] == "OK":
                     log.debug("看帖：{} 成功".format(self.postsList[i][1]))
@@ -175,6 +177,7 @@ class Mihoyobbs:
         for i in range(self.task_do["bbs_like_num"]):
             req = http.post(url=setting.bbs_like_url, headers=header,
                             json={"post_id": self.postsList[i][0], "is_cancel": False})
+            log.debug(req.text)
             data = req.json()
             if data["message"] == "OK":
                 log.debug("点赞：{} 成功".format(self.postsList[i][1]))
@@ -204,6 +207,7 @@ class Mihoyobbs:
             for i in range(3):
                 req = http.get(url=setting.bbs_share_url, params={"entity_id": self.postsList[0][0], "entity_type": 1},
                                headers=self.headers)
+                log.debug(req.text)
                 data = req.json()
                 if data["message"] == "OK":
                     log.debug(f"分享：{self.postsList[0][1]} 成功")
