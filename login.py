@@ -24,19 +24,15 @@ def login():
         raise CookieError('Cookie lost login_ticket')
     config.config["account"]["login_ticket"] = login_ticket
     uid = get_uid()
-    if uid is not None:
-        config.config["account"]["stuid"] = uid
-        data = http.get(url=setting.bbs_get_multi_token_by_login_ticket,
-                        params={"login_ticket": login_ticket, "token_types": "3", "uid": uid},
-                        headers=headers).json()
-        config.config["account"]["stoken"] = data["data"]["list"][0]["token"]
-        log.info("登录成功！")
-        log.info("正在保存Config！")
-        config.save_config()
-    else:
+    if uid is None:
         log.error("cookie已失效,请重新登录米游社抓取cookie")
         config.clear_cookies()
         raise CookieError('Cookie expires')
+    config.config["account"]["stuid"] = uid
+    config.config["account"]["stoken"] = get_stoken(login_ticket, uid)
+    log.info("登录成功！")
+    log.info("正在保存Config！")
+    config.save_config()
 
 
 def get_login_ticket() -> str:
@@ -57,6 +53,18 @@ def get_uid() -> str:
     else:
         uid = uid_match.group(2)
     return uid
+
+
+def get_stoken(login_ticket: str, uid: str) -> str:
+    data = http.get(url=setting.bbs_get_multi_token_by_login_ticket,
+                    params={"login_ticket": login_ticket, "token_types": "3", "uid": uid},
+                    headers=headers).json()
+    if data["retcode"] == 0:
+        return data["data"]["list"][0]["token"]
+    else:
+        log.error("login_ticket(只有半小时有效期)已失效,请重新登录米游社抓取cookie")
+        config.clear_cookies()
+        raise CookieError('Cookie expires')
 
 
 def get_cookie_token_by_stoken():
