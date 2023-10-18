@@ -50,7 +50,7 @@ def get_uid() -> str:
     if uid_match is None:
         # stuid就是uid，先搜索cookie里面的，搜不到再用api获取
         data = http.get(url=setting.bbs_account_info,
-                        params={"bbs_account_info": config.config["account"]["login_ticket"]},
+                        params={"login_ticket": config.config["account"]["login_ticket"]},
                         headers=headers).json()
         if "成功" in data["data"]["msg"]:
             uid = str(data["data"]["cookie_info"]["account_id"])
