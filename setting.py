@@ -5,6 +5,8 @@ mihoyobbs_salt_web = "1OJyMNCqFlstEQqqMOv0rKCIdTOoJhNt"
 # so提取 一般不会变
 mihoyobbs_salt_x4 = "xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs"
 mihoyobbs_salt_x6 = "t0qEgfub6cvueAPgR5m9aQWWVciEer7v"
+# 部分接口要带
+mihoyobbs_verify_key = "bll8iq97cem8"
 # 米游社的版本
 mihoyobbs_version = "2.60.1"  # Salt和Version相互对应
 # 米游社的客户端类型
