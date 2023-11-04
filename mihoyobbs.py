@@ -113,6 +113,7 @@ class Mihoyobbs:
                        params={"forum_id": setting.mihoyobbs_List_Use[0]["forumId"],
                                "is_good": False, "is_hot": False, "page_size": 20, "sort_type": 1},
                        headers=self.headers)
+        log.debug(req.text)
         data = req.json()["data"]["list"]
         while len(temp_list) < 5:
             post = random.choice(data)
