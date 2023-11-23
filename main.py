@@ -1,18 +1,23 @@
-import time
-import push
-import login
-import config
+import os
 import random
-import honkai2
-import genshin
-import setting
-import honkaisr
-import hoyo_sr
-import hoyo_gs
-import mihoyobbs
-import honkai3rd
-import tearsofthemis
+import shutil
+import subprocess
+import sys
+import time
+
 import cloud_genshin
+import config
+import genshin
+import honkai2
+import honkai3rd
+import honkaisr
+import hoyo_gs
+import hoyo_sr
+import login
+import mihoyobbs
+import push
+import setting
+import tearsofthemis
 from error import *
 from loghelper import log
 
@@ -124,7 +129,39 @@ def main():
         return 1, "Config未启用！"
 
 
+
 if __name__ == "__main__":
+    try:
+        status_code, message = main()
+        push.push(status_code, message)
+        for _ in range(5):
+            log.info("\n")
+        sys.exit(0)
+    except CookieError:
+        status_code = 1
+        message = "账号Cookie出错！"
+        log.error("账号Cookie有问题！")
+
+    time.sleep(5)
+    try:
+        current_directory = os.path.dirname(os.path.realpath(__file__))
+        mfile = os.path.join(current_directory, "mhylogin", "main00.py")
+        log.info(f"正在尝试获取 ck: {mfile}")
+        target_directory = os.path.join(current_directory, "mhylogin")
+        subprocess.run(["python3", mfile], cwd=target_directory)
+        source_file = os.path.join(
+            current_directory, "mhylogin", "outputjson", "config.yaml"
+        )
+        destination_file = os.path.join(current_directory, "config", "config.yaml")
+        if os.path.exists(source_file):
+            shutil.copy2(source_file, destination_file)
+            log.warning(f"File '{source_file}' copied to '{destination_file}'")
+        else:
+            log.warning(f"File '{source_file}' does not exist")
+            assert False, "获取ck失败"
+    except:
+        log.error("获取ck失败")
+    time.sleep(5)
     try:
         status_code, message = main()
     except CookieError:
@@ -132,3 +169,6 @@ if __name__ == "__main__":
         message = "账号Cookie出错！"
         log.error("账号Cookie有问题！")
     push.push(status_code, message)
+    for _ in range(5):
+        log.info("\n")
+    sys.exit(0)
