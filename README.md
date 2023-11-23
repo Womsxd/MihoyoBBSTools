@@ -29,7 +29,7 @@
 
   6. 请使用 vscode/notepad++等文本编辑器打开上一步复制好的配置文件
 
-  7. **使用[获取 Cookie](#获取米游社Cookie)里面的方法来获取米游社 Cookie**
+  7. **使用[获取 Cookie](#获取米游社-Cookie)里面的方法来获取米游社 Cookie**
 
   8. 将复制的 Cookie 粘贴到`config.yaml`的`cookie:" "`中(在`account`里面)
 
