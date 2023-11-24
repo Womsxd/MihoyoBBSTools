@@ -188,6 +188,5 @@ if __name__ == "__main__":
         message = "账号Cookie出错！"
         log.error("账号Cookie有问题！")
     push.push(status_code, message)
-    for _ in range(5):
-        log.info("\n")
+    log.info("\n"*5)
     sys.exit(0)
