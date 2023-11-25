@@ -63,6 +63,15 @@ def main():
     return_data = "\n"
     config.load_config()
     if config.config["enable"]:
+        # 整理 cookie，在字段重复时优先使用最后出现的值
+        cookie_dict = {}
+        for cookie in config.config["account"]["cookie"].split(";"):
+            cookie = cookie.strip()
+            if cookie == "":
+                continue
+            key, value = cookie.split("=", 1)
+            cookie_dict[key] = value
+        config.config["account"]["cookie"] = "; ".join([f"{key}={value}" for key, value in cookie_dict.items()])
         # 检测参数是否齐全，如果缺少就进行登入操作
         if config.config["account"]["login_ticket"] == "" or config.config["account"]["stuid"] == "" or \
                 config.config["account"]["stoken"] == "":
