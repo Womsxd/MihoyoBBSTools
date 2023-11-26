@@ -68,6 +68,10 @@ def get_stoken(login_ticket: str, uid: str) -> str:
 
 
 def get_cookie_token_by_stoken():
+    if config.config["account"]["stoken"] == "" and config.config["account"]["stuid"] == "":
+        log.error("Stoken和Suid为空，无法自动更新CookieToken")
+        config.clear_cookies()
+        raise CookieError('Cookie expires')
     data = http.get(url=setting.bbs_get_cookie_token_by_stoken,
                     params={"stoken": config.config["account"]["stoken"], "uid": config.config["account"]["stuid"]},
                     headers=headers).json()
