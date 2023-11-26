@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mihoyo
+spec:
+  selector:
+    matchLabels:
+      app: mihoyo
+  template:
+    metadata:
+      labels:
+        app: mihoyo
+    spec:
+      initContainers:
+        - name: mihoyo-init
+          image: busybox
+          command: ["/bin/sh", "-c"]
+          args: ["ls -al /conf-ro && cp -aL /conf-ro/* /conf/ && ls -al /conf"]
+          volumeMounts:
+            - name: mihoyo-conf-ro
+              mountPath: /conf-ro
+            - name: mihoyo-conf
+              mountPath: /conf
+      containers:
+        - name: mihoyo
+          image: womsxd/mihoyo-bbs:latest
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: mihoyo-conf
+              mountPath: /var/app/config
+      volumes:
+        - name: mihoyo-conf-ro
+          configMap:
+            name: mihoyo-conf
+        - name: mihoyo-conf
+          emptyDir: {}
