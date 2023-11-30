@@ -6,6 +6,8 @@
 
 也请不要滥用本项目
 
+⚠️ **对于Fork的开发者/用户，请不要滥用GitHub Action，因为 GitHub 将计算您的分支 GitHub Actions 使用量并归属到上游存储库，这可能导致 GitHub 停用此上游存储库**
+
 本项目米游币部分参考[XiaoMiku01/miyoubiAuto](https://github.com/XiaoMiku01/miyoubiAuto)进行编写
 
 - 此项目的用途
@@ -29,7 +31,7 @@
 
   6. 请使用 vscode/notepad++等文本编辑器打开上一步复制好的配置文件
 
-  7. **使用[获取 Cookie](#获取米游社-Cookie)里面的方法来获取米游社 Cookie**
+  7. **使用[获取 Cookie](#获取米游社-cookie)里面的方法来获取米游社 Cookie**
 
   8. 将复制的 Cookie 粘贴到`config.yaml`的`cookie:" "`中(在`account`里面)
 
