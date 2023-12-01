@@ -123,10 +123,7 @@ honkai3rd_act_id = "e202306201626331"
 tearsofthemis_act_id = "e202202251749321"
 
 # 原神自动签到相关的设置
-genshin_act_id = "e202009291139501"
-genshin_checkin_rewards = f'{web_api}/event/bbs_sign_reward/home'
-genshin_is_signurl = f"{web_api}/event/bbs_sign_reward/info"
-genshin_signurl = f"{web_api}/event/bbs_sign_reward/sign"
+genshin_act_id = "e202311201442471"
 
 # 星穹铁道自动签到相关设置
 honkai_sr_act_id = "e202304121516551"
