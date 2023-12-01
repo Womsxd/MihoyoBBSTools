@@ -91,7 +91,7 @@ headers = {
 
 # 通用设置
 bbs_api = "https://bbs-api.miyoushe.com"
-web_api = "https://api-takumi.miyoushe.com"
+web_api = "https://api-takumi.mihoyo.com"
 account_Info_url = web_api + "/binding/api/getUserGameRolesByCookie"
 
 # 米游社的API列表
