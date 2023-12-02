@@ -1,0 +1,78 @@
+[setting]
+enable=true
+# 共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot feishubot bark pushdeer gotify smtp(邮件推送) webhook qmsg(qq消息推送)
+push_server=pushplus
+# server酱 pushplus dingrobot 的推送token
+push_token=XXXXXX
+
+[cqhttp]
+#cqhttp的服务端地址
+cqhttp_url=http://127.0.0.1:5000/send_private_msg
+#推送给谁
+cqhttp_qq=10001
+
+[telegram]
+api_url=api.telegram.org
+bot_token=123465:abcdefg
+chat_id=123456
+
+[wecom]
+#企业微信的corpid
+wechat_id=
+#企业微信的应用配置
+agentid=
+secret=
+touser=@all
+
+[pushdeer]
+api_url=https://api2.pushdeer.com
+token=
+
+[dingrobot]
+webhook=https://oapi.dingtalk.com/robot/send?access_token=XXX
+secret=
+
+[feishubot]
+webhook=https://open.feishu.cn/open-apis/bot/v2/hook/XXX
+
+[bark]
+api_url=https://api.day.app
+token=ssXXX
+#bark通知图标，可选genshin,mihoyobbs,hokai2,honkai3rd,tears_of_themis
+icon=genshin
+
+[gotify]
+api_url=http://xxx.xxx.cn
+token=AMxxxx
+priority=7
+
+[ifttt]
+# If (Receive a web request) Then (Send a rich notification from the IFTTT app)
+# 使用value1(标题),value2(内容)
+event=mihoyo_push
+key=xxxxxxxxxxxxxxxxxxxxxx
+
+# 邮件推送
+[smtp]
+# 一般情况下，465端口会使用ssl加密默认465端口，不加密走25端口。
+# 例如qq邮箱为465端口，ssl加密;163邮箱不加密，使用25端口。
+# 请根据你的发送者邮箱配置端口和是否加密。
+mailhost=smtp.qq.com
+port=465
+ssl_enable=true
+fromaddr=xxx@example.com
+toaddr=xxx@example.com
+# 邮件主题
+subject=AutoMihoyoBBS
+username=xxx@example.com
+# 授权码
+password=passward
+
+#webhook自定义推送
+[webhook]
+webhook_url=
+
+# qmsg酱(qq消息推送)
+# https://qmsg.zendee.cn/user 获取key
+[qmsg]
+key=你的qmsg酱key
