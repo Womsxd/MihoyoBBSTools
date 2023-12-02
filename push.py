@@ -237,6 +237,17 @@ def webhook(send_title, push_message):
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
 
+# qmsg
+def qmsg(send_title, push_message):
+    rep = http.post(
+        url=f'https://qmsg.zendee.cn/send/{cfg.get("qmsg", "key")}',
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
+        data={
+            "msg":send_title+"\n"+push_message
+        }
+    ).json()
+    log.info(f"推送结果：{rep['reason']}")
+
 def push(status, push_message):
     if not load_config():
         return 0
