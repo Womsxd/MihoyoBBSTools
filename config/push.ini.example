@@ -1,6 +1,6 @@
 [setting]
 enable=true
-# 共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot feishubot bark pushdeer gotify smtp(邮件推送) webhook
+# 共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot feishubot bark pushdeer gotify smtp(邮件推送) webhook qmsg(qq消息推送)
 push_server=pushplus
 # server酱 pushplus dingrobot 的推送token
 push_token=XXXXXX
@@ -71,3 +71,8 @@ password=passward
 #webhook自定义推送
 [webhook]
 webhook_url=
+
+# qmsg酱(qq消息推送)
+# https://qmsg.zendee.cn/user 获取key
+[qmsg]
+key=你的qmsg酱key
