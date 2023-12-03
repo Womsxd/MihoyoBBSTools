@@ -86,7 +86,7 @@ def smtp(send_title, push_message):
     IMAGE_API = "http://api.iw233.cn/api.php?sort=random&type=json"
     
     try:
-        image_url = http.get(IMAGE_API).json()["pic"][0]
+        image_url = http.get(IMAGE_API,follow_redirects=True).json()["pic"][0]
     except:
         image_url = "unable to get the image"
         log.warning("获取随机背景图失败，请检查图片api")
