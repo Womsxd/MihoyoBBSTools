@@ -83,7 +83,7 @@ def smtp(send_title, push_message):
     import smtplib
     from email.mime.text import MIMEText
     
-    IMAGE_API = "http://api.iw233.cn/api.php?sort=random&type=json"
+    IMAGE_API = "https://api.iw233.cn/api.php?sort=random&type=json"
     
     try:
         image_url = http.get(IMAGE_API).json()["pic"][0]
