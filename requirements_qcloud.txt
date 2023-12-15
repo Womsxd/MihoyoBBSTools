@@ -1,2 +1,4 @@
 requests>=2.26.0
 PyYAML~=6.0
+2captcha-python
+urllib3==1.26.2

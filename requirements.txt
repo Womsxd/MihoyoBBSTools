@@ -1,3 +1,5 @@
 httpx>=0.21.1
 crontab~=1.0.1
 PyYAML~=6.0
+2captcha-python
+urllib3==1.26.2
