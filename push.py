@@ -186,6 +186,9 @@ def feishubot(send_title, push_message):
 
 # Bark
 def bark(send_title, push_message):
+    # make send_title and push_message to url encode
+    send_title = urllib.parse.quote_plus(send_title)
+    push_message = urllib.parse.quote_plus(push_message)
     rep = http.get(
         url=f'{cfg.get("bark", "api_url")}/{cfg.get("bark", "token")}/{send_title}/{push_message}?icon=https://cdn'
             f'.jsdelivr.net/gh/tanmx/pic@main/mihoyo/{cfg.get("bark", "icon")}.png'
