@@ -1,14 +1,14 @@
 # 米游社的Salt
 # java提取，会跟随版本更新
-mihoyobbs_salt = "pIlzNr5SAZhdnFW8ZxauW8UlxRdZc45r"
-mihoyobbs_salt_web = "0wr0OpH2BNuekYrfeRwkiDdshvt10cTY"
+mihoyobbs_salt = "yajbb9O8TgQYOW7JVZYfUJhXN7mAeZPE"
+mihoyobbs_salt_web = "LyD1rXqMv2GJhnwdvCBjFOKGiKuLY3aO"
 # so提取 一般不会变
 mihoyobbs_salt_x4 = "xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs"
 mihoyobbs_salt_x6 = "t0qEgfub6cvueAPgR5m9aQWWVciEer7v"
 # 部分接口要带
 mihoyobbs_verify_key = "bll8iq97cem8"
 # 米游社的版本
-mihoyobbs_version = "2.62.2"  # Salt和Version相互对应
+mihoyobbs_version = "2.67.1"  # Salt和Version相互对应
 # 米游社的客户端类型
 mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web
@@ -20,37 +20,30 @@ mihoyobbs_List = [{
     "id": "1",
     "forumId": "1",
     "name": "崩坏3",
-    "url": "https://bbs.mihoyo.com/bh3/"
 }, {
     "id": "2",
     "forumId": "26",
     "name": "原神",
-    "url": "https://bbs.mihoyo.com/ys/"
 }, {
     "id": "3",
     "forumId": "30",
     "name": "崩坏2",
-    "url": "https://bbs.mihoyo.com/bh2/"
 }, {
     "id": "4",
     "forumId": "37",
     "name": "未定事件簿",
-    "url": "https://bbs.mihoyo.com/wd/"
 }, {
     "id": "5",
     "forumId": "34",
     "name": "大别野",
-    "url": "https://bbs.mihoyo.com/dby/"
 }, {
     "id": "6",
     "forumId": "52",
     "name": "崩坏：星穹铁道",
-    "url": "https://bbs.mihoyo.com/sr/"
 }, {
     "id": "8",
     "forumId": "57",
     "name": "绝区零",
-    "url": "https://bbs.mihoyo.com/zzz/"
 }]
 
 game_id2name = {
@@ -58,7 +51,8 @@ game_id2name = {
     "bh3_cn": "崩坏3",
     "nxx_cn": "未定事件簿",
     "hk4e_cn": "原神",
-    "hkrpg_cn": "崩坏： 星穹铁道"
+    "hkrpg_cn": "崩坏： 星穹铁道",
+    "nap_cn": "绝区零"
 }
 
 game_id2config = {
@@ -66,7 +60,8 @@ game_id2config = {
     "bh3_cn": "honkai3rd",
     "nxx_cn": "tears_of_themis",
     "hk4e_cn": "genshin",
-    "hkrpg_cn": "honkaisr"
+    "hkrpg_cn": "honkaisr",
+    "nap_cn": "zzz"
 }
 # Config Load之后run里面进行列表的选择
 mihoyobbs_List_Use = []
@@ -127,6 +122,9 @@ genshin_act_id = "e202311201442471"
 
 # 星穹铁道自动签到相关设置
 honkai_sr_act_id = "e202304121516551"
+
+# 绝区零自动签到相关设置
+zzz_act_id = ""
 
 # 云原神相关api
 cloud_genshin_api = "https://api-cloudgame.mihoyo.com"
