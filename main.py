@@ -1,19 +1,20 @@
 import os
-import time
-import push
-import login
-import config
 import random
-import honkai2
-import genshin
-import setting
-import honkaisr
-import hoyo_sr
-import hoyo_gs
-import mihoyobbs
-import honkai3rd
-import tearsofthemis
+import time
+
 import cloud_genshin
+import config
+import genshin
+import honkai2
+import honkai3rd
+import honkaisr
+import hoyo_gs
+import hoyo_sr
+import login
+import mihoyobbs
+import push
+import setting
+import tearsofthemis
 from error import *
 from loghelper import log
 
@@ -29,37 +30,6 @@ def checkin_game(game_name, game_module, game_print_name=""):
     return ""
 
 
-def run_bbs():
-    return_data = "米游社: "
-    bbs = mihoyobbs.Mihoyobbs()
-    if bbs.task_do["bbs_sign"] and bbs.task_do["bbs_read"] and bbs.task_do["bbs_like"] and \
-            bbs.task_do["bbs_share"]:
-        return_data += "\n" + f"今天已经全部完成了！\n" \
-                              f"一共获得{bbs.today_have_get_coins}个米游币\n目前有{bbs.have_coins}个米游币"
-        log.info(f"今天已经全部完成了！一共获得{bbs.today_have_get_coins}个米游币，目前有{bbs.have_coins}个米游币")
-    else:
-        i = 0
-        while bbs.today_get_coins != 0 and i < 3:
-            if i > 0:
-                bbs.refresh_list()
-            if config.config["mihoyobbs"]["checkin"]:
-                bbs.signing()
-            if config.config["mihoyobbs"]["read_posts"]:
-                bbs.read_posts()
-            if config.config["mihoyobbs"]["like_posts"]:
-                bbs.like_posts()
-            if config.config["mihoyobbs"]["share_post"]:
-                bbs.share_post()
-            bbs.get_tasks_list()
-            i += 1
-        return_data += "\n" + f"今天已经获得{bbs.today_have_get_coins}个米游币\n" \
-                              f"还能获得{bbs.today_get_coins}个米游币\n目前有{bbs.have_coins}个米游币"
-        log.info(f"今天已经获得{bbs.today_have_get_coins}个米游币，"
-                 f"还能获得{bbs.today_get_coins}个米游币，目前有{bbs.have_coins}个米游币")
-        time.sleep(random.randint(2, 8))
-    return return_data
-
-
 def main():
     # 拒绝在GitHub Action运行
     if os.getenv('GITHUB_ACTIONS') == 'true':
@@ -70,8 +40,7 @@ def main():
     config.load_config()
     if config.config["enable"]:
         # 检测参数是否齐全，如果缺少就进行登入操作
-        if config.config["account"]["login_ticket"] == "" or config.config["account"]["stuid"] == "" or \
-                config.config["account"]["stoken"] == "":
+        if config.config["account"]["stuid"] == "" or config.config["account"]["stoken"] == "":
             # 整理 cookie，在字段重复时优先使用最后出现的值
             cookie_dict = {}
             for cookie in config.config["account"]["cookie"].split(";"):
@@ -100,7 +69,8 @@ def main():
         # 米游社签到
         ret_code = 0
         if config.config["mihoyobbs"]["enable"]:
-            return_data += run_bbs()
+            bbs = mihoyobbs.Mihoyobbs()
+            return_data += bbs.run_task()
         # 国服
         if config.config['games']['cn']["enable"]:
             # 崩坏2签到

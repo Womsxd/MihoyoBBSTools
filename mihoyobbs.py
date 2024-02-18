@@ -1,13 +1,14 @@
 import json
-import time
-import tools
-import config
 import random
+import time
+
 import captcha
+import config
 import setting
-from request import http
-from loghelper import log
+import tools
 from error import CookieError
+from loghelper import log
+from request import http
 
 
 def wait():
@@ -219,3 +220,32 @@ class Mihoyobbs:
                     log.debug(f"分享任务执行失败，正在执行第{i + 2}次，共3次")
                     wait()
             wait()
+
+    def run_task(self):
+        return_data = "米游社: "
+        if self.task_do["bbs_sign"] and self.task_do["bbs_read"] and self.task_do["bbs_like"] and \
+                self.task_do["bbs_share"]:
+            return_data += "\n" + f"今天已经全部完成了！\n" \
+                                  f"一共获得{self.today_have_get_coins}个米游币\n目前有{self.have_coins}个米游币"
+            log.info(f"今天已经全部完成了！一共获得{self.today_have_get_coins}个米游币，目前有{self.have_coins}个米游币")
+        else:
+            i = 0
+            while self.today_get_coins != 0 and i < 3:
+                if i > 0:
+                    self.refresh_list()
+                if config.config["mihoyobbs"]["checkin"]:
+                    self.signing()
+                if config.config["mihoyobbs"]["read_posts"]:
+                    self.read_posts()
+                if config.config["mihoyobbs"]["like_posts"]:
+                    self.like_posts()
+                if config.config["mihoyobbs"]["share_post"]:
+                    self.share_post()
+                self.get_tasks_list()
+                i += 1
+            return_data += "\n" + f"今天已经获得{self.today_have_get_coins}个米游币\n" \
+                                  f"还能获得{self.today_get_coins}个米游币\n目前有{self.have_coins}个米游币"
+            log.info(f"今天已经获得{self.today_have_get_coins}个米游币，"
+                     f"还能获得{self.today_get_coins}个米游币，目前有{self.have_coins}个米游币")
+            time.sleep(random.randint(2, 8))
+        return return_data
