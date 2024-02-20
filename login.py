@@ -1,9 +1,10 @@
 import re
+
 import config
 import setting
-from request import http
-from loghelper import log
 from error import CookieError
+from loghelper import log
+from request import http
 
 headers = setting.headers.copy()
 headers.pop("DS")
@@ -22,7 +23,6 @@ def login():
         log.error("cookie中没有'login_ticket'字段,请重新登录米游社，重新抓取cookie!")
         config.clear_cookies()
         raise CookieError('Cookie lost login_ticket')
-    config.config["account"]["login_ticket"] = login_ticket
     uid = get_uid()
     if uid is None:
         log.error("cookie已失效,请重新登录米游社抓取cookie")

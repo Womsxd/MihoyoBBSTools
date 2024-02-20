@@ -6,7 +6,7 @@ file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/logging.ini"
 if os.path.exists(file_path):
     import logging.config
 
-    logging.config.fileConfig(file_path)
+    logging.config.fileConfig(file_path,encoding='utf-8')
     log = logging.getLogger("AutoMihoyoBBS")
 else:
     logging.basicConfig(
