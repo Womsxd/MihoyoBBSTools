@@ -104,6 +104,17 @@ def get_next_day_timestamp() -> int:
     return next_day_time
 
 
+def time_conversion(minute: int) -> str:
+    """
+    将分钟转换为小时和分钟
+    :param minute: 分钟
+    :return: 小时和分钟
+    """
+    h = minute // 60
+    s = minute % 60
+    return f"{h}小时{s}分钟"
+
+
 # 获取ua 防止出现多个miHoYoBBS
 def get_useragent() -> str:
     if config.config["games"]["cn"]["useragent"] == "":  # 没设置自定义ua就返回默认ua
