@@ -81,7 +81,7 @@ class GameCheckin:
 
     def check_in(self, account):
         header = self.headers.copy()
-        retries = config.config['account'].get('retries', 3)
+        retries = config.config['games']['cn'].get('retries', 3)
         for i in range(1, retries + 1):
             if i > 1:
                 log.info(f'触发验证码，即将进行第 {i} 次重试，最多 {retries} 次')
