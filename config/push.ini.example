@@ -15,7 +15,8 @@ cqhttp_qq=10001
 api_url=api.telegram.org
 bot_token=123465:abcdefg
 chat_id=123456
-http_proxy=127.0.0.1:1080
+# 给telegarm推送启用代理，取消注释即可启用
+#http_proxy=127.0.0.1:1080
 
 [wecom]
 #企业微信的corpid

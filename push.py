@@ -5,7 +5,7 @@ import base64
 import config
 import urllib
 import hashlib
-from request import http,get_new_session_use_proxy
+from request import http, get_new_session_use_proxy
 from loghelper import log
 from configparser import ConfigParser, NoOptionError
 
@@ -34,7 +34,7 @@ def title(status):
 
 # telegram的推送
 def telegram(send_title, push_message):
-    http_proxy = cfg.get('telegram', 'http_proxy')
+    http_proxy = cfg.get('telegram', 'http_proxy', fallback=None)
     if http_proxy:
         session = get_new_session_use_proxy(http_proxy)
     else:
