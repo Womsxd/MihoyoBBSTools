@@ -4,16 +4,21 @@
 
 禁止大范围宣传本项目，谢谢配合
 
+请不要发B站，谢谢
+
 也请不要滥用本项目
 
 ⚠️ **对于Fork的开发者/用户，请不要滥用GitHub Action，因为 GitHub 将计算您的分支 GitHub Actions 使用量并归属到上游存储库，这可能导致 GitHub 停用此上游存储库**
 
-本项目米游币部分参考[XiaoMiku01/miyoubiAuto](https://github.com/XiaoMiku01/miyoubiAuto)进行编写
-
 - 此项目的用途
 
-  这是一个米游社的辅助签到项目，包含了米游币、崩坏学院2、崩坏3、原神、未定事件簿、崩坏:星穹铁道
-  已经支持米哈游国内在运营的全部游戏的米游社签到，以及米游币自动获取
+  这是一个米游社的辅助签到项目，包含了以下功能
+
+  1.自动获取米游币
+
+  2.支持国服：崩坏学院2、崩坏3、未定事件簿、原神、崩坏：星穹铁道的游戏签到
+
+  3.支持国际服：原神、崩坏：星穹铁道的游戏签到
 
 ## 如何使用程序
 
@@ -335,7 +340,6 @@ PyYAML: [GitHub](https://github.com/yaml/pyyaml) [pypi](https://pypi.org/project
 
 也**不会**处理使用`Github Actions`执行有关的 issues！
 
-推荐使用 阿里云/腾讯云 的云函数来进行每日自动执行脚本。
 
 ## Stargazers over time
 
@@ -348,6 +352,8 @@ PyYAML: [GitHub](https://github.com/yaml/pyyaml) [pypi](https://pypi.org/project
 ## 鸣谢
 
 [JetBrains](https://jb.gg/OpenSource)
+
+[XiaoMiku01/miyoubiAuto](https://github.com/XiaoMiku01/miyoubiAuto)
 
 [本项目的Contributors](https://github.com/Womsxd/MihoyoBBSTools/graphs/contributors)
 
