@@ -3,8 +3,7 @@ import random
 import time
 import cloud_genshin
 import config
-import hoyo_gs
-import hoyo_sr
+import hoyo_checkin
 import login
 import mihoyobbs
 import push
@@ -89,11 +88,11 @@ def main():
         return_data += "\n\n" + "海外版:"
         if config.config['games']['os']['genshin']["auto_checkin"]:
             log.info("正在进行原神签到")
-            data = hoyo_gs.run()
+            data = hoyo_checkin.genshin()
             return_data += "\n\n" + data
         if config.config['games']['os']['honkai_sr']["auto_checkin"]:
             log.info("正在进行崩坏:星穹铁道签到")
-            data = hoyo_sr.run()
+            data = hoyo_checkin.honkai_sr()
             return_data += "\n\n" + data
     # 云游戏
     if config.config['cloud_games']['genshin']["enable"] \

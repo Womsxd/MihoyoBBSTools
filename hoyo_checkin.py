@@ -1,6 +1,7 @@
 import time
 import random
 import setting
+import config
 from request import http
 from loghelper import log
 
@@ -75,3 +76,19 @@ def hoyo_checkin(
     ret_msg = f"\t今天获得的奖励是: {reward['cnt']}x {reward['name']}"
     return ret_msg
     # logging.info(f"\tMessage: {response['message']}")
+
+
+def genshin():
+    cookie_str = config.config.get("games", {}).get(
+        "os", {}).get("cookie", "")
+    ret_msg = '原神:\n' + hoyo_checkin("https://sg-hk4e-api.hoyolab.com/event/sol",
+                                     "e202102251931481", cookie_str)
+    return ret_msg
+
+
+def honkai_sr():
+    cookie_str = config.config.get("games", {}).get(
+        "os", {}).get("cookie", "")
+    ret_msg = '崩坏:星穹铁道:\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os",
+                                          "e202303301540311", cookie_str)
+    return ret_msg
