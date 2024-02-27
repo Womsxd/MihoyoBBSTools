@@ -263,24 +263,24 @@ kubectl logs $(kubectl get pod -l app=mihoyo -o jsonpath="{.items[0].metadata.na
 定时类型：crontab
 定时规则：2 2 28 * *
 白名单：ql_main.py
-依赖文件：error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main|gamecheckin|honkaisr|hoyo_checkin|hoyo_gs|hoyo_sr
+依赖文件：error|mihoyo|log|push|req|set|tools|con|acc|captcha|main|gamecheckin|hoyo_checkin|hoyo_gs|hoyo_sr
 ```
 
 方式 2：指令拉取
 
 ```sh
-ql repo https://github.com/Womsxd/MihoyoBBSTools.git "ql_main.py" "" "error|mihoyo|genshin|honkai3rd|log|push|req|set|tools|con|acc|honkai2|tearsofthemis|captcha|main|gamecheckin|honkaisr|hoyo_checkin|hoyo_gs|hoyo_sr"
+ql repo https://github.com/Womsxd/MihoyoBBSTools.git "ql_main.py" "" "error|mihoyo|log|push|req|set|tools|con|acc|captcha|main|gamecheckin|hoyo_checkin|hoyo_gs|hoyo_sr"
 ```
 
 ### 2.环境变量添加
 
 在青龙面板环境变量中添加以下变量
 
-| 名称 | 值 | 功能 |
-| --- | --- | --- |
-| AutoMihoyoBBS_config_path | /ql/data/config/ | 设置配置文件路径（必选） |
-| AutoMihoyoBBS_config_multi | 1 | 开启多用户（可选） |
-| AutoMihoyoBBS_config_prefix | mhy_ | 自定义文件开头(单用户可选，多用户推荐) |
+| 名称                          | 值                | 功能                   |
+|-----------------------------|------------------|----------------------|
+| AutoMihoyoBBS_config_path   | /ql/data/config/ | 设置配置文件路径（必选）         |
+| AutoMihoyoBBS_config_multi  | 1                | 开启多用户（可选）            |
+| AutoMihoyoBBS_config_prefix | mhy_             | 自定义文件开头(单用户可选，多用户推荐) |
 
 **注意！仅多用户需添加变量```AutoMihoyoBBS_config_multi```**
 
@@ -319,13 +319,15 @@ cp /ql/data/repo/Womsxd_MihoyoBBSTools/config/config.yaml.example /ql/data/confi
 
 ## 使用的第三方库
 
-requests: [github](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/) (当 httpx 无法使用时使用)
+~~requests~~: [GitHub](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/)
 
-httpx: [github](https://github.com/encode/httpx) [pypi](https://pypi.org/project/httpx/)
+requests仅作为在httpx无法使用时的备用选择，可能未来版本会进行移除
 
-crontab: [github](https://github.com/josiahcarlson/parse-crontab) [pypi](https://pypi.org/project/crontab/)
+httpx: [GitHub](https://github.com/encode/httpx) [pypi](https://pypi.org/project/httpx/)
 
-PyYAML: [github](https://github.com/yaml/pyyaml) [pypi](https://pypi.org/project/PyYAML/)
+crontab: [GitHub](https://github.com/josiahcarlson/parse-crontab) [pypi](https://pypi.org/project/crontab/)
+
+PyYAML: [GitHub](https://github.com/yaml/pyyaml) [pypi](https://pypi.org/project/PyYAML/)
 
 ## 关于使用 Github Actions 运行
 

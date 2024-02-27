@@ -152,3 +152,66 @@ class GameCheckin:
             return_data += f"\n{account[0]}已连续签到{sign_days}天\n" \
                            f"今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days - 1])}"
         return return_data
+
+
+class Honkai2(GameCheckin):
+    def __init__(self) -> None:
+        super().__init__("bh2_cn")
+        self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin/bh2/index.html?bbs_auth_required' \
+                                  f'=true&act_id={setting.honkai2_act_id}&bbs_presentation_style=fullscreen' \
+                                  '&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
+        self.act_id = setting.honkai2_act_id
+        self.game_mid = "honkai2"
+        self.game_name = "崩坏学园2"
+        self.init()
+
+
+class Honkai3rd(GameCheckin):
+    def __init__(self) -> None:
+        super().__init__("bh3_cn")
+        self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin/bh3/index.html?bbs_auth_required' \
+                                  f'=true&act_id={setting.honkai3rd_act_id}&bbs_presentation_style=fullscreen' \
+                                  '&utm_source=bbs&utm_medium=mys&utm_campaign=icon'
+        self.act_id = setting.honkai3rd_act_id
+        self.game_mid = "honkai3rd"
+        self.game_name = "崩坏3"
+        self.player_name = "舰长"
+        self.init()
+
+
+class TearsOfThemis(GameCheckin):
+    def __init__(self) -> None:
+        super().__init__("nxx_cn")
+        self.headers['Referer'] = 'https://webstatic.mihoyo.com/bbs/event/signin/nxx/index.html?bbs_auth_required' \
+                                  '=true&bbs_presentation_style=fullscreen' \
+                                  f'act_id={setting.tearsofthemis_act_id}'
+        self.act_id = setting.tearsofthemis_act_id
+        self.game_mid = "tears_of_themis"
+        self.game_name = "未定事件簿"
+        self.player_name = "律师"
+        self.init()
+
+
+class Genshin(GameCheckin):
+    def __init__(self) -> None:
+        super().__init__("hk4e_cn")
+        self.headers['Referer'] = 'https://act.mihoyo.com/'
+        self.headers["Origin"] = "https://act.mihoyo.com"
+        self.headers["x-rpc-signgame"] = "hk4e"
+        self.act_id = setting.genshin_act_id
+        self.game_mid = "genshin"
+        self.game_name = "原神"
+        self.player_name = "旅行者"
+        self.init()
+
+
+class Honkaisr(GameCheckin):
+    def __init__(self):
+        super().__init__("hkrpg_cn")
+        self.headers['Referer'] = 'https://act.mihoyo.com/'
+        self.headers["Origin"] = "https://act.mihoyo.com"
+        self.act_id = setting.honkai_sr_act_id
+        self.game_mid = "honkai_sr"
+        self.game_name = "崩坏: 星穹铁道"
+        self.player_name = "开拓者"
+        self.init()
