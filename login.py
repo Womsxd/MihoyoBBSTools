@@ -13,7 +13,7 @@ headers.pop("Referer")
 
 
 def login():
-    if config.config["account"]["cookie"] == '':
+    if not config.config["account"]["cookie"]:
         log.error("请填入Cookies!")
         config.clear_cookies()
         raise CookieError('No cookie')

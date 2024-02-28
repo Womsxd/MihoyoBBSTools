@@ -39,7 +39,11 @@ def main():
         raise CookieError('Cookie expires')
     # 检测参数是否齐全，如果缺少就进行登入操作，同时判断是否开启开启米游社签到
     if (config.config["account"]["stuid"] == "" or config.config["account"]["stoken"] == "") and \
-            (config.config["mihoyobbs"]["enable"] and config.config['games']['cn']["enable"]):
+            (config.config["mihoyobbs"]["enable"] or config.config['games']['cn']["enable"]):
+        # 登入，如果没开启bbs全局没打开就无需进行登入操作
+        if config.config["mihoyobbs"]["enable"]:
+            login.login()
+            time.sleep(random.randint(2, 8))
         # 整理 cookie，在字段重复时优先使用最后出现的值
         cookie_dict = {}
         for cookie in config.config["account"]["cookie"].split(";"):
@@ -49,25 +53,21 @@ def main():
             key, value = cookie.split("=", 1)
             cookie_dict[key] = value
         config.config["account"]["cookie"] = "; ".join([f"{key}={value}" for key, value in cookie_dict.items()])
-        # 登入，如果没开启bbs全局没打开就无需进行登入操作
-        if config.config["mihoyobbs"]["enable"]:
-            login.login()
-        time.sleep(random.randint(2, 8))
-    # 获取要使用的BBS列表,#判断是否开启bbs_Signin_multi
-    if config.config["mihoyobbs"]["checkin_multi"]:
-        # 用这里的方案可以实现当让id在第一个的时候为主社区
-        for i in config.config["mihoyobbs"]["checkin_multi_list"]:
-            for i2 in setting.mihoyobbs_List:
-                if i == int(i2["id"]):
-                    setting.mihoyobbs_List_Use.append(i2)
-    else:
-        # 关闭bbs_Signin_multi后只签到大别墅
-        for i in setting.mihoyobbs_List:
-            if int(i["id"]) == 5:
-                setting.mihoyobbs_List_Use.append(i)
     # 米游社签到
     ret_code = 0
     if config.config["mihoyobbs"]["enable"]:
+        # 获取要使用的BBS列表,#判断是否开启bbs_Signin_multi
+        if config.config["mihoyobbs"]["checkin_multi"]:
+            # 用这里的方案可以实现当让id在第一个的时候为主社区
+            for i in config.config["mihoyobbs"]["checkin_multi_list"]:
+                for i2 in setting.mihoyobbs_List:
+                    if i == int(i2["id"]):
+                        setting.mihoyobbs_List_Use.append(i2)
+        else:
+            # 关闭bbs_Signin_multi后只签到大别墅
+            for i in setting.mihoyobbs_List:
+                if int(i["id"]) == 5:
+                    setting.mihoyobbs_List_Use.append(i)
         bbs = mihoyobbs.Mihoyobbs()
         return_data += bbs.run_task()
     # 国服
