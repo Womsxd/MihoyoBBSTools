@@ -9,6 +9,7 @@ import mihoyobbs
 import push
 import setting
 import gamecheckin
+import tools
 from error import *
 from loghelper import log
 
@@ -45,25 +46,20 @@ def main():
             login.login()
             time.sleep(random.randint(2, 8))
         # 整理 cookie，在字段重复时优先使用最后出现的值
-        cookie_dict = {}
-        for cookie in config.config["account"]["cookie"].split(";"):
-            cookie = cookie.strip()
-            if cookie == "":
-                continue
-            key, value = cookie.split("=", 1)
-            cookie_dict[key] = value
-        config.config["account"]["cookie"] = "; ".join([f"{key}={value}" for key, value in cookie_dict.items()])
+        config.config["account"]["cookie"] = tools.tidy_cookie(config.config["account"]["cookie"])
     # 米游社签到
     ret_code = 0
     if config.config["mihoyobbs"]["enable"]:
         # 获取要使用的BBS列表,#判断是否开启bbs_Signin_multi
         if config.config["mihoyobbs"]["checkin_multi"]:
             setting.mihoyobbs_List_Use = [
-                i2 for i2 in setting.mihoyobbs_List if int(i2["id"]) in config.config["mihoyobbs"]["checkin_multi_list"]
-            ]
+                setting.mihoyobbs_List.get(i) for i in config.config["mihoyobbs"]["checkin_multi_list"]
+                if setting.mihoyobbs_List.get(i) is not None]
+
         else:
             # 关闭bbs_Signin_multi后只签到大别墅
-            setting.mihoyobbs_List_Use = [i for i in setting.mihoyobbs_List if int(i["id"]) == 5]
+            setting.mihoyobbs_List_Use = [setting.mihoyobbs_List.get("id")]
+        print(setting.mihoyobbs_List_Use)
         bbs = mihoyobbs.Mihoyobbs()
         return_data += bbs.run_task()
     # 国服

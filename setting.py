@@ -14,35 +14,15 @@ mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web
 
 # 米游社的分区列表
-mihoyobbs_List = [{
-    "id": "1",
-    "forumId": "1",
-    "name": "崩坏3",
-}, {
-    "id": "2",
-    "forumId": "26",
-    "name": "原神",
-}, {
-    "id": "3",
-    "forumId": "30",
-    "name": "崩坏2",
-}, {
-    "id": "4",
-    "forumId": "37",
-    "name": "未定事件簿",
-}, {
-    "id": "5",
-    "forumId": "34",
-    "name": "大别野",
-}, {
-    "id": "6",
-    "forumId": "52",
-    "name": "崩坏：星穹铁道",
-}, {
-    "id": "8",
-    "forumId": "57",
-    "name": "绝区零",
-}]
+mihoyobbs_List = {
+    1: {"id": "1", "forumId": "1", "name": "崩坏3"},
+    2: {"id": "2", "forumId": "26", "name": "原神"},
+    3: {"id": "3", "forumId": "30", "name": "崩坏2"},
+    4: {"id": "4", "forumId": "37", "name": "未定事件簿"},
+    5: {"id": "5", "forumId": "34", "name": "大别野"},
+    6: {"id": "6", "forumId": "52", "name": "崩坏：星穹铁道"},
+    8: {"id": "8", "forumId": "57", "name": "绝区零"}
+}
 
 game_id2name = {
     "bh2_cn": "崩坏2",

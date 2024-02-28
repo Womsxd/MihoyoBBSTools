@@ -115,6 +115,22 @@ def time_conversion(minute: int) -> str:
     return f"{h}小时{s}分钟"
 
 
+def tidy_cookie(cookies: str) -> str:
+    """
+    整理cookie
+    :param cookies: cookie
+    :return: 整理后的cookie
+    """
+    cookie_dict = {}
+    for cookie in cookies.split(";"):
+        cookie = cookie.strip()
+        if cookie == "":
+            continue
+        key, value = cookie.split("=", 1)
+        cookie_dict[key] = value
+    return "; ".join([f"{key}={value}" for key, value in cookie_dict.items()])
+
+
 # 获取ua 防止出现多个miHoYoBBS
 def get_useragent() -> str:
     if config.config["games"]["cn"]["useragent"] == "":  # 没设置自定义ua就返回默认ua
