@@ -82,7 +82,7 @@ def genshin():
     cookie_str = config.config.get("games", {}).get(
         "os", {}).get("cookie", "")
     ret_msg = '原神:\n' + hoyo_checkin("https://sg-hk4e-api.hoyolab.com/event/sol",
-                                     "e202102251931481", cookie_str)
+                                     setting.os_genshin_act_id, cookie_str)
     return ret_msg
 
 
@@ -90,5 +90,13 @@ def honkai_sr():
     cookie_str = config.config.get("games", {}).get(
         "os", {}).get("cookie", "")
     ret_msg = '崩坏:星穹铁道:\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os",
-                                          "e202303301540311", cookie_str)
+                                          setting.os_honkai_sr_act_id, cookie_str)
+    return ret_msg
+
+
+def honkai3rd():
+    cookie_str = config.config.get("games", {}).get(
+        "os", {}).get("cookie", "")
+    ret_msg = '崩坏3:\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/mani",
+                                      setting.os_honkai3rd_act_id, cookie_str)
     return ret_msg

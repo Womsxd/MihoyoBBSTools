@@ -112,3 +112,6 @@ cloud_genshin_sgin = f"{cloud_genshin_api}/hk4e_cg_cn/wallet/wallet/get"
 
 os_lang = 'zh-cn'
 os_referer_url = "https://act.hoyolab.com/"
+os_genshin_act_id = "e202102251931481"
+os_honkai_sr_act_id = "e202303301540311"
+os_honkai3rd_act_id = "e202110291205111"
