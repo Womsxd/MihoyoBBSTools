@@ -38,7 +38,7 @@ def main():
     elif config.config["account"]["cookie"] == "CookieError":
         raise CookieError('Cookie expires')
     # 检测参数是否齐全，如果缺少就进行登入操作，同时判断是否开启开启米游社签到
-    if (config.config["account"]["stuid"] != "" or config.config["account"]["stoken"] != "") and \
+    if (config.config["account"]["stuid"] == "" or config.config["account"]["stoken"] == "") and \
             (config.config["mihoyobbs"]["enable"] and config.config['games']['cn']["enable"]):
         # 整理 cookie，在字段重复时优先使用最后出现的值
         cookie_dict = {}
