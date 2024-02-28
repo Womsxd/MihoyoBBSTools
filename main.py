@@ -58,16 +58,12 @@ def main():
     if config.config["mihoyobbs"]["enable"]:
         # 获取要使用的BBS列表,#判断是否开启bbs_Signin_multi
         if config.config["mihoyobbs"]["checkin_multi"]:
-            # 用这里的方案可以实现当让id在第一个的时候为主社区
-            for i in config.config["mihoyobbs"]["checkin_multi_list"]:
-                for i2 in setting.mihoyobbs_List:
-                    if i == int(i2["id"]):
-                        setting.mihoyobbs_List_Use.append(i2)
+            setting.mihoyobbs_List_Use = [
+                i2 for i2 in setting.mihoyobbs_List if int(i2["id"]) in config.config["mihoyobbs"]["checkin_multi_list"]
+            ]
         else:
             # 关闭bbs_Signin_multi后只签到大别墅
-            for i in setting.mihoyobbs_List:
-                if int(i["id"]) == 5:
-                    setting.mihoyobbs_List_Use.append(i)
+            setting.mihoyobbs_List_Use = [i for i in setting.mihoyobbs_List if int(i["id"]) == 5]
         bbs = mihoyobbs.Mihoyobbs()
         return_data += bbs.run_task()
     # 国服
