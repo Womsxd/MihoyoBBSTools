@@ -6,12 +6,14 @@ import random
 import captcha
 import setting
 from error import *
-from request import http
+from request import get_new_session
 from loghelper import log
 from account import get_account_list
 
 
 class GameCheckin:
+    http = get_new_session()
+
     def __init__(self, game_id) -> None:
         self.headers = self._get_headers()
         self.game_id = game_id
@@ -53,7 +55,7 @@ class GameCheckin:
         log.info("正在获取签到奖励列表...")
         max_retry = 3
         for i in range(max_retry):
-            req = http.get(self.rewards_api, params={"act_id": self.act_id}, headers=self.headers)
+            req = self.http.get(self.rewards_api, params={"act_id": self.act_id}, headers=self.headers)
             data = req.json()
             if data["retcode"] == 0:
                 return data["data"]["awards"]
@@ -65,8 +67,8 @@ class GameCheckin:
 
     # 判断签到
     def is_sign(self, region: str, uid: str, update: bool = False) -> dict:
-        req = http.get(self.is_sign_api, params={"act_id": self.act_id, "region": region, "uid": uid},
-                       headers=self.headers)
+        req = self.http.get(self.is_sign_api, params={"act_id": self.act_id, "region": region, "uid": uid},
+                            headers=self.headers)
         data = req.json()
         if data["retcode"] != 0:
             if not update and login.update_cookie_token():
@@ -85,8 +87,8 @@ class GameCheckin:
         for i in range(1, retries + 1):
             if i > 1:
                 log.info(f'触发验证码，即将进行第 {i} 次重试，最多 {retries} 次')
-            req = http.post(url=self.sign_api, headers=header,
-                            json={'act_id': self.act_id, 'region': account[2], 'uid': account[1]})
+            req = self.http.post(url=self.sign_api, headers=header,
+                                 json={'act_id': self.act_id, 'region': account[2], 'uid': account[1]})
             if req.status_code == 429:
                 time.sleep(10)  # 429同ip请求次数过多，尝试sleep10s进行解决
                 log.warning('429 Too Many Requests ，即将进入下一次请求')
