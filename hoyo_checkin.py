@@ -2,22 +2,29 @@ import time
 import random
 import setting
 import config
-from request import http
+from request import get_new_session
 from loghelper import log
 
 RET_CODE_ALREADY_SIGNED_IN = -5003
 
 
-def hoyo_checkin(
-        event_base_url: str,
-        act_id: str,
-        cookie_str: str
-):
+def hoyo_checkin(event_base_url: str, act_id: str) -> str:
+    """
+    国际服游戏签到
+
+    :param event_base_url: 基础Url
+    :param act_id: 活动id
+    :return: 签到结果
+    """
     reward_url = f"{event_base_url}/home?lang={setting.os_lang}" \
                  f"&act_id={act_id}"
     info_url = f"{event_base_url}/info?lang={setting.os_lang}" \
                f"&act_id={act_id}"
     sign_url = f"{event_base_url}/sign?lang={setting.os_lang}"
+
+    http = get_new_session()
+
+    cookie_str = config.config.get("games", {}).get("os", {}).get("cookie", "")
 
     headers = {
         "Referer": setting.os_referer_url,
@@ -79,24 +86,24 @@ def hoyo_checkin(
 
 
 def genshin():
-    cookie_str = config.config.get("games", {}).get(
-        "os", {}).get("cookie", "")
     ret_msg = '原神:\n' + hoyo_checkin("https://sg-hk4e-api.hoyolab.com/event/sol",
-                                     setting.os_genshin_act_id, cookie_str)
+                                     setting.os_genshin_act_id)
     return ret_msg
 
 
 def honkai_sr():
-    cookie_str = config.config.get("games", {}).get(
-        "os", {}).get("cookie", "")
     ret_msg = '崩坏:星穹铁道:\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os",
-                                          setting.os_honkai_sr_act_id, cookie_str)
+                                          setting.os_honkai_sr_act_id)
     return ret_msg
 
 
 def honkai3rd():
-    cookie_str = config.config.get("games", {}).get(
-        "os", {}).get("cookie", "")
     ret_msg = '崩坏3:\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/mani",
-                                      setting.os_honkai3rd_act_id, cookie_str)
+                                      setting.os_honkai3rd_act_id)
+    return ret_msg
+
+
+def tears_of_themis():
+    ret_msg = '未定事件簿:\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os",
+                                        setting.os_tearsofthemis_act_id)
     return ret_msg
