@@ -27,7 +27,7 @@ class Mihoyobbs:
             "x-rpc-app_version": setting.mihoyobbs_version,
             "x-rpc-sys_version": "12",
             "x-rpc-channel": "miyousheluodi",
-            "x-rpc-device_id": tools.get_device_id(),
+            "x-rpc-device_id": tools.get_device_id(config.config["account"]["cookie"]),
             "x-rpc-device_name": tools.random_text(random.randint(1, 10)),
             "x-rpc-device_model": "Mi 10",
             "Referer": "https://app.mihoyo.com",

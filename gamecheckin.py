@@ -35,8 +35,8 @@ class GameCheckin:
         headers = setting.headers.copy()
         headers['DS'] = tools.get_ds(web=True)
         headers['Cookie'] = config.config.get("account", {}).get("cookie", "")
-        headers['x-rpc-device_id'] = tools.get_device_id()
-        headers['User-Agent'] = tools.get_useragent()
+        headers['x-rpc-device_id'] = tools.get_device_id(config.config["account"]["cookie"])
+        headers['User-Agent'] = tools.get_useragent(config.config["games"]["cn"]["useragent"])
         return headers
 
     def _get_account_list(self, update: bool = False) -> list:

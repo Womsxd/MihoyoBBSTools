@@ -5,7 +5,6 @@ import sys
 import time
 import uuid
 
-import config
 import setting
 
 
@@ -72,13 +71,14 @@ def get_ds2(query: str = "", body: str = "") -> str:
     return f"{i},{r},{c}"
 
 
-def get_device_id() -> str:
+def get_device_id(cookie: str) -> str:
     """
     使用 cookie 通过 uuid v3 生成设备 ID。
+    :param cookie: cookie
 
     :return: 设备 ID。
     """
-    return str(uuid.uuid3(uuid.NAMESPACE_URL, config.config["account"]["cookie"]))
+    return str(uuid.uuid3(uuid.NAMESPACE_URL, cookie))
 
 
 def get_item(raw_data: dict) -> str:
@@ -132,15 +132,15 @@ def tidy_cookie(cookies: str) -> str:
 
 
 # 获取ua 防止出现多个miHoYoBBS
-def get_useragent() -> str:
-    if config.config["games"]["cn"]["useragent"] == "":  # 没设置自定义ua就返回默认ua
+def get_useragent(useragent: str) -> str:
+    if useragent == "":  # 没设置自定义ua就返回默认ua
         return setting.headers['User-Agent']
-    if "miHoYoBBS" in config.config["games"]["cn"]["useragent"]:  # 防止出现多个miHoYoBBS
-        i = config.config["games"]["cn"]["useragent"].index("miHoYoBBS")
-        if config.config["games"]["cn"]["useragent"][i - 1] == " ":
+    if "miHoYoBBS" in useragent:  # 防止出现多个miHoYoBBS
+        i = useragent.index("miHoYoBBS")
+        if useragent[i - 1] == " ":
             i = i - 1
-        return f'{config.config["games"]["cn"]["useragent"][:i]} miHoYoBBS/{setting.mihoyobbs_version}'
-    return f'{config.config["games"]["cn"]["useragent"]} miHoYoBBS/{setting.mihoyobbs_version}'
+        return f'{useragent[:i]} miHoYoBBS/{setting.mihoyobbs_version}'
+    return f'{useragent} miHoYoBBS/{setting.mihoyobbs_version}'
 
 
 def get_openssl_version() -> int:
