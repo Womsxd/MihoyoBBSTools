@@ -68,15 +68,9 @@ def main():
     # 国际
     if config.config['games']['os']["enable"]:
         log.info("海外版:")
-        return_data += "\n\n" + "海外版:"
-        if config.config['games']['os']['genshin']["checkin"]:
-            log.info("正在进行原神签到")
-            data = hoyo_checkin.genshin()
-            return_data += "\n\n" + data
-        if config.config['games']['os']['honkai_sr']["checkin"]:
-            log.info("正在进行崩坏:星穹铁道签到")
-            data = hoyo_checkin.honkai_sr()
-            return_data += "\n\n" + data
+        os_result = hoyo_checkin.run_task()
+        if os_result != '':
+            return_data += "\n\n" + "海外版:" + os_result
     # 云游戏
     if config.config['cloud_games']['genshin']["enable"] \
             and config.config['cloud_games']['genshin']['token'] != "":
