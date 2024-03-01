@@ -13,14 +13,8 @@ update_config_need = False
 
 config = {
     'enable': True, 'version': 10,
-    'account': {
-        'cookie': '',
-        'stuid': '', 'stoken': ''
-    },
-    'device': {
-        'name': 'Xiaomi MI 6', 'model': 'Mi 6',
-        'id': ''
-    },
+    'account': {'cookie': '', 'stuid': '', 'stoken': ''},
+    'device': {'name': 'Xiaomi MI 6', 'model': 'Mi 6', 'id': ''},
     'mihoyobbs': {
         'enable': True, 'checkin': True, 'checkin_list': [5, 2],
         'read': True, 'like': True, 'cancel_like': True, 'share': True
@@ -74,7 +68,7 @@ def copy_config():
 def config_v8_update(data: dict):
     global update_config_need
     update_config_need = True
-    returns = config.copy()
+    returns = deepcopy(config)
     returns["enable"] = data["enable"]
     returns["account"].update(data["account"])
     returns["mihoyobbs"].update(data["mihoyobbs"])
@@ -173,7 +167,6 @@ def save_config(p_path=None, p_config=None):
         except OSError:
             serverless = True
             log.info("Cookie保存失败")
-            exit(-1)
         else:
             log.info("Config保存完毕")
 
@@ -184,7 +177,6 @@ def clear_cookies():
         log.info("云函数执行，无法保存")
         return None
     config["enable"] = False
-    config["account"]["login_ticket"] = ""
     config["account"]["stuid"] = ""
     config["account"]["stoken"] = ""
     config["account"]["cookie"] = "CookieError"
