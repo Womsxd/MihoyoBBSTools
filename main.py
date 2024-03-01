@@ -1,21 +1,22 @@
 import os
-import random
 import time
-import cloud_genshin
-import config
-import hoyo_checkin
-import login
-import mihoyobbs
+import random
+
 import push
-import setting
-import gamecheckin
+import login
 import tools
+import config
+import mihoyobbs
+import competition
+import gamecheckin
+import hoyo_checkin
+import cloud_genshin
 from error import *
 from loghelper import log
 
 
 def checkin_game(game_name, game_module, game_print_name=""):
-    if config.config["games"]["cn"][game_name]["auto_checkin"]:
+    if config.config["games"]["cn"][game_name]["checkin"]:
         time.sleep(random.randint(2, 8))
         if game_print_name == "":
             game_print_name = game_name
@@ -50,16 +51,6 @@ def main():
     # 米游社签到
     ret_code = 0
     if config.config["mihoyobbs"]["enable"]:
-        # 获取要使用的BBS列表,#判断是否开启bbs_Signin_multi
-        if config.config["mihoyobbs"]["checkin_multi"]:
-            setting.mihoyobbs_List_Use = [
-                setting.mihoyobbs_List.get(i) for i in config.config["mihoyobbs"]["checkin_multi_list"]
-                if setting.mihoyobbs_List.get(i) is not None]
-
-        else:
-            # 关闭bbs_Signin_multi后只签到大别墅
-            setting.mihoyobbs_List_Use = [setting.mihoyobbs_List.get("id")]
-        print(setting.mihoyobbs_List_Use)
         bbs = mihoyobbs.Mihoyobbs()
         return_data += bbs.run_task()
     # 国服
@@ -78,11 +69,11 @@ def main():
     if config.config['games']['os']["enable"]:
         log.info("海外版:")
         return_data += "\n\n" + "海外版:"
-        if config.config['games']['os']['genshin']["auto_checkin"]:
+        if config.config['games']['os']['genshin']["checkin"]:
             log.info("正在进行原神签到")
             data = hoyo_checkin.genshin()
             return_data += "\n\n" + data
-        if config.config['games']['os']['honkai_sr']["auto_checkin"]:
+        if config.config['games']['os']['honkai_sr']["checkin"]:
             log.info("正在进行崩坏:星穹铁道签到")
             data = hoyo_checkin.honkai_sr()
             return_data += "\n\n" + data

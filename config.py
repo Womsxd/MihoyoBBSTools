@@ -1,6 +1,9 @@
 import os
 import yaml
 import setting
+from copy import deepcopy
+
+import tools
 from loghelper import log
 
 # 这个字段现在还没找好塞什么地方好，就先塞config这里了
@@ -9,43 +12,51 @@ serverless = False
 update_config_need = False
 
 config = {
-    'enable': True, 'version': 9,
+    'enable': True, 'version': 10,
     'account': {
         'cookie': '',
-        'login_ticket': '',
-        'stuid': '',
-        'stoken': ''
+        'stuid': '', 'stoken': ''
+    },
+    'device': {
+        'name': 'Xiaomi MI 6', 'model': 'Mi 6',
+        'id': ''
     },
     'mihoyobbs': {
-        'enable': True, 'checkin': True, 'checkin_multi': True, 'checkin_multi_list': [2, 5],
-        'read_posts': True, 'like_posts': True, 'cancel_like_posts': True, 'share_post': True
+        'enable': True, 'checkin': True, 'checkin_list': [5, 2],
+        'read': True, 'like': True, 'cancel_like': True, 'share': True
     },
     'games': {
         'cn': {
             'enable': True,
             'useragent': 'Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) '
                          'Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36',
-            'genshin': {'auto_checkin': True, 'black_list': []},
-            'honkai2': {'auto_checkin': False, 'black_list': []},
-            'honkai3rd': {'auto_checkin': False, 'black_list': []},
-            'tears_of_themis': {'auto_checkin': False, 'black_list': []},
-            'honkai_sr': {'auto_checkin': False, 'black_list': []},
+            'retries': 3,
+            'genshin': {'checkin': True, 'black_list': []},
+            'honkai2': {'checkin': False, 'black_list': []},
+            'honkai3rd': {'checkin': False, 'black_list': []},
+            'tears_of_themis': {'checkin': False, 'black_list': []},
+            'honkai_sr': {'checkin': False, 'black_list': []},
+            'zzz': {'checkin': False, 'black_list': []}
         },
         'os': {
-            'enable': False, 'cookie': '',
-            'genshin': {'auto_checkin': False, 'black_list': []},
-            'honkai_sr': {'auto_checkin': False, 'black_list': []}
+            'enable': False, 'cookie': '', 'lang': 'zh-cn',
+            'genshin': {'checkin': False, 'black_list': []},
+            'honkai3rd': {'checkin': False, 'black_list': []},
+            'tears_of_themis': {'checkin': False, 'black_list': []},
+            'honkai_sr': {'checkin': False, 'black_list': []},
+            'zzz': {'checkin': False, 'black_list': []}
         }
     },
     'cloud_games': {
-        "genshin": {
-            'enable': False,
-            'token': ''
-        }
+        "genshin": {'enable': False, 'token': ''}
+    },
+
+    'competition': {
+        'enable': False,
+        'genius_invokation': {'enable': False, 'token': '', 'checkin': False, 'video': False}
     }
 }
-config_raw = {}
-config_raw.update(config)
+config_raw = deepcopy(config)
 
 path = os.path.dirname(os.path.realpath(__file__)) + "/config"
 if os.getenv("AutoMihoyoBBS_config_path") is not None:
@@ -58,15 +69,6 @@ config_Path = f"{path}/{config_prefix}config.yaml"
 
 def copy_config():
     return config_raw
-
-
-def config_v7_update(data: dict):
-    global update_config_need
-    update_config_need = True
-    data['version'] = 7
-    data['cloud_games'] = {"genshin": {'enable': False, 'token': ''}}
-    log.info("config已升级到: 7")
-    return data
 
 
 def config_v8_update(data: dict):
@@ -92,12 +94,46 @@ def config_v9_update(data: dict):
     update_config_need = True
     data['version'] = 9
     data['games']['os'] = {
-            'enable': False, 'cookie': '',
-            'genshin': {'auto_checkin': False, 'black_list': []},
-            'honkai_sr': {'auto_checkin': False, 'black_list': []}
-        }
+        'enable': False, 'cookie': '',
+        'genshin': {'auto_checkin': False, 'black_list': []},
+        'honkai_sr': {'auto_checkin': False, 'black_list': []}
+    }
     log.info("config已升级到: 9")
     return data
+
+
+def config_v10_update(data: dict):
+    global update_config_need
+    update_config_need = True
+    base_config = deepcopy(config_raw)
+
+    base_config["enable"] = data["enable"]
+    base_config['account'].update({key: value for key, value in data['account'].items()
+                                   if key in base_config['account'].keys()})
+    base_config['device']['id'] = tools.get_device_id(data['account']['cookie'])
+
+    base_config['mihoyobbs'].update({
+        'enable': data['mihoyobbs']['enable'],
+        'checkin': data['mihoyobbs']['checkin'],
+        'read': data['mihoyobbs']['read_posts'],
+        'like': data['mihoyobbs']['like_posts'],
+        'cancel_like': data['mihoyobbs']['cancel_like_posts'],
+        'share': data['mihoyobbs']['share_post']
+    })
+    if data['mihoyobbs']['checkin_multi']:
+        base_config['mihoyobbs']['checkin_list'] = data['mihoyobbs']['checkin_multi_list']
+    else:
+        base_config['mihoyobbs']['checkin_list'] = [5]
+
+    for region, region_data in data['games'].items():
+        region_config = base_config['games'][region]
+        for item, item_data in region_data.items():
+            if item not in ['enable', 'useragent', 'cookie', 'lang']:
+                region_config[item] = {'checkin': item_data['auto_checkin'], 'black_list': item_data['black_list']}
+            else:
+                region_config[item] = item_data
+    log.info("config已升级到: 10")
+    return base_config
 
 
 def load_config(p_path=None):
@@ -106,18 +142,17 @@ def load_config(p_path=None):
         p_path = config_Path
     with open(p_path, "r", encoding='utf-8') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
-    if data['version'] == 9:
-        config = data
-    else:
-        if data['version'] == 6:
-            data = config_v7_update(data)
+    if data['version'] != config_raw['version']:
         if data['version'] == 7:
-            config = config_v8_update(data)
+            data = config_v8_update(data)
         if data['version'] == 8:
-            config = config_v9_update(data)
-        save_config()
+            data = config_v9_update(data)
+        if data['version'] == 9:
+            data = config_v10_update(data)
+        save_config(p_config=data)
+    config = data
     log.info("Config加载完毕")
-    return config
+    return data
 
 
 def save_config(p_path=None, p_config=None):

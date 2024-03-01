@@ -41,8 +41,6 @@ game_id2config = {
     "hkrpg_cn": "honkaisr",
     "nap_cn": "zzz"
 }
-# Config Load之后run里面进行列表的选择
-mihoyobbs_List_Use = []
 
 # 游戏签到的请求头
 headers = {
@@ -109,8 +107,6 @@ cloud_genshin_api = "https://api-cloudgame.mihoyo.com"
 cloud_genshin_sgin = f"{cloud_genshin_api}/hk4e_cg_cn/wallet/wallet/get"
 
 # 接下来是国际服的内容
-
-os_lang = 'zh-cn'
 os_referer_url = "https://act.hoyolab.com/"
 os_genshin_act_id = "e202102251931481"
 os_honkai_sr_act_id = "e202303301540311"

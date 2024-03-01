@@ -26,7 +26,7 @@ def ql_config(config_list: list):
     for files in config_list:
         if 'mhy_' == files[:4]:
             config_list_ql.append(files)
-    return (config_list_ql)
+    return config_list_ql
 
 
 def main_multi(autorun: bool):
@@ -80,7 +80,7 @@ def main_multi(autorun: bool):
     elif len(results["captcha"]) != 0:
         status = 3
     push.push(status, push_message)
-    return (status, push_message)
+    return status, push_message
 
 
 if __name__ == "__main__":

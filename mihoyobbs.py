@@ -20,6 +20,8 @@ class Mihoyobbs:
         self.today_get_coins = 0
         self.today_have_get_coins = 0
         self.have_coins = 0
+        self.bbs_list = [setting.mihoyobbs_List.get(i) for i in config.config["mihoyobbs"]["checkin_list"]
+                         if setting.mihoyobbs_List.get(i) is not None]
         self.headers = {
             "DS": tools.get_ds(web=False),
             "cookie": f'stuid={config.config["account"]["stuid"]};stoken={config.config["account"]["stoken"]}',
@@ -27,9 +29,9 @@ class Mihoyobbs:
             "x-rpc-app_version": setting.mihoyobbs_version,
             "x-rpc-sys_version": "12",
             "x-rpc-channel": "miyousheluodi",
-            "x-rpc-device_id": tools.get_device_id(config.config["account"]["cookie"]),
-            "x-rpc-device_name": tools.random_text(random.randint(1, 10)),
-            "x-rpc-device_model": "Mi 10",
+            "x-rpc-device_id": config.config["device"]["id"],
+            "x-rpc-device_name": config.config["device"]["name"],
+            "x-rpc-device_model": config.config["device"]["model"],
             "Referer": "https://app.mihoyo.com",
             "Host": "bbs-api.mihoyo.com",
             "User-Agent": "okhttp/4.9.3"
@@ -111,7 +113,7 @@ class Mihoyobbs:
         temp_list = []
         log.info("正在获取帖子列表......")
         req = http.get(url=setting.bbs_post_list_url,
-                       params={"forum_id": setting.mihoyobbs_List_Use[0]["forumId"],
+                       params={"forum_id": self.bbs_list[0]["forumId"],
                                "is_good": str(False).lower(), "is_hot": str(False).lower(),
                                "page_size": 20, "sort_type": 1},
                        headers=self.headers)
@@ -131,7 +133,7 @@ class Mihoyobbs:
         else:
             log.info("正在签到......")
             header = self.headers.copy()
-            for forum in setting.mihoyobbs_List_Use:
+            for forum in self.bbs_list:
                 challenge = None
                 for retry_count in range(2):
                     header["DS"] = tools.get_ds2("", json.dumps({"gids": forum["id"]}))
@@ -188,7 +190,7 @@ class Mihoyobbs:
                     challenge = None
                     header.pop("x-rpc-challenge")
                 # 判断取消点赞是否打开
-                if config.config["mihoyobbs"]["cancel_like_posts"]:
+                if config.config["mihoyobbs"]["cancel_like"]:
                     wait()
                     req = http.post(url=setting.bbs_like_url, headers=self.headers,
                                     json={"post_id": self.postsList[i][0], "is_cancel": True})
@@ -235,11 +237,11 @@ class Mihoyobbs:
                     self.refresh_list()
                 if config.config["mihoyobbs"]["checkin"]:
                     self.signing()
-                if config.config["mihoyobbs"]["read_posts"]:
+                if config.config["mihoyobbs"]["read"]:
                     self.read_posts()
-                if config.config["mihoyobbs"]["like_posts"]:
+                if config.config["mihoyobbs"]["like"]:
                     self.like_posts()
-                if config.config["mihoyobbs"]["share_post"]:
+                if config.config["mihoyobbs"]["share"]:
                     self.share_post()
                 self.get_tasks_list()
                 i += 1

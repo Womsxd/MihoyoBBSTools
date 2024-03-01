@@ -1,51 +1,106 @@
-enable: true #这里控制整个config文件是否启用
-version: 9 #config的版本
+#这里控制整个config文件是否启用
+enable: true
+#config的版本
+version: 10
 account:
-  cookie: "" #登入账号只需要修改这里就行了，下面会自动获取
-  login_ticket: ""
+  #登入账号只需要修改cookie就行了
+  cookie: ""
   stuid: ""
   stoken: ""
+device:
+  name: "Xiaomi MI 6"
+  model: "Mi 6"
+  # 此处脚本随机生成
+  id: ""
 mihoyobbs:
-  enable: true #控制bbs功能是否启用
-  checkin: true #社区签到
-  checkin_multi: true #多个社区签到，关闭后只签到大别野
-  checkin_multi_list: #签到的社区列表 详情可以看config文件夹下面的readme
-    - 2
+  #控制bbs功能是否启用
+  enable: true
+  #社区签到
+  checkin: true
+  #签到的社区列表 详情可以看config文件夹下面的readme
+  checkin_list:
     - 5
-  read_posts: true #看帖
-  like_posts: true #点赞帖子
-  cancel_like_posts: true #取消点赞
-  share_post: true #分享帖子
+    - 2
+  #看帖
+  read: true
+  #点赞帖子
+  like: true
+  #取消点赞
+  cancel_like: true
+  #分享帖子
+  share: true
+# 游戏签到
 games:
-  cn: #国服控制区域
-    enable: true #控制是否启用国内签到
-    useragent: "Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36"
+  #国服控制区域
+  cn:
+    #控制是否启用国内签到
+    enable: true
     #配置签到用的ua 脚本会在后面自动加上miHoYoBBS/版本号 ,请复制的时候不要带miHoYoBBS/版本
-    genshin: #原神自动签到
-      auto_checkin: true #控制是否启用签到，下面一致
-      black_list: [] #这里是不签到的账号，填入文本型数据 示例["114514","1919810"](也许你这边是和checkin_multi_list那块一样) 下面的一样
-    honkai2: #崩坏2
-      auto_checkin: false
-      black_list: []
-    honkai3rd: #崩坏3
-      auto_checkin: false
-      black_list: []
-    tears_of_themis: #未定事件簿
-      auto_checkin: false
-      black_list: []
-    honkai_sr: # 崩坏: 星穹铁道
-      auto_checkin: false
-      black_list: []
-  os: #外服控制区域
-    enable: false
-    cookie: ""
+    useragent: "Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36"
+    #重试次数
+    retries: 3
+    #原神
     genshin:
-      auto_checkin: false
+      #控制是否启用签到，下面一致
+      checkin: true
+      #这里是不签到的账号，填入文本型数据 示例["114514","1919810"](也许你这边是和checkin_list那块一样)，下面一致
       black_list: []
-    honkai_sr: # 崩坏: 星穹铁道
-      auto_checkin: false
+    #崩坏2
+    honkai2:
+      checkin: false
       black_list: []
-cloud_games: #云游戏专区
-  genshin: #云原神
-    enable: false #开启签到
-    token: "" #这里填入抓包获得的token
+    #崩坏3
+    honkai3rd:
+      checkin: false
+      black_list: []
+    #未定事件簿
+    tears_of_themis:
+      checkin: false
+      black_list: []
+    # 崩坏: 星穹铁道
+    honkai_sr:
+      checkin: false
+      black_list: []
+    #绝区零
+    zzz:
+      checkin: false
+      black_list: []
+  #国际服控制区域
+  os:
+    enable: false
+    # 国际服专用Cookie填写
+    cookie: ""
+    # 国际服语言
+    lang: "zh-cn"
+    genshin:
+      checkin: false
+      black_list: []
+    honkai3rd:
+      checkin: false
+      black_list: [ ]
+    tears_of_themis:
+      checkin: false
+      black_list: []
+    honkai_sr:
+      checkin: false
+      black_list: []
+    zzz:
+      checkin: false
+      black_list: []
+#云游戏专区
+cloud_games:
+  # 控制整个云游戏的签到
+  enable: false
+  #云原神
+  genshin:
+    #开启签到
+    enable: false
+    #这里填入抓包获得的token
+    token: ""
+competition:
+  enable: false
+  genius_invokation:
+    enable: false
+    token: ""
+    checkin: false
+    video: false

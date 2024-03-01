@@ -1,7 +1,7 @@
 import time
 import random
 import setting
-import config
+from config import config
 from request import get_new_session
 from loghelper import log
 
@@ -16,15 +16,16 @@ def hoyo_checkin(event_base_url: str, act_id: str) -> str:
     :param act_id: 活动id
     :return: 签到结果
     """
-    reward_url = f"{event_base_url}/home?lang={setting.os_lang}" \
+    os_lang = config["games"]["os"]["os_lang"]
+    reward_url = f"{event_base_url}/home?lang={os_lang}" \
                  f"&act_id={act_id}"
-    info_url = f"{event_base_url}/info?lang={setting.os_lang}" \
+    info_url = f"{event_base_url}/info?lang={os_lang}" \
                f"&act_id={act_id}"
-    sign_url = f"{event_base_url}/sign?lang={setting.os_lang}"
+    sign_url = f"{event_base_url}/sign?lang={os_lang}"
 
     http = get_new_session()
 
-    cookie_str = config.config.get("games", {}).get("os", {}).get("cookie", "")
+    cookie_str = config.get("games", {}).get("os", {}).get("cookie", "")
 
     headers = {
         "Referer": setting.os_referer_url,
