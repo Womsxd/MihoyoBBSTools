@@ -15,17 +15,6 @@ from error import *
 from loghelper import log
 
 
-def checkin_game(game_name, game_module, game_print_name=""):
-    if config.config["games"]["cn"][game_name]["checkin"]:
-        time.sleep(random.randint(2, 8))
-        if game_print_name == "":
-            game_print_name = game_name
-        log.info(f"正在进行{game_print_name}签到")
-        return_data = f"\n\n{game_module().sign_account()}"
-        return return_data
-    return ""
-
-
 def main():
     # 拒绝在GitHub Action运行
     if os.getenv('GITHUB_ACTIONS') == 'true':
@@ -55,16 +44,7 @@ def main():
         return_data += bbs.run_task()
     # 国服
     if config.config['games']['cn']["enable"]:
-        # 崩坏2签到
-        return_data += checkin_game("honkai2", gamecheckin.Honkai2, "崩坏学园2")
-        # 崩坏3签到
-        return_data += checkin_game("honkai3rd", gamecheckin.Honkai3rd, "崩坏3rd")
-        # 未定事件簿签到
-        return_data += checkin_game("tears_of_themis", gamecheckin.TearsOfThemis, "未定事件簿")
-        # 原神签到
-        return_data += checkin_game("genshin", gamecheckin.Genshin, "原神")
-        # 崩铁
-        return_data += checkin_game("honkai_sr", gamecheckin.Honkaisr, "崩坏: 星穹铁道")
+        return_data += gamecheckin.run_task()
     # 国际
     if config.config['games']['os']["enable"]:
         log.info("海外版:")
@@ -78,6 +58,12 @@ def main():
         cloud_ys = cloud_genshin.CloudGenshin()
         data = cloud_ys.sign_account()
         return_data += "\n\n" + data
+    if config.config['competition']['enable']:
+        # todo 功能未实现
+        # log.info("正在进行米游社竞赛活动签到")
+        competition_result = competition.run_task()
+        if competition_result != '':
+            return_data += "\n\n" + "米游社竞赛活动:" + competition_result
     if "触发验证码" in return_data:
         ret_code = 3
     return ret_code, return_data
