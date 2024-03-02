@@ -121,7 +121,7 @@ var cookie=document.cookie;var ask=confirm('Cookie:'+cookie+'\n\nDo you want to 
 
 1. 建议使用打开浏览器的无痕/隐私/InPrivate模式
 
-2. 下载 [云原神网页版](https://ys.mihoyo.com/cloud/#/)
+2. 打开 [云原神网页版](https://ys.mihoyo.com/cloud/#/)
 
 3. 按下键盘上的`F12`或右键检查,打开开发者工具,在打开后登入账号
 
