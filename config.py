@@ -126,6 +126,7 @@ def config_v10_update(data: dict):
                 region_config[item] = {'checkin': item_data['auto_checkin'], 'black_list': item_data['black_list']}
             else:
                 region_config[item] = item_data
+    base_config['cloud_games'] = deepcopy(data['cloud_games'])
     log.info("config已升级到: 10")
     return base_config
 
