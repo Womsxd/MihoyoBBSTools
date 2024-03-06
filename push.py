@@ -134,6 +134,21 @@ def wecom(send_title, push_message):
     }
     http.post(f'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={push_token}', json=push_data)
 
+# 企业微信机器人
+def wecomrobot(send_title, push_message):
+    rep = http.post(
+        url=f'{cfg.get("wecomrobot", "url")}',
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        json={
+          "msgtype": "text",
+          "text": {
+              "content": send_title + "\r\n" + push_message,
+              "mentioned_mobile_list": [f'{cfg.get("wecomrobot", "mobile")}']
+          }
+        }
+    ).json()
+    log.info(f"推送结果：{rep.get('errmsg')}")
+
 
 # pushdeer
 def pushdeer(send_title, push_message):
