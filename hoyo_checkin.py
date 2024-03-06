@@ -16,7 +16,7 @@ def hoyo_checkin(event_base_url: str, act_id: str) -> str:
     :param act_id: 活动id
     :return: 签到结果
     """
-    os_lang = config.config["games"]["os"]["os_lang"]
+    os_lang = config.config["games"]["os"]["lang"]
     reward_url = f"{event_base_url}/home?lang={os_lang}" \
                  f"&act_id={act_id}"
     info_url = f"{event_base_url}/info?lang={os_lang}" \
