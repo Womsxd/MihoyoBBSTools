@@ -216,13 +216,13 @@ kubectl logs $(kubectl get pod -l app=mihoyo -o jsonpath="{.items[0].metadata.na
 
 1. 下载本项目
 
-2. 在脚本目录执行`pip3 install -r requirements_qcloud.txt -t .`
+2. 在脚本目录执行`pip3 install -r requirements.txt -t .`
 
 3. 在本地完整运行一次。
 
 4. 打开并登录[云函数控制台](https://console.cloud.tencent.com/scf/list)。
 
-5. 新建云函数 - 自定义创建，函数类型选`事件函数`，部署方式选`代码部署`，运行环境选 `Python3.6`.
+5. 新建云函数 - 自定义创建，函数类型选`事件函数`，部署方式选`代码部署`，运行环境选 `Python3.9`.
 
 6. 提交方法选`本地上传文件夹`，并在下方的函数代码处上传整个项目文件夹。
 
@@ -236,7 +236,7 @@ kubectl logs $(kubectl get pod -l app=mihoyo -o jsonpath="{.items[0].metadata.na
 
 - 阿里云
   1. 下载本项目
-  2. 在脚本目录执行`pip3 install -r requirements.txt -t .`，如果无法选择`Python3.9`环境请执行`pip3 install -r requirements_qcloud.txt -t .`
+  2. 在脚本目录执行`pip3 install -r requirements.txt -t .`
   3. 在本地完整运行一次。
   4. 打开并登录[函数计算 FC](https://fcnext.console.aliyun.com/cn-hangzhou/services)。注意左上方显示的地区，可点击切换其他地区。
   5. 创建服务 （日志功能可能产生费用，建议关闭）
