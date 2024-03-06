@@ -26,6 +26,12 @@ agentid=
 secret=
 touser=@all
 
+[wecomrobot]
+#企业微信群机器人webhookurl
+url=https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=
+#注册用的手机号,用来@自己通过mipush/其它push推送
+mobile=
+
 [pushdeer]
 api_url=https://api2.pushdeer.com
 token=
