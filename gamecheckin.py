@@ -52,12 +52,10 @@ class GameCheckin:
         headers['User-Agent'] = tools.get_useragent(config.config["games"]["cn"]["useragent"])
         return headers
 
-    def get_account_list(self, update: bool = False) -> list:
-        account_list = get_account_list(self.game_id, self.headers)
-        if account_list is None:
-            if not update and login.update_cookie_token():
-                self.headers = self.get_headers()
-                return self.get_account_list()
+    def get_account_list(self) -> list:
+        try:
+            account_list = get_account_list(self.game_id, self.headers)
+        except CookieError:
             log.warning(f"获取{self.game_name}账号列表失败！")
             config.clear_cookie_game(self.game_id)
             raise CookieError("BBS Cookie Error")
