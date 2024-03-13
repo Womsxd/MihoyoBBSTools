@@ -222,7 +222,7 @@ kubectl logs $(kubectl get pod -l app=mihoyo -o jsonpath="{.items[0].metadata.na
 
 4. 打开并登录[云函数控制台](https://console.cloud.tencent.com/scf/list)。
 
-5. 新建云函数 - 自定义创建，函数类型选`事件函数`，部署方式选`代码部署`，运行环境选 `Python3.9`.
+5. 新建云函数 - 自定义创建，函数类型选`事件函数`，部署方式选`代码部署`，运行环境选 `Python 3.10(公测版)`.
 
 6. 提交方法选`本地上传文件夹`，并在下方的函数代码处上传整个项目文件夹。
 
