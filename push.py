@@ -291,13 +291,12 @@ def discord(send_title, push_message):
                     "url": "https://github.com/Womsxd/MihoyoBBSTools",
                     "icon_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true"
                   },
-                  "footer": {
-                    "icon_url": "https://avatars.githubusercontent.com/u/7739233"
-                  },
                   "timestamp": datetime.now(timezone.utc).astimezone(pytz.timezone('Asia/Shanghai')).isoformat()
                 }
               ],
-              "attachments": []
+            "username": "MihoyoBBSTools",
+            "avatar_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true",
+            "attachments": []
             }
     )
     if rep.status_code != 204:
