@@ -5,7 +5,6 @@ import base64
 import config
 import urllib
 import hashlib
-import pytz
 from datetime import datetime, timezone
 from request import http, get_new_session_use_proxy
 from loghelper import log
@@ -276,6 +275,8 @@ def qmsg(send_title, push_message):
 
 
 def discord(send_title, push_message):
+    import pytz
+    
     rep = http.post(
         url=f'{cfg.get("discord", "webhook")}',
         headers={"Content-Type": "application/json; charset=utf-8"},
