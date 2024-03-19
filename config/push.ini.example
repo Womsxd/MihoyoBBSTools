@@ -84,3 +84,7 @@ webhook_url=
 # https://qmsg.zendee.cn/user 获取key
 [qmsg]
 key=你的qmsg酱key
+
+# Discord Channel Webhook
+[discord]
+webhook=https://discord.com/api/webhooks/your_channel_id_xxxxxx/your_webhook_token_xxxxxx

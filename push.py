@@ -5,6 +5,7 @@ import base64
 import config
 import urllib
 import hashlib
+from datetime import datetime, timezone
 from request import http, get_new_session_use_proxy
 from loghelper import log
 from configparser import ConfigParser, NoOptionError
@@ -134,17 +135,18 @@ def wecom(send_title, push_message):
     }
     http.post(f'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={push_token}', json=push_data)
 
+
 # 企业微信机器人
 def wecomrobot(send_title, push_message):
     rep = http.post(
         url=f'{cfg.get("wecomrobot", "url")}',
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
-          "msgtype": "text",
-          "text": {
-              "content": send_title + "\r\n" + push_message,
-              "mentioned_mobile_list": [f'{cfg.get("wecomrobot", "mobile")}']
-          }
+            "msgtype": "text",
+            "text": {
+                "content": send_title + "\r\n" + push_message,
+                "mentioned_mobile_list": [f'{cfg.get("wecomrobot", "mobile")}']
+            }
         }
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
@@ -270,6 +272,38 @@ def qmsg(send_title, push_message):
         }
     ).json()
     log.info(f"推送结果：{rep['reason']}")
+
+
+def discord(send_title, push_message):
+    import pytz
+    
+    rep = http.post(
+        url=f'{cfg.get("discord", "webhook")}',
+        headers={"Content-Type": "application/json; charset=utf-8"},
+        json={
+              "content": None,
+              "embeds": [
+                {
+                  "title": send_title,
+                  "description": push_message,
+                  "color": 1926125,
+                  "author": {
+                    "name": "MihoyoBBSTools",
+                    "url": "https://github.com/Womsxd/MihoyoBBSTools",
+                    "icon_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true"
+                  },
+                  "timestamp": datetime.now(timezone.utc).astimezone(pytz.timezone('Asia/Shanghai')).isoformat()
+                }
+              ],
+            "username": "MihoyoBBSTools",
+            "avatar_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true",
+            "attachments": []
+            }
+    )
+    if rep.status_code != 204:
+        log.warning(f"推送执行错误：{rep.text}")
+    else:
+        log.info(f"推送结果：HTTP {rep.status_code} Success")
 
 
 def push(status, push_message):
