@@ -106,6 +106,10 @@ zzz_act_id = ""
 cloud_genshin_api = "https://api-cloudgame.mihoyo.com"
 cloud_genshin_sgin = f"{cloud_genshin_api}/hk4e_cg_cn/wallet/wallet/get"
 
+# 云星穹铁道相关api
+cloud_honkai_sr_api = "https://cg-hkrpg-api.mihoyo.com"
+cloud_honkai_sr_sgin = f"{cloud_honkai_sr_api}/hkrpg_cn/cg/wallet/wallet/get"
+
 # 接下来是国际服的内容
 os_referer_url = "https://act.hoyolab.com/"
 os_genshin_act_id = "e202102251931481"

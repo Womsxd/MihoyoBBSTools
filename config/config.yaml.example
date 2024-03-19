@@ -97,6 +97,12 @@ cloud_games:
     enable: false
     #这里填入抓包获得的token
     token: ""
+  #云星穹铁道
+  honkai_sr:
+    #开启签到
+    enable: false
+    #这里填入抓包获得的token
+    token: ""
 competition:
   enable: false
   genius_invokation:

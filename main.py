@@ -11,6 +11,7 @@ import competition
 import gamecheckin
 import hoyo_checkin
 import cloud_genshin
+import cloud_honkai_sr
 from error import *
 from loghelper import log
 
@@ -58,6 +59,12 @@ def main():
         cloud_ys = cloud_genshin.CloudGenshin()
         data = cloud_ys.sign_account()
         return_data += "\n\n" + data
+    if config.config['cloud_games']['honkai_sr']["enable"] \
+            and config.config['cloud_games']['honkai_sr']['token'] != "":
+        log.info("正在进行云星穹铁道签到")
+        cloud_sr = cloud_honkai_sr.CloudHonkaiSr()
+        data = cloud_sr.sign_account()
+        return_data += "\n\n" + data
     if config.config['competition']['enable']:
         # todo 功能未实现
         # log.info("正在进行米游社竞赛活动签到")
@@ -67,7 +74,6 @@ def main():
     if "触发验证码" in return_data:
         ret_code = 3
     return ret_code, return_data
-
 
 if __name__ == "__main__":
     try:

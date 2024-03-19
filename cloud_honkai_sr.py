@@ -5,22 +5,21 @@ from request import http
 from loghelper import log
 
 
-class CloudGenshin:
+class CloudHonkaiSr:
     def __init__(self) -> None:
         self.headers = {
-            'Host': 'api-cloudgame.mihoyo.com',
+            'Host': 'cg-hkrpg-api.mihoyo.com',
             'Accept': '*/*',
             'Referer': 'https://app.mihoyo.com',
-            'x-rpc-combo_token': config.config['cloud_games']['genshin']['token'],
+            'x-rpc-combo_token': config.config['cloud_games']['honkai_sr']['token'],
             'Accept-Encoding': 'gzip, deflate',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                           'Chrome/99.0.4844.84 Safari/537.36',
-        
         }
 
     def sign_account(self) -> str:
-        ret_msg = "云原神:\r\n"
-        req = http.get(url=setting.cloud_genshin_sgin, headers=self.headers)
+        ret_msg = "云星穹铁道:\r\n"
+        req = http.get(url=setting.cloud_honkai_sr_sgin, headers=self.headers)
         data = req.json()
         if data['retcode'] == 0:
             if int(data["data"]["free_time"]["send_freetime"]) > 0:
@@ -30,12 +29,12 @@ class CloudGenshin:
                 log.info('签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上线')
                 ret_msg += '签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上线\n'
             ret_msg += f'你当前拥有免费时长 {tools.time_conversion(int(data["data"]["free_time"]["free_time"]))} ,' \
-                       f'畅玩卡状态为 {data["data"]["play_card"]["short_msg"]}，拥有原点 {data["data"]["coin"]["coin_num"]} 枚'
+                       f'畅玩卡状态为 {data["data"]["play_card"]["short_msg"]}，拥有星云币 {data["data"]["coin"]["coin_num"]} 枚'
             log.info(ret_msg)
         elif data['retcode'] == -100:
-            ret_msg = "云原神token失效/防沉迷"
+            ret_msg = "云星穹铁道token失效/防沉迷"
             log.warning(ret_msg)
-            config.clear_cookie_cloudgame_ys()
+            config.clear_cookie_cloudgame_sr()
         else:
             ret_msg = f'脚本签到失败，json文本:{req.text}'
             log.warning(ret_msg)

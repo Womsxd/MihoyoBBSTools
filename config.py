@@ -12,7 +12,7 @@ serverless = False
 update_config_need = False
 
 config = {
-    'enable': True, 'version': 10,
+    'enable': True, 'version': 11,
     'account': {'cookie': '', 'stuid': '', 'stoken': ''},
     'device': {'name': 'Xiaomi MI 6', 'model': 'Mi 6', 'id': ''},
     'mihoyobbs': {
@@ -42,7 +42,8 @@ config = {
         }
     },
     'cloud_games': {
-        "genshin": {'enable': False, 'token': ''}
+        "genshin": {'enable': False, 'token': ''},
+        "honkai_sr": {'enable': False, 'token': ''}
     },
 
     'competition': {
@@ -131,6 +132,24 @@ def config_v10_update(data: dict):
     return base_config
 
 
+def config_v11_update(data: dict):
+    global update_config_need
+    update_config_need = True
+    base_config = deepcopy(config_raw)
+
+    base_config["enable"] = data["enable"]
+    base_config['account']=deepcopy(data['account'])
+    base_config['device']=deepcopy(data['device'])
+    base_config['mihoyobbs']=deepcopy(data['mihoyobbs'])
+    base_config['competition']=deepcopy(data['competition'])
+    base_config['games']=deepcopy(data['games'])
+    base_config['cloud_games']['genshin']=deepcopy(data['cloud_games']['genshin'])
+    if data['cloud_games'].get('honkai_sr',None) :
+        base_config['cloud_games']['honkai_sr']=deepcopy(data['cloud_games']['honkai_sr'])
+    log.info("config已升级到: 11")
+    return base_config
+
+
 def load_config(p_path=None):
     global config
     if not p_path:
@@ -144,6 +163,8 @@ def load_config(p_path=None):
             data = config_v9_update(data)
         if data['version'] == 9:
             data = config_v10_update(data)
+        if data['version'] == 10:
+            data = config_v11_update(data)
         save_config(p_config=data)
     config = data
     log.info("Config加载完毕")
@@ -196,7 +217,7 @@ def clear_cookie_game(game_id: str):
     save_config()
 
 
-def clear_cookie_cloudgame():
+def clear_cookie_cloudgame_ys():
     global config
     if serverless:
         log.info("云函数执行，无法保存")
@@ -206,6 +227,15 @@ def clear_cookie_cloudgame():
     log.info("云原神Cookie删除完毕")
     save_config()
 
+def clear_cookie_cloudgame_sr():
+    global config
+    if serverless:
+        log.info("云函数执行，无法保存")
+        return None
+    config['cloud_games']['honkai_sr']["enable"] = False
+    config['cloud_games']['honkai_sr']['token'] = ""
+    log.info("云星穹铁道Cookie删除完毕")
+    save_config()
 
 if __name__ == "__main__":
     # 初始化配置文件
