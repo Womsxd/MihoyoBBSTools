@@ -5,7 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+captcha.py
 # Distribution / packaging
 .Python
 build/
