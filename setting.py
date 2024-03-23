@@ -84,6 +84,18 @@ cn_game_checkin_rewards = f"{web_api}/event/luna/home?lang={cn_game_lang}"
 cn_game_is_signurl = f"{web_api}/event/luna/info?lang={cn_game_lang}"
 cn_game_sign_url = f"{web_api}/event/luna/sign"
 
+hk4e_api_base_url = 'https://hk4e-api.mihoyo.com'
+# 获取hk4e token对应的账号信息
+hk4e_token_get_info_url = f'{web_api}/common/badge/v1/login/info'
+# 获取hk4e token
+get_hk4e_token_url = f'{web_api}/common/badge/v1/login/account'
+# 获取任务列表
+genius_invokation_task_url = f'{hk4e_api_base_url}/event/geniusinvokationtcg/adventure_task_list'
+# 领取任务奖励
+genius_invokation_get_award_url = f'{hk4e_api_base_url}/event/geniusinvokationtcg/award_adventure_task'
+# 提交任务完成
+genius_invokation_finish_task_url = f'{hk4e_api_base_url}/event/geniusinvokationtcg/finish_adventure_task'
+
 # 崩坏2自动签到相关的相关设置
 honkai2_act_id = "e202203291431091"
 
