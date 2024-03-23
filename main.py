@@ -59,11 +59,8 @@ def main():
         data = cloud_ys.sign_account()
         return_data += "\n\n" + data
     if config.config['competition']['enable']:
-        # todo 功能未实现
-        # log.info("正在进行米游社竞赛活动签到")
-        competition_result = competition.run_task()
-        if competition_result != '':
-            return_data += "\n\n" + "米游社竞赛活动:" + competition_result
+        cpt = competition.Competition()
+        return_data += '\n\n' + cpt.run_task()
     if "触发验证码" in return_data:
         ret_code = 3
     return ret_code, return_data

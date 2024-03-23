@@ -129,6 +129,18 @@ var cookie=document.cookie;var ask=confirm('Cookie:'+cookie+'\n\nDo you want to 
 
 5. 点击记录，往下拉，找到`X-Rpc-Combo_token`,复制对应的值,成功获取token
 
+## 获取原神赛事网站的 token
+
+1. 建议使用打开浏览器的无痕/隐私/InPrivate模式
+
+2. 打开 [原神赛事网站](https://webstatic.mihoyo.com/ys/event/tcgmatch/index.html#/news)，并登录账号
+
+3. 按下键盘上的`F12`或右键检查,打开开发者工具,在打开后点击“赛事福利”
+
+4. 在filter里面输入`adventure_task_listt`,选择`status`为`200`的记录
+
+5. 点击记录，往下拉，找到`Cookie`,在`Cookie`中找到`e_hk4e_token`字段,复制等号后面的值(最后面如果有分号去掉),成功获取token
+
 ## 使用 Docker 运行
 
 Docker 的运行脚本基于 Linux 平台编写，暂未在 Win 平台测试。

@@ -112,3 +112,10 @@ os_genshin_act_id = "e202102251931481"
 os_honkai_sr_act_id = "e202303301540311"
 os_honkai3rd_act_id = "e202110291205111"
 os_tearsofthemis_act_id = "e202202281857121"
+
+# 原神赛事网站相关api（目前只有七圣召唤）
+competition_api = 'https://hk4e-api.mihoyo.com'
+game_biz = 'game_biz=hk4e_cn'
+adventure_task_list = f'{competition_api}/event/geniusinvokationtcg/adventure_task_list?{game_biz}'
+award_adventure_task = f'{competition_api}/event/geniusinvokationtcg/award_adventure_task?{game_biz}'
+finish_adventure_task = f'{competition_api}/event/geniusinvokationtcg/finish_adventure_task?{game_biz}'

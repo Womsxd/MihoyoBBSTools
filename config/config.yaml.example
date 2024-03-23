@@ -97,10 +97,18 @@ cloud_games:
     enable: false
     #这里填入抓包获得的token
     token: ""
+#原神赛事网站
 competition:
+  # 控制整个赛事网站相关任务是否执行
   enable: false
-  genius_invokation:
+  geniusinvokation:
+    #控制获取冒险牌币相关任务是否执行
     enable: false
+    #这里填入抓包获得的token
     token: ""
+    #每日福利签到
     checkin: false
+    #每日观看精彩视频
     video: false
+    #每周完成胜冠之试
+    play_cards: false

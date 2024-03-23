@@ -47,7 +47,8 @@ config = {
 
     'competition': {
         'enable': False,
-        'genius_invokation': {'enable': False, 'token': '', 'checkin': False, 'video': False}
+        'geniusinvokation': {'enable': False, 'token': '', 'checkin': False,
+                             'video': False, 'play_cards': False}
     }
 }
 config_raw = deepcopy(config)
@@ -204,6 +205,17 @@ def clear_cookie_cloudgame():
     config['cloud_games']['genshin']["enable"] = False
     config['cloud_games']['genshin']['token'] = ""
     log.info("云原神Cookie删除完毕")
+    save_config()
+
+
+def clear_cookie_competition():
+    global config
+    if serverless:
+        log.info('云函数执行，无法保存')
+        return None
+    config['competition']['geniusinvokation']['enable'] = False
+    config['competition']['geniusinvokation']['token'] = ''
+    log.info('原神赛事网站Cookie删除完毕')
     save_config()
 
 
