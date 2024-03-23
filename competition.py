@@ -16,6 +16,10 @@ UN_FINISH = 'Unfinish'
 FINISH = 'Finish'
 REWARD = 'Reward'
 
+task_sign_id = 101
+task_video_id = 102
+task_play_cards_id = 503
+
 
 class Competition:
     def __init__(self):
@@ -27,7 +31,7 @@ class Competition:
             'Referer': 'https://webstatic.mihoyo.com/',
             'Host': 'hk4e-api.mihoyo.com'
         }
-        self.task_do = {
+        self.task_status = {
             'sign': UN_FINISH,
             'video': UN_FINISH,
             'play_cards': UN_FINISH
@@ -44,17 +48,17 @@ class Competition:
             config.clear_cookie_competition()
             raise CookieError('Cookie expires')
         active_tasks = data['data']['active_tasks']
-        task_id2task_do = {
-            101: 'sign',
-            102: 'video',
-            503: 'play_cards'
+        task_id2task_name = {
+            task_sign_id: 'sign',
+            task_video_id: 'video',
+            task_play_cards_id: 'play_cards'
         }
         self.today_get_coins = self.today_have_get_coins = 0
         for task in active_tasks:
-            self.task_do[task_id2task_do[task['task_id']]] = task['status']
+            self.task_status[task_id2task_name[task['task_id']]] = task['status']
             if task['status'] == REWARD:
                 self.today_have_get_coins += task['adventure_coin']
-            elif task['task_id'] == 503 and task['status'] == UN_FINISH:
+            elif task['task_id'] == task_play_cards_id and task['status'] == UN_FINISH:
                 pass
             else:
                 self.today_get_coins += task['adventure_coin']
@@ -66,12 +70,12 @@ class Competition:
 
     # 每日福利签到
     def get_sign_bonus(self):
-        if self.task_do['sign'] == REWARD:
+        if self.task_status['sign'] == REWARD:
             log.info('【每日福利签到】任务已经完成过了~')
         else:
             log.info('正在做【每日福利签到】任务...')
             data = http.post(url=setting.award_adventure_task, headers=self.headers,
-                             json={'task_id': 101}).json()
+                             json={'task_id': task_sign_id}).json()
             if data['retcode'] == 0:
                 log.info('任务成功完成')
                 wait()
@@ -80,18 +84,18 @@ class Competition:
 
     # 每日观看精彩视频
     def watch_video(self):
-        if self.task_do['video'] == REWARD:
+        if self.task_status['video'] == REWARD:
             log.info('【每日观看精彩视频】任务已经完成过了~')
         else:
             log.info('正在做【每日观看精彩视频】任务...')
-            if self.task_do['video'] == UN_FINISH:
+            if self.task_status['video'] == UN_FINISH:
                 data = http.post(url=setting.finish_adventure_task, headers=self.headers,
-                                 json={'task_id': 102}).json()
+                                 json={'task_id': task_video_id}).json()
                 if data['retcode'] != 0:
                     log.warning(f'任务失败，原因：{data}')
                     return
             data = http.post(url=setting.award_adventure_task, headers=self.headers,
-                             json={'task_id': 102}).json()
+                             json={'task_id': task_video_id}).json()
             if data['retcode'] == 0:
                 log.info('任务成功完成')
                 wait()
@@ -100,13 +104,13 @@ class Competition:
 
     # 每周完成胜冠之试
     def play_cards(self):
-        if self.task_do['play_cards'] == REWARD:
+        if self.task_status['play_cards'] == REWARD:
             log.info('【每周完成胜冠之试】任务已经完成过了~')
         else:
             log.info('正在做【每周完成胜冠之试】任务...')
-            if self.task_do['play_cards'] == FINISH:
+            if self.task_status['play_cards'] == FINISH:
                 data = http.post(url=setting.award_adventure_task, headers=self.headers,
-                                 json={'task_id': 503}).json()
+                                 json={'task_id': task_play_cards_id}).json()
                 if data['retcode'] == 0:
                     log.info('任务成功完成')
                     wait()
@@ -119,8 +123,8 @@ class Competition:
     def run_task(self):
         return_data = '原神赛事网站: '
         for retry in range(3):
-            if self.task_do['sign'] == REWARD and self.task_do['video'] == REWARD \
-                    and self.task_do['play_cards'] == UN_FINISH:
+            if self.task_status['sign'] == REWARD and self.task_status['video'] == REWARD \
+                    and self.task_status['play_cards'] == UN_FINISH:
                 return_data += '\n' + f'今天已经全部完成了！\n' \
                                       f'一共获得{self.today_have_get_coins}个冒险牌币\n目前有{self.have_coins}个冒险牌币' \
                                       f'\n本周还能获得完成[胜冠之试]的20个冒险牌币'
