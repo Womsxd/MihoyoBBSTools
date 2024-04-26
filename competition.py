@@ -28,8 +28,9 @@ class GeniusInvokation:
     task_list = {
         # finish是False证明reward一定是False，finish是True不一定是reward不一定是true
         101: {'task_id': 101, 'task_name': '每日签到', 'finish': False, 'reward': False},
-        102: {'task_id': 102, 'task_name': '观看视频', 'finish': False, 'reward': False},
-        503: {'task_id': 503, 'task_name': '每周完成冠胜之试', 'finish': False, 'reward': False}
+        503: {'task_id': 503, 'task_name': '每周完成冠胜之试', 'finish': False, 'reward': False},
+        504: {'task_id': 504, 'task_name': '每周完成10场匹配', 'finish': False, 'reward': False},
+        505: {'task_id': 505, 'task_name': '每周获得3场匹配胜利', 'finish': False, 'reward': False}
     }
 
     def __init__(self):
@@ -173,23 +174,6 @@ class GeniusInvokation:
             return '成功签到'
         return f'无法进行签到'
 
-    def watch_video(self):
-        """
-        观看视频
-
-        :return:
-        """
-        task_info = self.task_list.get(102)
-        if task_info['reward']:
-            return '已经领取过了'
-        if not task_info['finish']:
-            if not self.finish_task(task_info['task_id']):
-                return '观看视频任务提交失败'
-            time.sleep(random.randint(3, 8))
-        if self.get_award(task_info['task_id']):
-            log.info('成功完成观看视频')
-            return '成功领取视频奖励'
-        return f'无法领取视频奖励'
 
     def week_task(self):
         """
@@ -222,9 +206,6 @@ class GeniusInvokation:
         task_config = config.config['competition']['genius_invokation']
         if task_config['checkin']:
             result += f'\n{self.checkin()}'
-            time.sleep(random.randint(3, 8))
-        if task_config['video']:
-            result += f'\n{self.watch_video()}'
             time.sleep(random.randint(3, 8))
         # if task_config['week_task']:
         #    result += f'\n{self.week_task()}'
