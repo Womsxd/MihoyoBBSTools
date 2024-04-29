@@ -142,21 +142,6 @@ class GeniusInvokation:
             return True
         return None
 
-    def finish_task(self, task_id: int):
-        """
-        完成任务
-        :return:
-        """
-        request = self.http.post(setting.genius_invokation_finish_task_url, params=self.params,
-                                 json={"task_id": task_id}, headers=self.headers)
-        if request.status_code != 200:
-            return None
-        data = request.json()
-        # 已经提交过了
-        if data['retcode'] == 0 or data['retcode'] == -521038:
-            return True
-        return None
-
     def checkin(self):
         """
         签到
@@ -174,20 +159,28 @@ class GeniusInvokation:
             return '成功签到'
         return f'无法进行签到'
 
-
-    def week_task(self):
+    def week_task(self, task_ids: list):
         """
         每周打牌任务
         """
-        task_info = self.task_list.get(503)
-        if task_info['reward']:
-            return '已经领取每周打牌奖励了'
-        if not task_info['finish']:
-            return '每周打牌任务还未完成'
-        if self.get_award(task_info['task_id']):
-            task_info['reward'] = True
-            return '成功领取每周打牌任务奖励'
-        return f'无法领取奖励'
+
+        def do_task(task: int):
+            task_info = self.task_list.get(task)
+            if task_info['reward']:
+                return ''  # 领取后了应该不需要提示了
+            if not task_info['finish']:
+                return f'每周任务:{task_info["task_name"]} 还未完成'
+            if self.get_award(task_info['task_id']):
+                task_info['reward'] = True
+                return f'成功领取每周任务:{task_info["task_name"]} 奖励'
+            return f'无法领取 {task_info["task_name"]} 奖励'
+
+        results = ""
+        for task_id in task_ids:
+            result = do_task(task_id)
+            log.info(result)
+            results += f'{result}\n'
+        return results
 
     def run_task(self):
         """
