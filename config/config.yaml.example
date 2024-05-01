@@ -7,6 +7,7 @@ account:
   cookie: ""
   stuid: ""
   stoken: ""
+  mid: ""
 device:
   name: "Xiaomi MI 6"
   model: "Mi 6"

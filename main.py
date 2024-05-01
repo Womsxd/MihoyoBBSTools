@@ -29,7 +29,7 @@ def main():
     elif config.config["account"]["cookie"] == "CookieError":
         raise CookieError('Cookie expires')
     # 检测参数是否齐全，如果缺少就进行登入操作，同时判断是否开启开启米游社签到
-    if (config.config["account"]["stuid"] == "" or config.config["account"]["stoken"] == "") and \
+    if (config.config["account"]["stuid"] == "" or config.config["account"]["stoken"] == "" or config.config["account"]["mid"] == "") and \
             (config.config["mihoyobbs"]["enable"] or config.config['games']['cn']["enable"]):
         # 登入，如果没开启bbs全局没打开就无需进行登入操作
         if config.config["mihoyobbs"]["enable"]:

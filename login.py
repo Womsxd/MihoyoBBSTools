@@ -28,7 +28,8 @@ def login():
         log.error("cookie已失效,请重新登录米游社抓取cookie")
         config.clear_cookies()
         raise CookieError('Cookie expires')
-    config.config["account"]["stuid"] = uid
+    config.config["account"]["stuid"] = uid    
+    config.config["account"]["mid"] = get_mid()
     config.config["account"]["stoken"] = get_stoken(login_ticket, uid)
     log.info("登录成功！")
     log.info("正在保存Config！")
@@ -39,6 +40,9 @@ def get_login_ticket() -> str:
     ticket_match = re.search(r'login_ticket=(.*?)(?:;|$)', config.config["account"]["cookie"])
     return ticket_match.group(1) if ticket_match else None
 
+def get_mid() -> str:
+    mid = re.search(r'(account_mid_v2|ltmid_v2|mid)=(.*?)(?:;|$)', config.config["account"]["cookie"])
+    return mid.group(2) if mid else None
 
 def get_uid() -> str:
     uid = None

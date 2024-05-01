@@ -13,7 +13,7 @@ update_config_need = False
 
 config = {
     'enable': True, 'version': 10,
-    'account': {'cookie': '', 'stuid': '', 'stoken': ''},
+    'account': {'cookie': '', 'stuid': '', 'stoken': '', 'mid': ''},
     'device': {'name': 'Xiaomi MI 6', 'model': 'Mi 6', 'id': ''},
     'mihoyobbs': {
         'enable': True, 'checkin': True, 'checkin_list': [5, 2],
@@ -178,6 +178,7 @@ def clear_cookies():
         log.info("云函数执行，无法保存")
         return None
     config["enable"] = False
+    config["account"]["mid"] = ""
     config["account"]["stuid"] = ""
     config["account"]["stoken"] = ""
     config["account"]["cookie"] = "CookieError"

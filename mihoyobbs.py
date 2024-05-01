@@ -24,7 +24,7 @@ class Mihoyobbs:
                          if setting.mihoyobbs_List.get(i) is not None]
         self.headers = {
             "DS": tools.get_ds(web=False),
-            "cookie": f'stuid={config.config["account"]["stuid"]};stoken={config.config["account"]["stoken"]}',
+            "cookie": f'stuid={config.config["account"]["stuid"]};stoken={config.config["account"]["stoken"]};mid={config.config["account"]["mid"]}',
             "x-rpc-client_type": setting.mihoyobbs_Client_type,
             "x-rpc-app_version": setting.mihoyobbs_version,
             "x-rpc-sys_version": "12",
