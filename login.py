@@ -121,5 +121,9 @@ def get_stoken_cookie() -> str:
     """
     cookie = f"stuid={config.config['account']['stuid']};stoken={config.config['account']['stoken']}"
     if require_mid():
-        cookie += f";mid={config.config['account']['mid']}"
+        if config.config['account']['mid']: 
+            cookie += f";mid={config.config['account']['mid']}"
+        else:
+            log.info(f"v2_stoken需要mid参数")
+            raise CookieError(f"cookie require @mid parament")
     return cookie
