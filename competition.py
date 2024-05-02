@@ -200,8 +200,8 @@ class GeniusInvokation:
         if task_config['checkin']:
             result += f'\n{self.checkin()}'
             time.sleep(random.randint(3, 8))
-        # if task_config['week_task']:
-        #    result += f'\n{self.week_task()}'
+        if task_config['weekly']:
+            result += f'\n{self.week_task([503,504,505])}'
         log.info('七圣召唤赛事任务执行完毕')
         return result
 

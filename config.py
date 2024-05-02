@@ -1,3 +1,4 @@
+import collections
 import os
 import yaml
 import setting
@@ -12,7 +13,7 @@ serverless = False
 update_config_need = False
 
 config = {
-    'enable': True, 'version': 10,
+    'enable': True, 'version': 11,
     'account': {'cookie': '', 'stuid': '', 'stoken': '', 'mid': ''},
     'device': {'name': 'Xiaomi MI 6', 'model': 'Mi 6', 'id': ''},
     'mihoyobbs': {
@@ -47,7 +48,7 @@ config = {
 
     'competition': {
         'enable': False,
-        'genius_invokation': {'enable': False, 'token': '', 'checkin': False, 'video': False}
+        'genius_invokation': {'enable': False, 'account': [], 'checkin': False, 'weekly': False}
     }
 }
 config_raw = deepcopy(config)
@@ -96,7 +97,7 @@ def config_v9_update(data: dict):
     return data
 
 
-def config_v10_update(data: dict):
+def config_v9_update_to_v11(data: dict):
     global update_config_need
     update_config_need = True
     base_config = deepcopy(config_raw)
@@ -131,6 +132,19 @@ def config_v10_update(data: dict):
     return base_config
 
 
+def config_v10_update(data: dict):
+    global update_config_need
+    update_config_need = True
+    data['version'] = 11
+    data['account']['mid'] = ""
+    genius = data['competition']['genius_invokation']
+    new_keys = ['enable', 'account', 'checkin', 'weekly']
+    data['competition']['genius_invokation'] = dict(collections.OrderedDict(
+        (key, genius.get(key, False) if key != 'account' else []) for key in new_keys))
+    log.info("config已升级到: 11")
+    return data
+
+
 def load_config(p_path=None):
     global config
     if not p_path:
@@ -143,6 +157,8 @@ def load_config(p_path=None):
         if data['version'] == 8:
             data = config_v9_update(data)
         if data['version'] == 9:
+            data = config_v9_update_to_v11(data)
+        if data['version'] == 10:
             data = config_v10_update(data)
         save_config(p_config=data)
     config = data
