@@ -77,11 +77,13 @@
 
 9. 将此处的复制到的 Cookie 先粘贴到 config 文件的 Cookie 处，如果末尾没有`;空格`请手动补上
 
-10. 打开`http://user.mihoyo.com/`并进行登入操作
+10. **下面方式已失效，新用户请先关闭米游社相关功能，只开启游戏签到，请直接跳到14**
 
-11. 按下键盘上的`F12`或右键检查,打开开发者工具,点击 Console
+11. 打开`http://user.mihoyo.com/`并进行登入操作
 
-12. 输入
+12. 按下键盘上的`F12`或右键检查,打开开发者工具,点击 Console
+
+13. 输入
 
 ```javascript
 var cookie=document.cookie;var ask=confirm('Cookie:'+cookie+'\n\nDo you want to copy the cookie to the clipboard?');if(ask==true){copy(cookie);msg=cookie}else{msg='Cancel'}
