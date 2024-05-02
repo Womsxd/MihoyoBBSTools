@@ -108,7 +108,7 @@ def require_mid() -> bool:
 
     :return: 是否需要mid
     """
-    if config.config["account"]["stoken"].startswith("v2"):
+    if config.config["account"]["stoken"].startswith("v2_"):
         return True
     return False
 
@@ -120,6 +120,6 @@ def get_stoken_cookie() -> str:
     :return: 正确的stoken的cookie
     """
     cookie = f"stuid={config.config['account']['stuid']};stoken={config.config['account']['stoken']}"
-    if config.config["account"]["stoken"].startswith("v2"):
+    if require_mid():
         cookie += f";mid={config.config['account']['mid']}"
     return cookie
