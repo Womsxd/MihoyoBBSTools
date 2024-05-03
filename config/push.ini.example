@@ -1,6 +1,6 @@
 [setting]
 enable=true
-# 共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot feishubot bark pushdeer gotify smtp(邮件推送) webhook qmsg(qq消息推送)
+# 共有 cqhttp ftqq(sever酱) pushplus telegram wecom dingrobot feishubot bark pushdeer gotify smtp(邮件推送) webhook qmsg(qq消息推送) WinToast(Win11通知)
 push_server=pushplus
 # server酱 pushplus dingrobot 的推送token
 push_token=XXXXXX

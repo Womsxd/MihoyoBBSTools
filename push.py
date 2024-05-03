@@ -305,6 +305,14 @@ def discord(send_title, push_message):
     else:
         log.info(f"推送结果：HTTP {rep.status_code} Success")
 
+def wintoast(send_title, push_message):
+    try:
+        from win11toast import toast
+        toast(app_id="MihoyoBBSTools",title=send_title,body=push_message,icon='')
+    except:
+        log.error(f"请先pip install win11toast再使用win通知")
+    
+
 
 def push(status, push_message):
     if not load_config():
