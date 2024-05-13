@@ -40,7 +40,6 @@ class GeniusInvokation:
             'Origin': 'https://webstatic.mihoyo.com', 'Referer': 'https://webstatic.mihoyo.com/',
             'Accept-Language': 'zh-CN,zh;q=0.9',
             'Cookie': ''}
-        self.set_hk4e_token(config.config["competition"]["genius_invokation"]["token"])
         # self.user_info = self.get_info()
         self.user_info = self.get_hk4e_token()
         if self.user_info is not None:
