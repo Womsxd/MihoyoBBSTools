@@ -46,11 +46,21 @@
      > cookie: 你复制的cookie
      > ```
 
-  9. 检查`config.yaml`的`enable:`的值为 true
+  9. 通过[获取Stoken](https://github.com/Womsxd/mihoyo_login) 项目获取Stoken (麻烦可以去关闭BBS模块mihoyobbs.enable: false)
 
-  10. 在命令提示符(cmd)/powershell，输入`python main.py`来进行执行
+  10. 登录成功后复制 `stoken='获取到的Stoken'`里的`Stoken`，然后粘贴到`config.yaml`的`stoken: ""`中(在`account`里面)
 
-  11. 多用户的请使用`python main_multi.py`，多用户在需要自动执行的情况下请使用`python main_multi.py autorun`
+      例子
+
+     > ```yaml
+     > stoken: 获取到的Stoken
+     > ```
+
+  11. 检查`config.yaml`的需求开启的功能的`enable:`的值为 true
+
+  12. 在命令提示符(cmd)/powershell，输入`python main.py`来进行执行
+
+  13. 多用户的请使用`python main_multi.py`，多用户在需要自动执行的情况下请使用`python main_multi.py autorun`
 
 ## 获取米游社 Cookie
 
@@ -77,23 +87,7 @@
 
 9. 将此处的复制到的 Cookie 先粘贴到 config 文件的 Cookie 处，如果末尾没有`;空格`请手动补上
 
-10. **下面方式已失效，新用户请先关闭米游社相关功能，只开启游戏签到，请直接跳到14**
-
-11. 打开`http://user.mihoyo.com/`并进行登入操作
-
-12. 按下键盘上的`F12`或右键检查,打开开发者工具,点击 Console
-
-13. 输入
-
-```javascript
-var cookie=document.cookie;var ask=confirm('Cookie:'+cookie+'\n\nDo you want to copy the cookie to the clipboard?');if(ask==true){copy(cookie);msg=cookie}else{msg='Cancel'}
-```
-
-回车执行，并在确认无误后点击确定。
-
-13. 将本次获取到的 Cookie 粘贴到之前获取到的 Cookie 后面
-
-14. **此时 Cookie 已经获取完毕了**
+10. **此时 Cookie 已经获取完毕了**
 
 ## 海外版获取Cookie
 
