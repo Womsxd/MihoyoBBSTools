@@ -17,19 +17,22 @@ def login():
         log.error("请填入Cookies!")
         config.clear_cookies()
         raise CookieError('No cookie')
-    # 判断Cookie里面是否有login_ticket 没有的话直接退了
-    login_ticket = get_login_ticket()
-    if login_ticket is None:
-        log.error("cookie中没有'login_ticket'字段,请重新登录米游社，重新抓取cookie!")
-        config.clear_cookies()
-        raise CookieError('Cookie lost login_ticket')
+    if config.config['account']['stoken'] == "":
+        log.error("无Stoken 请手动填入stoken!")
+        raise CookieError('no stoken')
+    # # 判断Cookie里面是否有login_ticket 没有的话直接退了
+    # login_ticket = get_login_ticket()
+    # if login_ticket is None:
+    #     log.error("cookie中没有'login_ticket'字段,请重新登录米游社，重新抓取cookie!")
+    #     config.clear_cookies()
+    #     raise CookieError('Cookie lost login_ticket')
     uid = get_uid()
     if uid is None:
         log.error("cookie已失效,请重新登录米游社抓取cookie")
         config.clear_cookies()
         raise CookieError('Cookie expires')
     config.config["account"]["stuid"] = uid
-    config.config["account"]["stoken"] = get_stoken(login_ticket, uid)
+    # config.config["account"]["stoken"] = get_stoken(login_ticket, uid)
     if require_mid():
         config.config["account"]["mid"] = get_mid()
     log.info("登录成功！")
