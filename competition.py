@@ -25,13 +25,6 @@ def cookie_get_hk4e_token(cookies: str) -> str:
 
 class GeniusInvokation:
     http = get_new_session()
-    task_list = {
-        # finish是False证明reward一定是False，finish是True不一定是reward不一定是true
-        101: {'task_id': 101, 'task_name': '每日签到', 'finish': False, 'reward': False},
-        503: {'task_id': 503, 'task_name': '每周完成冠胜之试', 'finish': False, 'reward': False},
-        504: {'task_id': 504, 'task_name': '每周完成10场匹配', 'finish': False, 'reward': False},
-        505: {'task_id': 505, 'task_name': '每周获得3场匹配胜利', 'finish': False, 'reward': False}
-    }
 
     def __init__(self):
         self.headers = {
@@ -40,6 +33,13 @@ class GeniusInvokation:
             'Origin': 'https://webstatic.mihoyo.com', 'Referer': 'https://webstatic.mihoyo.com/',
             'Accept-Language': 'zh-CN,zh;q=0.9',
             'Cookie': ''}
+        self.task_list = {
+            # finish是False证明reward一定是False，finish是True不一定是reward不一定是true
+            101: {'task_id': 101, 'task_name': '每日签到', 'finish': False, 'reward': False},
+            503: {'task_id': 503, 'task_name': '每周完成冠胜之试', 'finish': False, 'reward': False},
+            504: {'task_id': 504, 'task_name': '每周完成10场匹配', 'finish': False, 'reward': False},
+            505: {'task_id': 505, 'task_name': '每周获得3场匹配胜利', 'finish': False, 'reward': False}
+        }
         # self.user_info = self.get_info()
         self.user_info = self.get_hk4e_token()
         if self.user_info is not None:
@@ -200,7 +200,7 @@ class GeniusInvokation:
             result += f'\n{self.checkin()}'
             time.sleep(random.randint(3, 8))
         if task_config['weekly']:
-            result += f'\n{self.week_task([503,504,505])}'
+            result += f'\n{self.week_task([503, 504, 505])}'
         log.info('七圣召唤赛事任务执行完毕')
         return result
 
