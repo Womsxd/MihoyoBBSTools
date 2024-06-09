@@ -28,7 +28,7 @@ def login():
     #     raise CookieError('Cookie lost login_ticket')
     uid = get_uid()
     if uid is None:
-        log.error("cookie已失效,请重新登录米游社抓取cookie")
+        log.error("cookie缺少UID，请重新抓取bbs的cookie")
         config.clear_cookies()
         raise CookieError('Cookie expires')
     config.config["account"]["stuid"] = uid
@@ -50,16 +50,17 @@ def get_mid() -> str:
     return mid.group(2) if mid else None
 
 
-def get_uid() -> str:
+def get_uid():
     uid = None
     uid_match = re.search(r"(account_id|ltuid|login_uid)=(\d+)", config.config["account"]["cookie"])
     if uid_match is None:
         # stuid就是uid，先搜索cookie里面的，搜不到再用api获取
-        data = http.get(url=setting.bbs_account_info,
-                        params={"login_ticket": config.config["account"]["login_ticket"]},
-                        headers=headers).json()
-        if "成功" in data["data"]["msg"]:
-            uid = str(data["data"]["cookie_info"]["account_id"])
+        # data = http.get(url=setting.bbs_account_info,
+        #                 params={"login_ticket": config.config["account"]["login_ticket"]},
+        #                 headers=headers).json()
+        # if "成功" in data["data"]["msg"]:
+        #     uid = str(data["data"]["cookie_info"]["account_id"])
+        return uid
     else:
         uid = uid_match.group(2)
     return uid
