@@ -52,7 +52,8 @@ def get_mid() -> str:
 
 def get_uid():
     uid = None
-    uid_match = re.search(r"(account_id|ltuid|login_uid)=(\d+)", config.config["account"]["cookie"])
+    uid_match = re.search(r"(account_id|ltuid|login_uid|ltuid_v2|account_id_v2)=(\d+)",
+                          config.config["account"]["cookie"])
     if uid_match is None:
         # stuid就是uid，先搜索cookie里面的，搜不到再用api获取
         # data = http.get(url=setting.bbs_account_info,
@@ -61,8 +62,7 @@ def get_uid():
         # if "成功" in data["data"]["msg"]:
         #     uid = str(data["data"]["cookie_info"]["account_id"])
         return uid
-    else:
-        uid = uid_match.group(2)
+    uid = uid_match.group(2)
     return uid
 
 
@@ -125,7 +125,7 @@ def get_stoken_cookie() -> str:
     """
     cookie = f"stuid={config.config['account']['stuid']};stoken={config.config['account']['stoken']}"
     if require_mid():
-        if config.config['account']['mid']: 
+        if config.config['account']['mid']:
             cookie += f";mid={config.config['account']['mid']}"
         else:
             log.error(f"v2_stoken需要mid参数")
