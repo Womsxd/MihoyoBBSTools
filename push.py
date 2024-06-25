@@ -311,7 +311,21 @@ def wintoast(send_title, push_message):
         toast(app_id="MihoyoBBSTools",title=send_title,body=push_message,icon='')
     except:
         log.error(f"请先pip install win11toast再使用win通知")
-    
+
+# 推送消息中屏蔽关键词
+def msg_replace(msg):
+    block_keys = []
+    try:
+        block_str = cfg.get('setting', 'push_block_keys')
+        block_keys = block_str.split(',')
+    except:
+        return msg
+    else:
+        for block_key in block_keys:
+            block_key_trim = str(block_key).strip()
+            if block_key_trim:
+                msg = str(msg).replace(block_key_trim, "*" * len(block_key_trim))
+        return msg
 
 
 def push(status, push_message):
@@ -329,7 +343,7 @@ def push(status, push_message):
         log.debug(f"推送所用的服务为: {func_name}")
         try:
             if not config.update_config_need:
-                func(title.get(status, ''), push_message)
+                func(msg_replace(title.get(status, '')), msg_replace(push_message))
             else:
                 func('「米游社脚本」config可能需要手动更新',
                      f'如果您多次收到此消息开头的推送，证明您运行的环境无法自动更新config，请手动更新一下，谢谢\r\n'
