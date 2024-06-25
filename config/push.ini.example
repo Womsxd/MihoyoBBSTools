@@ -4,6 +4,8 @@ enable=true
 push_server=pushplus
 # server酱 pushplus dingrobot 的推送token
 push_token=XXXXXX
+# 推送消息中需要屏蔽的关键词,多个关键词使用,分隔
+push_block_keys=
 
 [cqhttp]
 #cqhttp的服务端地址
