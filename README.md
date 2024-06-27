@@ -105,13 +105,6 @@
 
 5. 将获取到的 Cookie 粘贴到之前获取到 OS 的 Cookie 里面
 
-## 获取设备 UA
-
-1. 使用常用的移动端设备访问 `https://www.ip138.com/useragent/`
-
-2. 复制网页内容中的 `客户端获取的UserAgent`
-
-3. 替换配置文件中 `useragent` 的原始内容
 
 ## 获取云原神的 token
 
