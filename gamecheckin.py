@@ -208,6 +208,17 @@ class Honkaisr(GameCheckin):
         self.init()
 
 
+class ZZZ(GameCheckin):
+    def __init__(self):
+        super().__init__("nap_cn", "zzz", "绝区零", setting.zzz_act_id, "绳匠")
+        self.headers["Origin"] = "https://act.mihoyo.com"
+        self.headers['X-Rpc-Signgame'] = 'zzz'
+        self.rewards_api = setting.zzz_game_checkin_rewards
+        self.is_sign_api = setting.zzz_game_is_signurl
+        self.sign_api = setting.zzz_game_sign_url
+        self.init()
+
+
 def checkin_game(game_name, game_module, game_print_name=""):
     game_config = config.config["games"]["cn"][game_name]
     if game_config["checkin"]:
@@ -226,7 +237,8 @@ def run_task():
         ("崩坏3rd", "honkai3rd", Honkai3rd),
         ("未定事件簿", "tears_of_themis", TearsOfThemis),
         ("原神", "genshin", Genshin),
-        ("崩坏: 星穹铁道", "honkai_sr", Honkaisr)
+        ("崩坏: 星穹铁道", "honkai_sr", Honkaisr),
+        ("绝区零", "zzz", ZZZ)
     ]
     return_data = ''
     for game_print_name, game_name, game_module in games:
