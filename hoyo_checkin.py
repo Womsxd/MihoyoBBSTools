@@ -113,6 +113,12 @@ def tears_of_themis():
                                         setting.os_tearsofthemis_act_id)
     return ret_msg
 
+def zzz():
+    log.info(f"正在进行绝区零签到")
+    ret_msg = '绝区零:\n' + hoyo_checkin("https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os",
+                                      setting.os_zzz_act_id)
+    return ret_msg
+
 
 def run_task():
     ret_msg = ''
