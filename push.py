@@ -276,29 +276,41 @@ def qmsg(send_title, push_message):
 
 def discord(send_title, push_message):
     import pytz
-    
+
+    match send_title:
+        case "「米游社脚本」执行成功!":
+            embed_color = 1926125
+        case "「米游社脚本」执行失败!":
+            embed_color = 14368575
+        case "「米游社脚本」部分账号执行失败！":
+            embed_color = 16744192
+        case "「米游社脚本」游戏道具签到触发验证码！":
+            embed_color = 16744192
+        case _:
+            embed_color = 16744192
+
     rep = http.post(
         url=f'{cfg.get("discord", "webhook")}',
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
-              "content": None,
-              "embeds": [
+            "content": None,
+            "embeds": [
                 {
-                  "title": send_title,
-                  "description": push_message,
-                  "color": 1926125,
-                  "author": {
-                    "name": "MihoyoBBSTools",
-                    "url": "https://github.com/Womsxd/MihoyoBBSTools",
-                    "icon_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true"
-                  },
-                  "timestamp": datetime.now(timezone.utc).astimezone(pytz.timezone('Asia/Shanghai')).isoformat()
+                    "title": send_title,
+                    "description": push_message,
+                    "color": embed_color,
+                    "author": {
+                        "name": "MihoyoBBSTools",
+                        "url": "https://github.com/Womsxd/MihoyoBBSTools",
+                        "icon_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true"
+                    },
+                    "timestamp": datetime.now(timezone.utc).astimezone(pytz.timezone('Asia/Shanghai')).isoformat(),
                 }
-              ],
+            ],
             "username": "MihoyoBBSTools",
             "avatar_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true",
             "attachments": []
-            }
+        }
     )
     if rep.status_code != 204:
         log.warning(f"推送执行错误：{rep.text}")
