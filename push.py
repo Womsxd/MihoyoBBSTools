@@ -276,41 +276,55 @@ def qmsg(send_title, push_message):
 
 def discord(send_title, push_message):
     import pytz
-    
+
+    def get_color() -> int:
+        embed_color = 16744192
+        if "执行成功" in send_title:
+            embed_color = 1926125
+        elif "部分账号执行失败" in send_title:
+            embed_color = 16744192
+        elif "游戏道具签到触发验证码" in send_title:
+            embed_color = 16744192
+        elif "执行失败" in title:
+            embed_color = 14368575
+        return embed_color
+
     rep = http.post(
         url=f'{cfg.get("discord", "webhook")}',
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
-              "content": None,
-              "embeds": [
+            "content": None,
+            "embeds": [
                 {
-                  "title": send_title,
-                  "description": push_message,
-                  "color": 1926125,
-                  "author": {
-                    "name": "MihoyoBBSTools",
-                    "url": "https://github.com/Womsxd/MihoyoBBSTools",
-                    "icon_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true"
-                  },
-                  "timestamp": datetime.now(timezone.utc).astimezone(pytz.timezone('Asia/Shanghai')).isoformat()
+                    "title": send_title,
+                    "description": push_message,
+                    "color": get_color(),
+                    "author": {
+                        "name": "MihoyoBBSTools",
+                        "url": "https://github.com/Womsxd/MihoyoBBSTools",
+                        "icon_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true"
+                    },
+                    "timestamp": datetime.now(timezone.utc).astimezone(pytz.timezone('Asia/Shanghai')).isoformat(),
                 }
-              ],
+            ],
             "username": "MihoyoBBSTools",
             "avatar_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true",
             "attachments": []
-            }
+        }
     )
     if rep.status_code != 204:
         log.warning(f"推送执行错误：{rep.text}")
     else:
         log.info(f"推送结果：HTTP {rep.status_code} Success")
 
+
 def wintoast(send_title, push_message):
     try:
         from win11toast import toast
-        toast(app_id="MihoyoBBSTools",title=send_title,body=push_message,icon='')
+        toast(app_id="MihoyoBBSTools", title=send_title, body=push_message, icon='')
     except:
         log.error(f"请先pip install win11toast再使用win通知")
+
 
 # 推送消息中屏蔽关键词
 def msg_replace(msg):
