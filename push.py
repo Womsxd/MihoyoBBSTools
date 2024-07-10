@@ -277,17 +277,17 @@ def qmsg(send_title, push_message):
 def discord(send_title, push_message):
     import pytz
 
-    match send_title:
-        case "「米游社脚本」执行成功!":
+    def get_color() -> int:
+        embed_color = 16744192
+        if "执行成功" in send_title:
             embed_color = 1926125
-        case "「米游社脚本」执行失败!":
+        elif "部分账号执行失败" in send_title:
+            embed_color = 16744192
+        elif "游戏道具签到触发验证码" in send_title:
+            embed_color = 16744192
+        elif "执行失败" in title:
             embed_color = 14368575
-        case "「米游社脚本」部分账号执行失败！":
-            embed_color = 16744192
-        case "「米游社脚本」游戏道具签到触发验证码！":
-            embed_color = 16744192
-        case _:
-            embed_color = 16744192
+        return embed_color
 
     rep = http.post(
         url=f'{cfg.get("discord", "webhook")}',
@@ -298,7 +298,7 @@ def discord(send_title, push_message):
                 {
                     "title": send_title,
                     "description": push_message,
-                    "color": embed_color,
+                    "color": get_color(),
                     "author": {
                         "name": "MihoyoBBSTools",
                         "url": "https://github.com/Womsxd/MihoyoBBSTools",
@@ -317,12 +317,14 @@ def discord(send_title, push_message):
     else:
         log.info(f"推送结果：HTTP {rep.status_code} Success")
 
+
 def wintoast(send_title, push_message):
     try:
         from win11toast import toast
-        toast(app_id="MihoyoBBSTools",title=send_title,body=push_message,icon='')
+        toast(app_id="MihoyoBBSTools", title=send_title, body=push_message, icon='')
     except:
         log.error(f"请先pip install win11toast再使用win通知")
+
 
 # 推送消息中屏蔽关键词
 def msg_replace(msg):
