@@ -16,9 +16,9 @@
 
   1.自动获取米游币
 
-  2.支持国服：崩坏学院2、崩坏3、未定事件簿、原神、崩坏：星穹铁道的游戏签到
+  2.支持国服：崩坏学院2、崩坏3、未定事件簿、原神、崩坏：星穹铁道、绝区零 的游戏签到
 
-  3.支持国际服：崩坏3、未定事件簿、原神、崩坏：星穹铁道的游戏签到
+  3.支持国际服：崩坏3、未定事件簿、原神、崩坏：星穹铁道、绝区零的游戏签到
 
 ## 如何使用程序
 
@@ -46,11 +46,21 @@
      > cookie: 你复制的cookie
      > ```
 
-  9. 检查`config.yaml`的`enable:`的值为 true
+  9. 通过[获取Stoken](https://github.com/Womsxd/mihoyo_login) 项目获取Stoken (麻烦可以去关闭BBS模块mihoyobbs.enable: false)
 
-  10. 在命令提示符(cmd)/powershell，输入`python main.py`来进行执行
+  10. 登录成功后复制 `stoken='获取到的Stoken'`里的`Stoken`，然后粘贴到`config.yaml`的`stoken: ""`中(在`account`里面)
 
-  11. 多用户的请使用`python main_multi.py`，多用户在需要自动执行的情况下请使用`python main_multi.py autorun`
+      例子
+
+     > ```yaml
+     > stoken: 获取到的Stoken
+     > ```
+
+  11. 检查`config.yaml`的需求开启的功能的`enable:`的值为 true
+
+  12. 在命令提示符(cmd)/powershell，输入`python main.py`来进行执行
+
+  13. 多用户的请使用`python main_multi.py`，多用户在需要自动执行的情况下请使用`python main_multi.py autorun`
 
 ## 获取米游社 Cookie
 
@@ -77,21 +87,7 @@
 
 9. 将此处的复制到的 Cookie 先粘贴到 config 文件的 Cookie 处，如果末尾没有`;空格`请手动补上
 
-10. 打开`http://user.mihoyo.com/`并进行登入操作
-
-11. 按下键盘上的`F12`或右键检查,打开开发者工具,点击 Console
-
-12. 输入
-
-```javascript
-var cookie=document.cookie;var ask=confirm('Cookie:'+cookie+'\n\nDo you want to copy the cookie to the clipboard?');if(ask==true){copy(cookie);msg=cookie}else{msg='Cancel'}
-```
-
-回车执行，并在确认无误后点击确定。
-
-13. 将本次获取到的 Cookie 粘贴到之前获取到的 Cookie 后面
-
-14. **此时 Cookie 已经获取完毕了**
+10. **此时 Cookie 已经获取完毕了**
 
 ## 海外版获取Cookie
 
@@ -109,13 +105,6 @@ var cookie=document.cookie;var ask=confirm('Cookie:'+cookie+'\n\nDo you want to 
 
 5. 将获取到的 Cookie 粘贴到之前获取到 OS 的 Cookie 里面
 
-## 获取设备 UA
-
-1. 使用常用的移动端设备访问 `https://www.ip138.com/useragent/`
-
-2. 复制网页内容中的 `客户端获取的UserAgent`
-
-3. 替换配置文件中 `useragent` 的原始内容
 
 ## 获取云原神的 token
 

@@ -11,7 +11,7 @@ from error import CookieError
 
 
 # 搜索配置文件
-def fund_config(ext: str) -> list:
+def find_config(ext: str) -> list:
     file_name = []
     for files in os.listdir(config.path):
         if os.path.splitext(files)[1] == ext:
@@ -29,10 +29,8 @@ def ql_config(config_list: list):
     return config_list_ql
 
 
-def main_multi(autorun: bool):
-    log.info("AutoMihoyoBBS Multi User mode")
-    log.info("正在搜索配置文件！")
-    config_list = fund_config('.yaml')
+def get_config_list() -> list:
+    config_list = find_config('.yaml')
     if os.getenv("AutoMihoyoBBS_config_prefix") is None and os.getenv("AutoMihoyoBBS_config_multi") == '1':
         # 判断通过读取青龙目录环境变量来判断用户是否使用青龙面板
         if os.getenv("QL_DIR") is not None:
@@ -40,6 +38,13 @@ def main_multi(autorun: bool):
     if len(config_list) == 0:
         log.warning("未检测到配置文件，请确认config文件夹存在.yaml后缀名的配置文件！")
         exit(1)
+    return config_list
+
+
+def main_multi(autorun: bool):
+    log.info("AutoMihoyoBBS Multi User mode")
+    log.info("正在搜索配置文件！")
+    config_list = get_config_list()
     if autorun:
         log.info(f"已搜索到{len(config_list)}个配置文件，正在开始执行！")
     else:
@@ -85,9 +90,8 @@ def main_multi(autorun: bool):
 
 if __name__ == "__main__":
     if (len(sys.argv) >= 2 and sys.argv[1] == "autorun") or os.getenv("AutoMihoyoBBS_autorun") == "1":
-        autorun = True
+        autorun_flag = True
     else:
-        autorun = False
-    main_multi(autorun)
+        autorun_flag = False
+    main_multi(autorun_flag)
     exit(0)
-pass

@@ -1,12 +1,13 @@
 #这里控制整个config文件是否启用
 enable: true
 #config的版本
-version: 10
+version: 11
 account:
   #登入账号只需要修改cookie就行了
   cookie: ""
   stuid: ""
   stoken: ""
+  mid: ""
 device:
   name: "Xiaomi MI 6"
   model: "Mi 6"
@@ -101,6 +102,6 @@ competition:
   enable: false
   genius_invokation:
     enable: false
-    token: ""
+    account: []
     checkin: false
-    video: false
+    weekly: false

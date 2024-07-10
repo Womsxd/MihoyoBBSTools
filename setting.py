@@ -1,14 +1,14 @@
 # 米游社的Salt
 # java提取，会跟随版本更新
-mihoyobbs_salt = "yajbb9O8TgQYOW7JVZYfUJhXN7mAeZPE"
-mihoyobbs_salt_web = "LyD1rXqMv2GJhnwdvCBjFOKGiKuLY3aO"
+mihoyobbs_salt = "rtvTthKxEyreVXQCnhluFgLXPOFKPHlA"
+mihoyobbs_salt_web = "EJncUPGnOHajenjLhBOsdpwEMZmiCmQX"
 # so提取 一般不会变
 mihoyobbs_salt_x4 = "xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs"
 mihoyobbs_salt_x6 = "t0qEgfub6cvueAPgR5m9aQWWVciEer7v"
 # 部分接口要带
 mihoyobbs_verify_key = "bll8iq97cem8"
 # 米游社的版本
-mihoyobbs_version = "2.67.1"  # Salt和Version相互对应
+mihoyobbs_version = "2.71.1"  # Salt和Version相互对应
 # 米游社的客户端类型
 mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web
@@ -112,7 +112,11 @@ genshin_act_id = "e202311201442471"
 honkai_sr_act_id = "e202304121516551"
 
 # 绝区零自动签到相关设置
-zzz_act_id = ""
+zzz_web_api = 'https://act-nap-api.mihoyo.com'
+zzz_game_checkin_rewards = f"{zzz_web_api}/event/luna/zzz/home?lang={cn_game_lang}"
+zzz_game_is_signurl = f"{zzz_web_api}/event/luna/zzz/info?lang={cn_game_lang}"
+zzz_game_sign_url = f"{zzz_web_api}/event/luna/zzz/sign"
+zzz_act_id = "e202406242138391"
 
 # 云原神相关api
 cloud_genshin_api = "https://api-cloudgame.mihoyo.com"
@@ -124,3 +128,4 @@ os_genshin_act_id = "e202102251931481"
 os_honkai_sr_act_id = "e202303301540311"
 os_honkai3rd_act_id = "e202110291205111"
 os_tearsofthemis_act_id = "e202202281857121"
+os_zzz_act_id = "e202406031448091"

@@ -29,8 +29,9 @@ def main():
     elif config.config["account"]["cookie"] == "CookieError":
         raise CookieError('Cookie expires')
     # 检测参数是否齐全，如果缺少就进行登入操作，同时判断是否开启开启米游社签到
-    if (config.config["account"]["stuid"] == "" or config.config["account"]["stoken"] == "") and \
-            (config.config["mihoyobbs"]["enable"] or config.config['games']['cn']["enable"]):
+    if (config.config["account"]["stuid"] == "" or config.config["account"]["stoken"] == "" or
+            (login.require_mid() and config.config["account"]["mid"] == "")) and \
+            config.config["mihoyobbs"]["enable"]:
         # 登入，如果没开启bbs全局没打开就无需进行登入操作
         if config.config["mihoyobbs"]["enable"]:
             login.login()
@@ -59,7 +60,6 @@ def main():
         data = cloud_ys.sign_account()
         return_data += "\n\n" + data
     if config.config['competition']['enable']:
-        # todo 功能未实现
         log.info("正在进行米游社竞赛活动签到")
         competition_result = competition.run_task()
         if competition_result != '':
