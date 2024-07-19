@@ -78,14 +78,9 @@
 
 7. 点击一条捕获到的结果，往下拉，找到`Cookie:`
 
-8. 从`cookie_token_v2`开始复制到结尾
+8. 复制Cookie部分除`Cookie:`的全部内容
 
-   ```text
-   示例:
-   cookie_token_v2=xxx; account_mid_v2=xxx; ltoken_v2=xxx; ltmid_v2=xxx;
-   ```
-
-9. 将此处的复制到的 Cookie 先粘贴到 config 文件的 Cookie 处，如果末尾没有`;空格`请手动补上
+9. 将此处的复制到的 Cookie 先粘贴到 config 文件的 Cookie 处
 
 10. **此时 Cookie 已经获取完毕了**
 
