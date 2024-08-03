@@ -347,6 +347,9 @@ def push(status, push_message):
         return 1
     if not cfg.getboolean('setting', 'enable'):
         return 0
+    if cfg.getboolean('setting', 'error_push_only', fallback=False):
+        if status == 0:
+            return 0
     log.info("正在执行推送......")
     func_names = cfg.get('setting', 'push_server').lower()
     for func_name in func_names.split(","):
