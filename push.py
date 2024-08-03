@@ -386,7 +386,7 @@ def push(status, push_message):
             push_success = False
             continue
         log.info(f"{func_name} - 推送完毕......")
-    if push_success:
+    if not push_success:
         return 1
     return 0
 
