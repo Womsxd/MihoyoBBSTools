@@ -273,6 +273,7 @@ ql repo https://github.com/Womsxd/MihoyoBBSTools.git "ql_main.py" "" "error|miho
 | AutoMihoyoBBS_push_project  | 1                | 使用项目自带的Push，而不是青龙的   |
 | AutoMihoyoBBS_push_path     | /ql/data/config/ | 项目自带的推送配置文件路径        |
 | AutoMihoyoBBS_push_name     | push             | 项目自带的推送配置文件名         |
+
 **注意！仅多用户需添加变量```AutoMihoyoBBS_config_multi```**
 
 `AutoMihoyoBBS_push_path`和`AutoMihoyoBBS_push_name`在青龙里面仅在启用项目自带的推送后才生效
