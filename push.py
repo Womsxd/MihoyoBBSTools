@@ -6,17 +6,30 @@ import config
 import urllib
 import hashlib
 from datetime import datetime, timezone
-from request import http, get_new_session_use_proxy
+from request import get_new_session, get_new_session_use_proxy
 from loghelper import log
 from configparser import ConfigParser, NoOptionError
 
+http = get_new_session()
 cfg = ConfigParser()
+config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config')
+config_name = "push"
+
+
+def get_config_path():
+    file_path = config_path
+    file_name = config_name
+    if os.getenv("AutoMihoyoBBS_push_path"):
+        file_path = os.getenv("AutoMihoyoBBS_push_path")
+    if os.getenv("AutoMihoyoBBS_push_name"):
+        file_name = os.getenv("AutoMihoyoBBS_push_name")
+    return os.path.join(file_path, f'{file_name}.ini')
 
 
 def load_config():
-    config_path = os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config'), 'push.ini')
-    if os.path.exists(config_path):
-        cfg.read(config_path, encoding='utf-8')
+    file_path = get_config_path()
+    if os.path.exists(file_path):
+        cfg.read(file_path, encoding='utf-8')
         return True
     else:
         return False
@@ -302,13 +315,15 @@ def discord(send_title, push_message):
                     "author": {
                         "name": "MihoyoBBSTools",
                         "url": "https://github.com/Womsxd/MihoyoBBSTools",
-                        "icon_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true"
+                        "icon_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public"
+                                    "/images/202308/hoyolab-miyoushe-Icon.png?raw=true "
                     },
                     "timestamp": datetime.now(timezone.utc).astimezone(pytz.timezone('Asia/Shanghai')).isoformat(),
                 }
             ],
             "username": "MihoyoBBSTools",
-            "avatar_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images/202308/hoyolab-miyoushe-Icon.png?raw=true",
+            "avatar_url": "https://github.com/DGP-Studio/Snap.Hutao.Docs/blob/main/docs/.vuepress/public/images"
+                          "/202308/hoyolab-miyoushe-Icon.png?raw=true",
             "attachments": []
         }
     )
@@ -352,6 +367,7 @@ def push(status, push_message):
             return 0
     log.info("正在执行推送......")
     func_names = cfg.get('setting', 'push_server').lower()
+    push_success = True
     for func_name in func_names.split(","):
         func = globals().get(func_name)
         if not func:
@@ -366,9 +382,12 @@ def push(status, push_message):
                      f'如果您多次收到此消息开头的推送，证明您运行的环境无法自动更新config，请手动更新一下，谢谢\r\n'
                      f'{title.get(status, "")}\r\n{push_message}')
         except Exception as r:
-            log.warning(f"推送执行错误：{str(r)}")
-            return 1
+            log.warning(f"{func_name} 推送执行错误：{str(r)}")
+            push_success = False
+            continue
         log.info(f"{func_name} - 推送完毕......")
+    if push_success:
+        return 1
     return 0
 
 
