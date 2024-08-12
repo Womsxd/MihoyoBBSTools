@@ -12,7 +12,6 @@ from account import get_account_list
 
 
 class GameCheckin:
-    http = get_new_session()
 
     def __init__(self, game_id: str, game_mid: str, game_name: str, act_id: str, player_name: str = "玩家") -> None:
         """
@@ -29,8 +28,10 @@ class GameCheckin:
         self.game_name = game_name
         self.act_id = act_id
         self.player_name = player_name
+        self.headers = {}
+        self.http = get_new_session()
 
-        self.headers = self.get_headers()
+        self.set_headers()
 
         self.rewards_api = setting.cn_game_checkin_rewards
         self.account_list = self.get_account_list()
@@ -43,22 +44,23 @@ class GameCheckin:
         if len(self.account_list) != 0:
             self.checkin_rewards = self.get_checkin_rewards()
 
-    def get_headers(self) -> dict:
+    def set_headers(self):
         headers = setting.headers.copy()
         headers['DS'] = tools.get_ds(web=True)
         headers['Referer'] = 'https://act.mihoyo.com/'
         headers['Cookie'] = config.config.get("account", {}).get("cookie", "")
         headers['x-rpc-device_id'] = config.config["device"]["id"]
         headers['User-Agent'] = tools.get_useragent(config.config["games"]["cn"]["useragent"])
-        return headers
+        self.headers = headers
 
     def get_account_list(self) -> list:
         try:
             account_list = get_account_list(self.game_id, self.headers)
         except CookieError:
             log.warning(f"获取{self.game_name}账号列表失败！")
-            config.clear_cookie_game(self.game_id)
-            raise CookieError("BBS Cookie Error")
+            config.clear_cookie()
+            config.disable_games()
+            raise CookieError("Cookie Error")
         return account_list
 
     # 获取签到信息
@@ -82,7 +84,7 @@ class GameCheckin:
         data = req.json()
         if data["retcode"] != 0:
             if not update and login.update_cookie_token():
-                self.headers = self.get_headers()
+                self.set_headers()
                 return self.is_sign(region, uid, True)
             log.warning("获取账号签到信息失败！")
             print(req.text)

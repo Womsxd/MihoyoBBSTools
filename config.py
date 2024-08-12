@@ -190,28 +190,35 @@ def save_config(p_path=None, p_config=None):
             log.info("Config保存完毕")
 
 
-def clear_cookies():
+def clear_stoken():
     global config
     if serverless:
         log.info("云函数执行，无法保存")
         return None
-    config["enable"] = False
     config["account"]["mid"] = ""
     config["account"]["stuid"] = ""
-    config["account"]["stoken"] = ""
-    config["account"]["cookie"] = "CookieError"
-    log.info("Cookie已删除")
+    config["account"]["stoken"] = "StokenError"
+    log.info("Stoken已删除")
     save_config()
 
 
-def clear_cookie_game(game_id: str):
+def clear_cookie():
     global config
     if serverless:
         log.info("云函数执行，无法保存")
         return None
-    config["account"]["cookie"] = "GameCookieError"
-    config["games"]["cn"][setting.game_id2config[game_id]]["auto_checkin"] = False
-    log.info(f"游戏签到Cookie已删除")
+    config["account"]["cookie"] = "CookieError"
+    log.info(f"Cookie已删除")
+    save_config()
+
+
+def disable_games(region: str = "cn"):
+    global config
+    if serverless:
+        log.info("云函数执行，无法保存")
+        return None
+    config['games'][region]['enable'] = False
+    log.info(f"游戏签到({region})已关闭")
     save_config()
 
 

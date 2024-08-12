@@ -7,7 +7,7 @@ import config
 import random
 import setting
 from loghelper import log
-from error import CookieError
+from error import CookieError, StokenError
 
 
 # 搜索配置文件
@@ -60,7 +60,7 @@ def main_multi(autorun: bool):
         config.config_Path = f"{config.path}/{i}"
         try:
             run_code, run_message = main.main()
-        except CookieError:
+        except (CookieError, StokenError):
             results["error"].append(i)
         else:
             if run_code == 0:

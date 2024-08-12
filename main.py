@@ -21,18 +21,14 @@ def main():
         print("请不要在GitHub Action运行本项目")
         exit(0)
     # 初始化，加载配置
-    return_data = "\n"
     config.load_config()
     if not config.config["enable"]:
         log.warning("Config未启用！")
         return 1, "Config未启用！"
-    elif config.config["account"]["cookie"] == "CookieError":
-        raise CookieError('Cookie expires')
-    # 检测参数是否齐全，如果缺少就进行登入操作，同时判断是否开启开启米游社签到
-    if (config.config["account"]["stuid"] == "" or config.config["account"]["stoken"] == "" or
-            (login.require_mid() and config.config["account"]["mid"] == "")) and \
-            config.config["mihoyobbs"]["enable"]:
-        # 登入，如果没开启bbs全局没打开就无需进行登入操作
+    # 检测参数是否齐全，如果缺少就进行登入操作
+    if any([config.config["account"]["stuid"] == "", config.config["account"]["stoken"] == "",
+            login.require_mid() and config.config["account"]["mid"] == ""]):
+        # 登入，如果没开启bbs全局没打开就无需进行登入操作 (实际上也可以登录)
         if config.config["mihoyobbs"]["enable"]:
             login.login()
             time.sleep(random.randint(2, 8))
@@ -40,10 +36,21 @@ def main():
         config.config["account"]["cookie"] = tools.tidy_cookie(config.config["account"]["cookie"])
     # 米游社签到
     ret_code = 0
+    return_data = "\n"
+    raise_stoken = False
     if config.config["mihoyobbs"]["enable"]:
-        bbs = mihoyobbs.Mihoyobbs()
-        return_data += bbs.run_task()
+        if config.config["account"]["stoken"] == "StokenError":
+            raise_stoken = True
+            return_data += "米游社: \n账号Stoken异常"
+        else:
+            try:
+                bbs = mihoyobbs.Mihoyobbs()
+                return_data += bbs.run_task()
+            except StokenError:
+                raise_stoken = True
     # 国服
+    if config.config["account"]["cookie"] == "CookieError":
+        raise CookieError('Cookie expires')
     if config.config['games']['cn']["enable"]:
         return_data += gamecheckin.run_task()
     # 国际
@@ -64,16 +71,25 @@ def main():
         competition_result = competition.run_task()
         if competition_result != '':
             return_data += "\n\n" + "米游社竞赛活动:" + competition_result
+    if raise_stoken:
+        raise StokenError("Stoken异常")
     if "触发验证码" in return_data:
         ret_code = 3
     return ret_code, return_data
 
 
 if __name__ == "__main__":
+    push_message = ""
+    message = ""
     try:
         status_code, message = main()
     except CookieError:
         status_code = 1
-        message = "账号Cookie出错！"
+        push_message = "账号Cookie出错！\n"
         log.error("账号Cookie有问题！")
-    push.push(status_code, message)
+    except StokenError:
+        status_code = 1
+        push_message = "账号Stoken出错！\n"
+        log.error("账号Stoken有问题！")
+    push_message += message
+    push.push(status_code, push_message)

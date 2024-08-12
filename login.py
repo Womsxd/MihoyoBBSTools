@@ -2,7 +2,7 @@ import re
 
 import config
 import setting
-from error import CookieError
+from error import CookieError, StokenError
 from loghelper import log
 from request import http
 
@@ -15,11 +15,11 @@ headers.pop("Referer")
 def login():
     if not config.config["account"]["cookie"]:
         log.error("请填入Cookies!")
-        config.clear_cookies()
+        config.clear_cookie()
         raise CookieError('No cookie')
     if config.config['account']['stoken'] == "":
         log.error("无Stoken 请手动填入stoken!")
-        raise CookieError('no stoken')
+        raise StokenError('no stoken')
     # # 判断Cookie里面是否有login_ticket 没有的话直接退了
     # login_ticket = get_login_ticket()
     # if login_ticket is None:
@@ -29,7 +29,7 @@ def login():
     uid = get_uid()
     if uid is None:
         log.error("cookie缺少UID，请重新抓取bbs的cookie")
-        config.clear_cookies()
+        config.clear_cookie()
         raise CookieError('Cookie expires')
     config.config["account"]["stuid"] = uid
     # config.config["account"]["stoken"] = get_stoken(login_ticket, uid)
@@ -74,22 +74,22 @@ def get_stoken(login_ticket: str, uid: str) -> str:
         return data["data"]["list"][0]["token"]
     else:
         log.error("login_ticket(只有半小时有效期)已失效,请重新登录米游社抓取cookie")
-        config.clear_cookies()
+        config.clear_cookie()
         raise CookieError('Cookie expires')
 
 
 def get_cookie_token_by_stoken():
     if config.config["account"]["stoken"] == "" and config.config["account"]["stuid"] == "":
         log.error("Stoken和Suid为空，无法自动更新CookieToken")
-        config.clear_cookies()
+        config.clear_cookie()
         raise CookieError('Cookie expires')
     data = http.get(url=setting.bbs_get_cookie_token_by_stoken,
                     params={"stoken": config.config["account"]["stoken"], "uid": config.config["account"]["stuid"]},
                     headers=headers).json()
     if data.get("retcode", -1) != 0:
         log.error("stoken已失效，请重新抓取cookie")
-        config.clear_cookies()
-        raise CookieError('Cookie expires')
+        config.clear_stoken()
+        raise StokenError('Stoken expires')
     return data["data"]["cookie_token"]
 
 
@@ -129,5 +129,5 @@ def get_stoken_cookie() -> str:
             cookie += f";mid={config.config['account']['mid']}"
         else:
             log.error(f"v2_stoken需要mid参数")
-            raise CookieError(f"cookie require @mid parament")
+            raise CookieError(f"cookie require mid parament")
     return cookie
