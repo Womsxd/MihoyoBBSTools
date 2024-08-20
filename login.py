@@ -1,4 +1,5 @@
 import re
+from copy import deepcopy
 
 import config
 import setting
@@ -83,9 +84,10 @@ def get_cookie_token_by_stoken():
         log.error("Stoken和Suid为空，无法自动更新CookieToken")
         config.clear_cookie()
         raise CookieError('Cookie expires')
+    header = deepcopy(headers)
+    header["cookie"] = get_stoken_cookie()
     data = http.get(url=setting.bbs_get_cookie_token_by_stoken,
-                    params={"stoken": config.config["account"]["stoken"], "uid": config.config["account"]["stuid"]},
-                    headers=headers).json()
+                    headers=header).json()
     if data.get("retcode", -1) != 0:
         log.error("stoken已失效，请重新抓取cookie")
         config.clear_stoken()
