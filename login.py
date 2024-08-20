@@ -133,3 +133,25 @@ def get_stoken_cookie() -> str:
             log.error(f"v2_stoken需要mid参数")
             raise CookieError(f"cookie require mid parament")
     return cookie
+
+
+def update_stoken_v2():
+    if config.config["account"]["stoken"].startswith("v2_"):
+        return
+    log.info("stoken版本为v1，尝试升级为v2")
+    header = deepcopy(headers)
+    header["cookie"] = get_stoken_cookie()
+    header["x-rpc-app_id"] = "bll8iq97cem8"
+    data = http.post(url=setting.get_token_by_stoken, headers=header).json()
+    if data["retcode"] == 0:
+        stoken_v2 = data["data"]["token"]["token"]
+        config.config["account"]["stoken"] = stoken_v2
+        config.config["account"]["mid"] = data["data"]["user_info"]["mid"]
+        config.save_config()
+        log.info("升级stoken成功")
+    elif data["retcode"] == -100:
+        log.error("stoken已失效，请重新抓取cookie")
+        config.clear_stoken()
+        raise StokenError('Stoken expires')
+    else:
+        log.error("其他异常")

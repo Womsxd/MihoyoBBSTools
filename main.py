@@ -38,6 +38,14 @@ def main():
     ret_code = 0
     return_data = "\n"
     raise_stoken = False
+
+    # 升级stoken
+    if config.config["account"]["stoken"] != "" and not login.require_mid():
+        try:
+            login.update_stoken_v2()
+        except StokenError:
+            raise_stoken = True
+
     if config.config["mihoyobbs"]["enable"]:
         if config.config["account"]["stoken"] == "StokenError":
             raise_stoken = True

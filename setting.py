@@ -63,7 +63,10 @@ headers = {
 # 通用设置
 bbs_api = "https://bbs-api.miyoushe.com"
 web_api = "https://api-takumi.mihoyo.com"
+passport_api = "https://passport-api.mihoyo.com"
+
 account_Info_url = web_api + "/binding/api/getUserGameRolesByCookie"
+get_token_by_stoken = f"{passport_api}/account/ma-cn-session/app/getTokenBySToken"
 
 # 米游社的API列表
 bbs_account_info = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket"
