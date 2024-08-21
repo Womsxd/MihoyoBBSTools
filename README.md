@@ -46,7 +46,7 @@
      > cookie: 你复制的cookie
      > ```
 
-  9. 通过[获取Stoken](https://github.com/Womsxd/mihoyo_login) 项目获取Stoken (麻烦可以去关闭BBS模块mihoyobbs.enable: false)
+  9. 通过[获取Stoken](https://github.com/Womsxd/mihoyo_login) 项目获取Stoken，或请参考[Hutao文档](https://hut.ao/zh/advanced/get-stoken-cookie-from-the-third-party.html)里的方法获取Stoken (麻烦可以去关闭BBS模块mihoyobbs.enable: false)
 
   10. 登录成功后复制 `stoken='获取到的Stoken'`里的`Stoken`，然后粘贴到`config.yaml`的`stoken: ""`中(在`account`里面)
 
