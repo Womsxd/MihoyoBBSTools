@@ -8,6 +8,8 @@ push_token=XXXXXX
 push_block_keys=
 # 是否仅在错误时推送（默认false）
 error_push_only=false
+# PushPlus推送指定群组
+topic=
 
 [cqhttp]
 #cqhttp的服务端地址
