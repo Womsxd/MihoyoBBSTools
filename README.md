@@ -227,7 +227,7 @@ kubectl logs $(kubectl get pod -l app=mihoyo -o jsonpath="{.items[0].metadata.na
      1. 创建函数
      2. 从零开始创建
         1. `请求处理程序类型：处理事件请求`
-        2. 推荐设置运行环境为`Python3.9`
+        2. 推荐设置运行环境为`Python3.10`
         3. `请求处理程序：index.main_handler`，多用户请填写`index.main_handler_mulit`
         4. 配置触发器：触发器类型 定时触发器 异步调用。建议触发方式设为`指定时间`
         5. 点击创建
