@@ -77,7 +77,8 @@ def pushplus(send_title, push_message):
         data={
             "token": cfg.get('setting', 'push_token'),
             "title": send_title,
-            "content": push_message
+            "content": push_message,
+            "topic": cfg.get('setting', 'topic')
         }
     )
 
