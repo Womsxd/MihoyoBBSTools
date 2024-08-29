@@ -13,7 +13,7 @@ serverless = False
 update_config_need = False
 
 config = {
-    'enable': True, 'version': 11,
+    'enable': True, 'version': 12,
     'account': {'cookie': '', 'stuid': '', 'stoken': '', 'mid': ''},
     'device': {'name': 'Xiaomi MI 6', 'model': 'Mi 6', 'id': ''},
     'mihoyobbs': {
@@ -49,6 +49,11 @@ config = {
     'competition': {
         'enable': False,
         'genius_invokation': {'enable': False, 'account': [], 'checkin': False, 'weekly': False}
+    },
+
+    'wxmall': {
+        'enable': False,
+        'token':''
     }
 }
 config_raw = deepcopy(config)
@@ -145,6 +150,17 @@ def config_v10_update(data: dict):
     return data
 
 
+def config_v11_update(data: dict):
+    global update_config_need
+    update_config_need = True
+    data['version'] = 12
+    data["wxmall"] = {
+        "enable": False,
+        "token": ""
+    }
+    log.info("config已升级到: 12")
+    return data
+
 def load_config(p_path=None):
     global config
     if not p_path:
@@ -160,6 +176,8 @@ def load_config(p_path=None):
             data = config_v9_update_to_v11(data)
         if data['version'] == 10:
             data = config_v10_update(data)
+        if data['version'] == 11:
+            data = config_v11_update(data)
         save_config(p_config=data)
     # 去除cookie最末尾的空格
     data["account"]["cookie"] = str(data["account"]["cookie"]).rstrip(' ')

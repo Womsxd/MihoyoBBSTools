@@ -132,3 +132,8 @@ os_honkai_sr_act_id = "e202303301540311"
 os_honkai3rd_act_id = "e202110291205111"
 os_tearsofthemis_act_id = "e202202281857121"
 os_zzz_act_id = "e202406031448091"
+
+#微信商城api
+wx_mall_sign_task = f'{hk4e_api_base_url}/event/weixinpointsmall/sign_task'
+wx_mall_sign = f'{hk4e_api_base_url}/event/weixinpointsmall/sign'
+wx_mall_referer_url = "https://servicewechat.com/wx3b919a574b90c5de/4/page-frame.html"

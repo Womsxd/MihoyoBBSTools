@@ -11,6 +11,7 @@ import competition
 import gamecheckin
 import hoyo_checkin
 import cloud_genshin
+import wxmall
 from error import *
 from loghelper import log
 
@@ -79,6 +80,12 @@ def main():
         competition_result = competition.run_task()
         if competition_result != '':
             return_data += "\n\n" + "米游社竞赛活动:" + competition_result
+    # 微信商城签到
+    if config.config['wxmall']['enable']:
+        log.info("正在进行微信商城签到")
+        wxmall_result = wxmall.run_task()
+        if wxmall_result != '':
+            return_data += "\n\n" + "微信商城签到:" + wxmall_result
     if raise_stoken:
         raise StokenError("Stoken异常")
     if "触发验证码" in return_data:
