@@ -54,6 +54,15 @@ class GeniusInvokation:
         """
         self.headers['Cookie'] = f'e_hk4e_token={hk4e_token}'
 
+    def get_status(self):
+        response = self.http.get(setting.genius_invokation_status, params=self.params, headers=self.headers)
+        if response.status_code != 200:
+            return None
+        data = response.json()
+        if data['retcode'] == -521030:  # 系统正在维护中
+            return False
+        return True
+
     def get_info(self):
         """
         获取账号信息
@@ -192,6 +201,9 @@ class GeniusInvokation:
         if not self.user_info:
             log.warning("账号没有绑定任何原神账号！")
             result += "账号没有绑定任何原神账号！"
+            return result
+        if not self.get_status():
+            log.warning("七圣赛事维护中")
             return result
         self.get_task_list()
         time.sleep(random.randint(3, 8))
