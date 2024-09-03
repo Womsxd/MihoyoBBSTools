@@ -150,10 +150,12 @@ class Mihoyobbs:
                     log.info(str(forum["name"] + data["message"]))
                     wait()
                     break
-                else:
+                elif data["retcode"] == -100:
                     log.error("签到失败，你的cookie可能已过期，请重新设置cookie。")
                     config.clear_stoken()
                     raise StokenError('Stoken expires')
+                else:
+                    log.error(f'未知错误: {req.text}')
             if challenge is not None:
                 header.pop("x-rpc-challenge")
 
