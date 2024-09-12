@@ -31,12 +31,13 @@ def ql_config(config_list: list):
 
 def get_config_list() -> list:
     config_list = find_config('.yaml')
+    config_list.extend(find_config('.yml'))
     if os.getenv("AutoMihoyoBBS_config_prefix") is None and os.getenv("AutoMihoyoBBS_config_multi") == '1':
         # 判断通过读取青龙目录环境变量来判断用户是否使用青龙面板
         if os.getenv("QL_DIR") is not None:
             config_list = ql_config(config_list)
     if len(config_list) == 0:
-        log.warning("未检测到配置文件，请确认config文件夹存在.yaml后缀名的配置文件！")
+        log.warning("未检测到配置文件，请确认config文件夹存在.yaml/.yml后缀名的配置文件！")
         exit(1)
     return config_list
 
