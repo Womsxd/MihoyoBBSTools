@@ -122,7 +122,10 @@ def tidy_cookie(cookies: str) -> str:
     :return: 整理后的cookie
     """
     cookie_dict = {}
-    for cookie in cookies.split(";"):
+    spilt_cookie = cookies.split(";")
+    if len(spilt_cookie) < 2:
+        return cookies
+    for cookie in spilt_cookie:
         cookie = cookie.strip()
         if cookie == "":
             continue
