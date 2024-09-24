@@ -333,7 +333,6 @@ PyYAML: [GitHub](https://github.com/yaml/pyyaml) [pypi](https://pypi.org/project
 ## Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/Womsxd/MihoyoBBSTools.svg)](https://starchart.cc/Womsxd/MihoyoBBSTools)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FWomsxd%2FMihoyoBBSTools.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FWomsxd%2FMihoyoBBSTools?ref=badge_shield)
 
 ## License
 
