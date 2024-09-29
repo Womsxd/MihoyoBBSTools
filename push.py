@@ -36,15 +36,28 @@ def load_config():
 
 
 title = {
+    -2: "「米游社脚本」StatusID 错误",
+    -1: "「米游社脚本」Config版本已更新",
     0: "「米游社脚本」执行成功!",
     1: "「米游社脚本」执行失败!",
     2: "「米游社脚本」部分账号执行失败！",
-    3: "「米游社脚本」游戏道具签到触发验证码！"
+    3: "「米游社脚本」社区/游戏道具签到触发验证码！"
 }
 
 
-# telegram的推送
-def telegram(send_title, push_message):
+def get_push_title(status_id) -> str:
+    """
+    获取推送标题
+    :param status_id: 状态ID
+    :return:
+    """
+    return title.get(status_id, title.get(-2))
+
+
+def telegram(status_id, push_message):
+    """
+    Telegram机器人推送
+    """
     http_proxy = cfg.get('telegram', 'http_proxy', fallback=None)
     if http_proxy:
         session = get_new_session_use_proxy(http_proxy)
@@ -54,49 +67,57 @@ def telegram(send_title, push_message):
         url="https://{}/bot{}/sendMessage".format(cfg.get('telegram', 'api_url'), cfg.get('telegram', 'bot_token')),
         data={
             "chat_id": cfg.get('telegram', 'chat_id'),
-            "text": send_title + "\r\n" + push_message
+            "text": get_push_title(status_id) + "\r\n" + push_message
         }
     )
 
 
-# server酱
-def ftqq(send_title, push_message):
+def ftqq(status_id, push_message):
+    """
+    Server酱推送，具体推送位置在server酱后台配置
+    """
     http.post(
         url="https://sctapi.ftqq.com/{}.send".format(cfg.get('setting', 'push_token')),
         data={
-            "title": send_title,
+            "title": get_push_title(status_id),
             "desp": push_message
         }
     )
 
 
-# pushplus
-def pushplus(send_title, push_message):
+def pushplus(status_id, push_message):
+    """
+    PushPlus推送
+    """
     http.post(
         url="https://www.pushplus.plus/send",
         data={
             "token": cfg.get('setting', 'push_token'),
-            "title": send_title,
+            "title": get_push_title(status_id),
             "content": push_message,
             "topic": cfg.get('setting', 'topic')
         }
     )
 
 
-# cq http协议的推送
-def cqhttp(send_title, push_message):
+def cqhttp(status_id, push_message):
+    """
+    OneBot V11(CqHttp)协议推送
+    """
     http.post(
         url=cfg.get('cqhttp', 'cqhttp_url'),
         json={
             "user_id": cfg.getint('cqhttp', 'cqhttp_qq'),
-            "message": send_title + "\r\n" + push_message
+            "message": get_push_title(status_id) + "\r\n" + push_message
         }
     )
 
 
-# smtp mail(电子邮件)
 # 感谢 @islandwind 提供的随机壁纸api 个人主页：https://space.bilibili.com/7600422
-def smtp(send_title, push_message):
+def smtp(status_id, push_message):
+    """
+    SMTP 电子邮件推送
+    """
     import smtplib
     from email.mime.text import MIMEText
 
@@ -109,7 +130,8 @@ def smtp(send_title, push_message):
         log.warning("获取随机背景图失败，请检查图片api")
     with open("assets/email_example.html", encoding="utf-8") as f:
         EMAIL_TEMPLATE = f.read()
-    message = EMAIL_TEMPLATE.format(title=send_title, message=push_message.replace("\n", "<br/>"), image_url=image_url)
+    message = EMAIL_TEMPLATE.format(title=get_push_title(status_id), message=push_message.replace("\n", "<br/>"),
+                                    image_url=image_url)
     message = MIMEText(message, "html", "utf-8")
     message['Subject'] = cfg["smtp"]["subject"]
     message['To'] = cfg["smtp"]["toaddr"]
@@ -124,8 +146,11 @@ def smtp(send_title, push_message):
     log.info("邮件发送成功啦")
 
 
-# 企业微信 感谢linjie5492@github
-def wecom(send_title, push_message):
+def wecom(status_id, push_message):
+    """
+    企业微信推送
+    感谢linjie5493@github 提供的代码
+    """
     secret = cfg.get('wecom', 'secret')
     corpid = cfg.get('wecom', 'wechat_id')
     try:
@@ -143,22 +168,24 @@ def wecom(send_title, push_message):
         "msgtype": "text",
         "touser": touser,
         "text": {
-            "content": send_title + "\r\n" + push_message
+            "content": get_push_title(status_id) + "\r\n" + push_message
         },
         "safe": 0
     }
     http.post(f'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token={push_token}', json=push_data)
 
 
-# 企业微信机器人
-def wecomrobot(send_title, push_message):
+def wecomrobot(status_id, push_message):
+    """
+    企业微信机器人
+    """
     rep = http.post(
         url=f'{cfg.get("wecomrobot", "url")}',
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
             "msgtype": "text",
             "text": {
-                "content": send_title + "\r\n" + push_message,
+                "content": get_push_title(status_id) + "\r\n" + push_message,
                 "mentioned_mobile_list": [f'{cfg.get("wecomrobot", "mobile")}']
             }
         }
@@ -166,21 +193,25 @@ def wecomrobot(send_title, push_message):
     log.info(f"推送结果：{rep.get('errmsg')}")
 
 
-# pushdeer
-def pushdeer(send_title, push_message):
+def pushdeer(status_id, push_message):
+    """
+    PushDeer推送
+    """
     http.get(
         url=f'{cfg.get("pushdeer", "api_url")}/message/push',
         params={
             "pushkey": cfg.get("pushdeer", "token"),
-            "text": send_title,
+            "text": get_push_title(status_id),
             "desp": str(push_message).replace("\r\n", "\r\n\r\n"),
             "type": "markdown"
         }
     )
 
 
-# 钉钉群机器人
-def dingrobot(send_title, push_message):
+def dingrobot(status_id, push_message):
+    """
+    钉钉群机器人推送
+    """
     api_url = cfg.get('dingrobot', 'webhook')  # https://oapi.dingtalk.com/robot/send?access_token=XXX
     secret = cfg.get('dingrobot', 'secret')  # 安全设置 -> 加签 -> 密钥 -> SEC*
     if secret:
@@ -198,29 +229,33 @@ def dingrobot(send_title, push_message):
         url=api_url,
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
-            "msgtype": "text", "text": {"content": send_title + "\r\n" + push_message}
+            "msgtype": "text", "text": {"content": get_push_title(status_id) + "\r\n" + push_message}
         }
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
 
 
-# 飞书机器人
-def feishubot(send_title, push_message):
+def feishubot(status_id, push_message):
+    """
+    飞书机器人(WebHook)
+    """
     api_url = cfg.get('feishubot', 'webhook')  # https://open.feishu.cn/open-apis/bot/v2/hook/XXX
     rep = http.post(
         url=api_url,
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
-            "msg_type": "text", "content": {"text": send_title + "\r\n" + push_message}
+            "msg_type": "text", "content": {"text": get_push_title(status_id) + "\r\n" + push_message}
         }
     ).json()
     log.info(f"推送结果：{rep.get('msg')}")
 
 
-# Bark
-def bark(send_title, push_message):
+def bark(status_id, push_message):
+    """
+    Bark推送
+    """
     # make send_title and push_message to url encode
-    send_title = urllib.parse.quote_plus(send_title)
+    send_title = urllib.parse.quote_plus(get_push_title(status_id))
     push_message = urllib.parse.quote_plus(push_message)
     rep = http.get(
         url=f'{cfg.get("bark", "api_url")}/{cfg.get("bark", "token")}/{send_title}/{push_message}?icon=https://cdn'
@@ -229,13 +264,15 @@ def bark(send_title, push_message):
     log.info(f"推送结果：{rep.get('message')}")
 
 
-# gotify
-def gotify(send_title, push_message):
+def gotify(status_id, push_message):
+    """
+    gotify
+    """
     rep = http.post(
         url=f'{cfg.get("gotify", "api_url")}/message?token={cfg.get("gotify", "token")}',
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
-            "title": send_title,
+            "title": get_push_title(status_id),
             "message": push_message,
             "priority": cfg.getint("gotify", "priority")
         }
@@ -243,15 +280,17 @@ def gotify(send_title, push_message):
     log.info(f"推送结果：{rep.get('errmsg')}")
 
 
-# ifttt
-def ifttt(send_title, push_message):
+def ifttt(status_id, push_message):
+    """
+    ifttt
+    """
     ifttt_event = cfg.get('ifttt', 'event')
     ifttt_key = cfg.get('ifttt', 'key')
     rep = http.post(
         url=f'https://maker.ifttt.com/trigger/{ifttt_event}/with/key/{ifttt_key}',
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
-            "value1": send_title,
+            "value1": get_push_title(status_id),
             "value2": push_message
         }
     )
@@ -263,44 +302,48 @@ def ifttt(send_title, push_message):
     return 1
 
 
-# webhook
-def webhook(send_title, push_message):
+def webhook(status_id, push_message):
+    """
+    WebHook
+    """
     rep = http.post(
         url=f'{cfg.get("webhook", "webhook_url")}',
         headers={"Content-Type": "application/json; charset=utf-8"},
         json={
-            "title": send_title,
+            "title": get_push_title(status_id),
             "message": push_message
         }
     ).json()
     log.info(f"推送结果：{rep.get('errmsg')}")
 
 
-# qmsg
-def qmsg(send_title, push_message):
+def qmsg(status_id, push_message):
+    """
+    qmsg
+    """
     rep = http.post(
         url=f'https://qmsg.zendee.cn/send/{cfg.get("qmsg", "key")}',
         headers={"Content-Type": "application/x-www-form-urlencoded"},
         data={
-            "msg": send_title + "\n" + push_message
+            "msg": get_push_title(status_id) + "\n" + push_message
         }
     ).json()
     log.info(f"推送结果：{rep['reason']}")
 
 
-def discord(send_title, push_message):
+def discord(status_id, push_message):
     import pytz
 
     def get_color() -> int:
         embed_color = 16744192
-        if "执行成功" in send_title:
+        if status_id == 0:  # 成功
             embed_color = 1926125
-        elif "部分账号执行失败" in send_title:
-            embed_color = 16744192
-        elif "游戏道具签到触发验证码" in send_title:
-            embed_color = 16744192
-        elif "执行失败" in title:
+        elif status_id == 1:  # 全部失败
             embed_color = 14368575
+        elif status_id == 2:  # 部分失败
+            embed_color = 16744192
+        elif status_id == 3:  # 触发验证码
+            embed_color = 16744192
         return embed_color
 
     rep = http.post(
@@ -310,7 +353,7 @@ def discord(send_title, push_message):
             "content": None,
             "embeds": [
                 {
-                    "title": send_title,
+                    "title": get_push_title(status_id),
                     "description": push_message,
                     "color": get_color(),
                     "author": {
@@ -334,10 +377,10 @@ def discord(send_title, push_message):
         log.info(f"推送结果：HTTP {rep.status_code} Success")
 
 
-def wintoast(send_title, push_message):
+def wintoast(status_id, push_message):
     try:
         from win11toast import toast
-        toast(app_id="MihoyoBBSTools", title=send_title, body=push_message, icon='')
+        toast(app_id="MihoyoBBSTools", title=get_push_title(status_id), body=push_message, icon='')
     except:
         log.error(f"请先pip install win11toast再使用win通知")
 
@@ -377,9 +420,9 @@ def push(status, push_message):
         log.debug(f"推送所用的服务为: {func_name}")
         try:
             if not config.update_config_need:
-                func(msg_replace(title.get(status, '')), msg_replace(push_message))
+                func(status, msg_replace(push_message))
             else:
-                func('「米游社脚本」config可能需要手动更新',
+                func(-1,
                      f'如果您多次收到此消息开头的推送，证明您运行的环境无法自动更新config，请手动更新一下，谢谢\r\n'
                      f'{title.get(status, "")}\r\n{push_message}')
         except Exception as r:
