@@ -11,8 +11,7 @@
 <body>
 	<div class="cover" style="position: relative;">
 		<!-- 邮箱只解析行内样式 -->
-		<img src="{image_url}" alt="background" style="width: 100%;
-			filter: brightness(50%)">
+		{background_image}
 		<section style="position: absolute;
 			top: 0px;
 			width: 100%;
@@ -22,8 +21,7 @@
 			<h2 style="color: #fff;text-shadow:0px 0px 10px #000;">{title}</h2>
 			<p style="color: #fff;text-shadow:0px 0px 10px #000;">{message}</p>
 			<br />
-			<p style="color: #fff;text-shadow:0px 0px 10px #000;">背景图片链接</p>
-			<a href="{image_url}" style="color: #fff;text-shadow:0px 0px 10px #000;">{image_url}</a>
+			{background_info}
 		</section>
 	</div>
 </body>

@@ -81,6 +81,8 @@ subject=AutoMihoyoBBS
 username=xxx@example.com
 # 授权码
 password=passward
+# 背景 开关
+background = true
 
 #webhook自定义推送
 [webhook]

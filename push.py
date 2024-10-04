@@ -121,17 +121,34 @@ def smtp(status_id, push_message):
     import smtplib
     from email.mime.text import MIMEText
 
-    IMAGE_API = "https://api.iw233.cn/api.php?sort=random&type=json"
+    def get_background_url():
+        try:
+            _image_url = http.get("https://api.iw233.cn/api.php?sort=random&type=json").json()["pic"][0]
+        except:
+            _image_url = "unable to get the image"
+            log.warning("获取随机背景图失败，请检查图片api")
+        return _image_url
 
-    try:
-        image_url = http.get(IMAGE_API).json()["pic"][0]
-    except:
-        image_url = "unable to get the image"
-        log.warning("获取随机背景图失败，请检查图片api")
+    def get_background_img_html(background_url):
+        if background_url:
+            return f'<img src="{background_url}" alt="background" style="width: 100%; filter: brightness(50%)">'
+        return ""
+
+    def get_background_img_info(background_url):
+        if background_url:
+            return f'p style="color: #fff;text-shadow:0px 0px 10px #000;">背景图片链接</p>\n' \
+                   f'<a href="{background_url}" style="color: #fff;text-shadow:0px 0px 10px #000;">{background_url}</a>'
+        return ""
+
+    image_url = None
+    if cfg.getboolean('smtp', 'background', fallback=True):
+        image_url = get_background_url()
+
     with open("assets/email_example.html", encoding="utf-8") as f:
         EMAIL_TEMPLATE = f.read()
     message = EMAIL_TEMPLATE.format(title=get_push_title(status_id), message=push_message.replace("\n", "<br/>"),
-                                    image_url=image_url)
+                                    background_image=get_background_img_html(image_url),
+                                    background_info=get_background_img_info(image_url))
     message = MIMEText(message, "html", "utf-8")
     message['Subject'] = cfg["smtp"]["subject"]
     message['To'] = cfg["smtp"]["toaddr"]
