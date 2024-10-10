@@ -6,16 +6,16 @@ from loghelper import log
 
 
 class CloudGenshin:
-    def __init__(self) -> None:
+    def __init__(self, token) -> None:
         self.headers = {
             'Host': 'api-cloudgame.mihoyo.com',
             'Accept': '*/*',
             'Referer': 'https://app.mihoyo.com',
-            'x-rpc-combo_token': config.config['cloud_games']['genshin']['token'],
+            'x-rpc-combo_token': token,
             'Accept-Encoding': 'gzip, deflate',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                           'Chrome/99.0.4844.84 Safari/537.36',
-        
+
         }
 
     def sign_account(self) -> str:
@@ -40,6 +40,16 @@ class CloudGenshin:
             ret_msg = f'脚本签到失败，json文本:{req.text}'
             log.warning(ret_msg)
         return ret_msg
+
+
+def run_task() -> str:
+    ret_msg = ""
+    cg_cn = config.config['cloud_games']['cn']
+    if cg_cn['genshin'] and cg_cn['genshin']['token'] == "":
+        return ""
+    cg_genshin = CloudGenshin(cg_cn['genshin']['token'])
+    ret_msg += cg_genshin.sign_account() + "\n\n"
+    return ret_msg
 
 
 if __name__ == '__main__':

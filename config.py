@@ -1,7 +1,6 @@
 import collections
 import os
 import yaml
-import setting
 from copy import deepcopy
 
 import tools
@@ -13,7 +12,7 @@ serverless = False
 update_config_need = False
 
 config = {
-    'enable': True, 'version': 11,
+    'enable': True, 'version': 12, "push": "",
     'account': {'cookie': '', 'stuid': '', 'stoken': '', 'mid': ''},
     'device': {'name': 'Xiaomi MI 6', 'model': 'Mi 6', 'id': ''},
     'mihoyobbs': {
@@ -43,7 +42,14 @@ config = {
         }
     },
     'cloud_games': {
-        "genshin": {'enable': False, 'token': ''}
+        "cn": {
+            "enable": False,
+            "genshin": {'enable': False, 'token': ""}
+        },
+        "os": {
+            "enable": False, 'lang': 'zh-cn',
+            "genshin": {'enable': False, 'token': ""}
+        }
     },
 
     'competition': {
@@ -66,24 +72,6 @@ def copy_config():
     return config_raw
 
 
-def config_v8_update(data: dict):
-    global update_config_need
-    update_config_need = True
-    returns = deepcopy(config)
-    returns["enable"] = data["enable"]
-    returns["account"].update(data["account"])
-    returns["mihoyobbs"].update(data["mihoyobbs"])
-    returns["cloud_games"].update(data["cloud_games"])
-    returns["games"]["os"].update(data["games"]["os"])
-    for i in data['games']['cn'].keys():
-        if i == "hokai2":
-            returns['games']['cn']['honkai2'].update(data['games']['cn']['hokai2'])
-            continue
-        returns['games']['cn'][i] = data['games']['cn'][i]
-    log.info("config已升级到: 8")
-    return returns
-
-
 def config_v9_update(data: dict):
     global update_config_need
     update_config_need = True
@@ -97,7 +85,7 @@ def config_v9_update(data: dict):
     return data
 
 
-def config_v9_update_to_v11(data: dict):
+def config_v9_update_to_v12(data: dict):
     global update_config_need
     update_config_need = True
     base_config = deepcopy(config_raw)
@@ -127,8 +115,10 @@ def config_v9_update_to_v11(data: dict):
                 region_config[item] = {'checkin': item_data['auto_checkin'], 'black_list': item_data['black_list']}
             else:
                 region_config[item] = item_data
-    base_config['cloud_games'] = deepcopy(data['cloud_games'])
-    log.info("config已升级到: 10")
+    base_config['cloud_games']['cn']['enable'] = data['cloud_games']['genshin']['enable']
+    base_config['cloud_games']['cn']['genshin']['enable'] = data['cloud_games']['genshin']['enable']
+    base_config['cloud_games']['cn']['genshin']['token'] = data['cloud_games']['genshin']['token']
+    log.info("config已升级到: 12")
     return base_config
 
 
@@ -145,6 +135,25 @@ def config_v10_update(data: dict):
     return data
 
 
+def config_v11_update(data: dict):
+    global update_config_need
+    update_config_need = True
+    data['version'] = 12
+    new_config = {}
+    for key in data:
+        if key == "account":
+            new_config["push"] = ""
+        if key == "cloud_games":
+            new_config['cloud_games'] = deepcopy(config_raw['cloud_games'])
+            continue
+        new_config[key] = deepcopy(data[key])
+    new_config['cloud_games']['cn']['enable'] = data['cloud_games']['genshin']['enable']
+    new_config['cloud_games']['cn']['genshin']['enable'] = data['cloud_games']['genshin']['enable']
+    new_config['cloud_games']['cn']['genshin']['token'] = data['cloud_games']['genshin']['token']
+    log.info("config已升级到: 12")
+    return new_config
+
+
 def load_config(p_path=None):
     global config
     if not p_path:
@@ -152,14 +161,14 @@ def load_config(p_path=None):
     with open(p_path, "r", encoding='utf-8') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
     if data['version'] != config_raw['version']:
-        if data['version'] == 7:
-            data = config_v8_update(data)
         if data['version'] == 8:
             data = config_v9_update(data)
         if data['version'] == 9:
-            data = config_v9_update_to_v11(data)
+            data = config_v9_update_to_v12(data)
         if data['version'] == 10:
             data = config_v10_update(data)
+        if data['version'] == 11:
+            data = config_v11_update(data)
         save_config(p_config=data)
     # 去除cookie最末尾的空格
     data["account"]["cookie"] = str(data["account"]["cookie"]).rstrip(' ')

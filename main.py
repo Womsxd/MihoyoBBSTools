@@ -68,12 +68,9 @@ def main():
         if os_result != '':
             return_data += "\n\n" + "海外版:" + os_result
     # 云游戏
-    if config.config['cloud_games']['genshin']["enable"] \
-            and config.config['cloud_games']['genshin']['token'] != "":
+    if config.config['cloud_games']['cn']["enable"]:
         log.info("正在进行云原神签到")
-        cloud_ys = cloud_genshin.CloudGenshin()
-        data = cloud_ys.sign_account()
-        return_data += "\n\n" + data
+        return_data += "\n\n" + cloud_genshin.run_task()
     if config.config['competition']['enable']:
         log.info("正在进行米游社竞赛活动签到")
         competition_result = competition.run_task()
