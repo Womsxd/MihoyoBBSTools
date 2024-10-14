@@ -32,6 +32,8 @@ def hoyo_checkin(event_base_url: str, act_id: str) -> str:
         "Accept-Encoding": "gzip, deflate, br",
         "Cookie": cookie_str,
     }
+    if act_id == setting.os_zzz_act_id:
+        headers['x-rpc-signgame'] = "zzz"
 
     info_list = http.get(info_url, headers=headers).json()
 
