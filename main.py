@@ -10,7 +10,8 @@ import mihoyobbs
 import competition
 import gamecheckin
 import hoyo_checkin
-import cloud_genshin
+import cloudgames
+import os_cloudgames
 from error import *
 from loghelper import log
 
@@ -61,16 +62,19 @@ def main():
         raise CookieError('Cookie expires')
     if config.config['games']['cn']["enable"]:
         return_data += gamecheckin.run_task()
+    # 云游戏
+    if config.config['cloud_games']['cn']["enable"]:
+        log.info("正在进行云游戏签到")
+        return_data += "\n\n" + cloudgames.run_task()
     # 国际
     if config.config['games']['os']["enable"]:
         log.info("海外版:")
         os_result = hoyo_checkin.run_task()
         if os_result != '':
             return_data += "\n\n" + "海外版:" + os_result
-    # 云游戏
-    if config.config['cloud_games']['cn']["enable"]:
-        log.info("正在进行云原神签到")
-        return_data += "\n\n" + cloud_genshin.run_task()
+    if config.config['cloud_games']['os']["enable"]:
+        log.info("正在进行云游戏国际版签到")
+        return_data += "\n\n" + os_cloudgames.run_task()
     if config.config['competition']['enable']:
         log.info("正在进行米游社竞赛活动签到")
         competition_result = competition.run_task()

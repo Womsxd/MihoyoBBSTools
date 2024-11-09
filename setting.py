@@ -133,3 +133,7 @@ os_honkai_sr_act_id = "e202303301540311"
 os_honkai3rd_act_id = "e202110291205111"
 os_tearsofthemis_act_id = "e202202281857121"
 os_zzz_act_id = "e202406031448091"
+
+# 国际服云原神
+cloud_genshin_api_os = "https://sg-cg-api.hoyoverse.com"
+cloud_genshin_sgin_os = f"{cloud_genshin_api_os}/hk4e_global/cg/wallet/wallet/get"

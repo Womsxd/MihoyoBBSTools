@@ -45,7 +45,7 @@ class CloudGenshin:
 def run_task() -> str:
     ret_msg = ""
     cg_cn = config.config['cloud_games']['cn']
-    if cg_cn['genshin'] and cg_cn['genshin']['token'] == "":
+    if not cg_cn['genshin']['enable'] or cg_cn['genshin']['token'] == "":
         return ""
     cg_genshin = CloudGenshin(cg_cn['genshin']['token'])
     ret_msg += cg_genshin.sign_account() + "\n\n"

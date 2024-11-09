@@ -101,7 +101,6 @@ cloud_games:
       enable: false
       #这里填入抓包获得的token，支持多个
       token: ""
-  # os还是todo功能
   os:
     lang: "zh-cn"
     enable: false
