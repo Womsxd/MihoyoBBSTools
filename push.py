@@ -136,7 +136,7 @@ def smtp(status_id, push_message):
 
     def get_background_img_info(background_url):
         if background_url:
-            return f'p style="color: #fff;text-shadow:0px 0px 10px #000;">背景图片链接</p>\n' \
+            return f'<p style="color: #fff;text-shadow:0px 0px 10px #000;">背景图片链接</p>\n' \
                    f'<a href="{background_url}" style="color: #fff;text-shadow:0px 0px 10px #000;">{background_url}</a>'
         return ""
 
