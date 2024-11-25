@@ -35,7 +35,6 @@ class PushHandler:
         self.cfg = ConfigParser()
         self.config_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config')
         self.config_name = config_file
-        self.load_config()
 
     def get_config_path(self):
         file_path = self.config_path
@@ -400,6 +399,8 @@ class PushHandler:
     # 在类内部直接使用 self.cfg 读取配置
 
     def push(self, status, push_message):
+        if not self.load_config():
+            return 1
         if not self.cfg.getboolean('setting', 'enable'):
             return 0
         if self.cfg.getboolean('setting', 'error_push_only', fallback=False) and status == 0:
