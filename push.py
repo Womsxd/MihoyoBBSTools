@@ -106,6 +106,33 @@ class PushHandler:
             }
         )
 
+    def pushme(self, status_id, push_message):
+        """
+        PushMe推送
+        """
+        pushme_key = self.cfg.get('pushme', 'token')
+        if not pushme_key:
+            log.error("PushMe 推送失败！PUSHME_KEY 未设置")
+            return
+        log.info("PushMe 服务启动")
+        data = {
+            "push_key": pushme_key,
+            "title": get_push_title(status_id),
+            "content": push_message,
+            "date": "",
+            "type": ""
+        }
+        log.debug(f"PushMe 请求数据: {data}")
+        response = self.http.post(
+            url=self.cfg.get('pushme', 'url', fallback="https://push.i-i.me/"),
+            data=data)
+        log.debug(f"PushMe 响应状态码: {response.status_code}")
+        log.debug(f"PushMe 响应内容: {response.text}")
+        if response.status_code == 200 and response.text == "success":
+            log.info("PushMe 推送成功！")
+        else:
+            log.error(f"PushMe 推送失败！{response.status_code} {response.text}")
+
     def cqhttp(self, status_id, push_message):
         """
         OneBot V11(CqHttp)协议推送
