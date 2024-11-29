@@ -143,6 +143,9 @@ config/*.ini
 config/push.ini
 .DS_Store
 yaml/
-
+# 自定义忽略文件
+push.py
+captcha.py
+# 自定义忽略文件
 # 日志文件
 *.log
