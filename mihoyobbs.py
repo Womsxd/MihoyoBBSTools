@@ -137,8 +137,10 @@ class Mihoyobbs:
         for forum in self.bbs_list:
             challenge = None
             for retry_count in range(2):
-                header["DS"] = tools.get_ds2("", json.dumps({"gids": forum["id"]}))
-                req = http.post(url=setting.bbs_sign_url, json={"gids": forum["id"]}, headers=header)
+                post_data = json.dumps({"gids": forum["id"]})
+                post_data.replace(' ', '')
+                header["DS"] = tools.get_ds2("", post_data)
+                req = http.post(url=setting.bbs_sign_url, data=post_data, headers=header)
                 log.debug(req.text)
                 data = req.json()
                 if data["retcode"] == 1034:
