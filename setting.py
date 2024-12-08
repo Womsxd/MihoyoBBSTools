@@ -126,6 +126,10 @@ zzz_act_id = "e202406242138391"
 cloud_genshin_api = "https://api-cloudgame.mihoyo.com"
 cloud_genshin_sgin = f"{cloud_genshin_api}/hk4e_cg_cn/wallet/wallet/get"
 
+# 云绝区零相关api
+cloud_zzz_api = "https://cg-nap-api.mihoyo.com"
+cloud_zzz_sgin = f"{cloud_zzz_api}/nap_cn/cg/wallet/wallet/get"
+
 # 接下来是国际服的内容
 os_referer_url = "https://act.hoyolab.com/"
 os_genshin_act_id = "e202102251931481"

@@ -37,7 +37,7 @@ class CloudGenshin:
         elif data['retcode'] == -100:
             ret_msg = "云原神token失效"
             log.warning(ret_msg)
-            config.clear_cookie_cloudgame()
+            config.clear_cookie_cloudgame_genshin_os()
         else:
             ret_msg = f'脚本签到失败，json文本:{req.text}'
             log.warning(ret_msg)
