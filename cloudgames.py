@@ -35,20 +35,60 @@ class CloudGenshin:
         elif data['retcode'] == -100:
             ret_msg = "云原神token失效/防沉迷"
             log.warning(ret_msg)
-            config.clear_cookie_cloudgame()
+            config.clear_cookie_cloudgame_genshin()
         else:
             ret_msg = f'脚本签到失败，json文本:{req.text}'
             log.warning(ret_msg)
         return ret_msg
 
+class CloudZZZ:
+    def __init__(self, token) -> None:
+        self.headers = {
+            'Host': 'cg-nap-api.mihoyo.com',
+            'Accept': '*/*',
+            'x-rpc-combo_token': token,
+            'Accept-Encoding': 'gzip, deflate',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                          'Chrome/99.0.4844.84 Safari/537.36',
+
+        }
+
+    def sign_account(self) -> str:
+        ret_msg = "云绝区零:\r\n"
+        req = http.get(url=setting.cloud_zzz_sgin, headers=self.headers)
+        data = req.json()
+        if data['retcode'] == 0:
+            if int(data["data"]["free_time"]["send_freetime"]) > 0:
+                log.info(f'签到成功，已获得{data["data"]["free_time"]["send_freetime"]}分钟免费时长')
+                ret_msg += f'签到成功，已获得{data["data"]["free_time"]["send_freetime"]}分钟免费时长\n'
+            else:
+                log.info('签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上线')
+                ret_msg += '签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上线\n'
+            ret_msg += f'你当前拥有免费时长 {tools.time_conversion(int(data["data"]["free_time"]["free_time"]))} ,' \
+                       f'畅玩卡状态为 {data["data"]["play_card"]["short_msg"]}，拥有邦邦点 {data["data"]["coin"]["coin_num"]} 个'
+            log.info(ret_msg)
+        elif data['retcode'] == -100:
+            ret_msg = "云绝区零token失效/防沉迷"
+            log.warning(ret_msg)
+            config.clear_cookie_cloudgame_zzz()
+        else:
+            ret_msg = f'脚本签到失败，json文本:{req.text}'
+            log.warning(ret_msg)
+        return ret_msg
 
 def run_task() -> str:
     ret_msg = ""
     cg_cn = config.config['cloud_games']['cn']
-    if not cg_cn['genshin']['enable'] or cg_cn['genshin']['token'] == "":
+    if not cg_cn['enable']:
         return ""
-    cg_genshin = CloudGenshin(cg_cn['genshin']['token'])
-    ret_msg += cg_genshin.sign_account() + "\n\n"
+    # 云原神签到
+    if cg_cn['genshin']['enable'] and cg_cn['genshin']['token'] != "":
+        cg_genshin = CloudGenshin(cg_cn['genshin']['token'])
+        ret_msg += cg_genshin.sign_account() + "\n\n"
+    # 云绝区零签到
+    if cg_cn['zzz']['enable'] and cg_cn['zzz']['token'] != "":
+        cg_zzz = CloudZZZ(cg_cn['zzz']['token'])
+        ret_msg += cg_zzz.sign_account() + "\n\n"
     return ret_msg
 
 

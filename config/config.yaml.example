@@ -1,7 +1,7 @@
 #这里控制整个config文件是否启用
 enable: true
 #config的版本
-version: 12
+version: 13
 # todo功能
 push: ""
 account:
@@ -100,6 +100,10 @@ cloud_games:
       #开启签到
       enable: false
       #这里填入抓包获得的token，支持多个
+      token: ""
+    #云绝区零
+    zzz:
+      enable: false
       token: ""
   os:
     lang: "zh-cn"
