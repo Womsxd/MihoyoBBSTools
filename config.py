@@ -73,20 +73,7 @@ def copy_config():
     return config_raw
 
 
-def config_v9_update(data: dict):
-    global update_config_need
-    update_config_need = True
-    data['version'] = 9
-    data['games']['os'] = {
-        'enable': False, 'cookie': '',
-        'genshin': {'auto_checkin': False, 'black_list': []},
-        'honkai_sr': {'auto_checkin': False, 'black_list': []}
-    }
-    log.info("config已升级到: 9")
-    return data
-
-
-def config_v9_update_to_v12(data: dict):
+def config_v9_update_to_v13(data: dict):
     global update_config_need
     update_config_need = True
     base_config = deepcopy(config_raw)
@@ -119,7 +106,7 @@ def config_v9_update_to_v12(data: dict):
     base_config['cloud_games']['cn']['enable'] = data['cloud_games']['genshin']['enable']
     base_config['cloud_games']['cn']['genshin']['enable'] = data['cloud_games']['genshin']['enable']
     base_config['cloud_games']['cn']['genshin']['token'] = data['cloud_games']['genshin']['token']
-    log.info("config已升级到: 12")
+    log.info("config已升级到: 13")
     return base_config
 
 
@@ -139,7 +126,7 @@ def config_v10_update(data: dict):
 def config_v11_update(data: dict):
     global update_config_need
     update_config_need = True
-    data['version'] = 12
+    data['version'] = 13
     new_config = {}
     for key in data:
         if key == "account":
@@ -151,7 +138,7 @@ def config_v11_update(data: dict):
     new_config['cloud_games']['cn']['enable'] = data['cloud_games']['genshin']['enable']
     new_config['cloud_games']['cn']['genshin']['enable'] = data['cloud_games']['genshin']['enable']
     new_config['cloud_games']['cn']['genshin']['token'] = data['cloud_games']['genshin']['token']
-    log.info("config已升级到: 12")
+    log.info("config已升级到: 13")
     return new_config
 
 
@@ -171,10 +158,8 @@ def load_config(p_path=None):
     with open(p_path, "r", encoding='utf-8') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
     if data['version'] != config_raw['version']:
-        if data['version'] == 8:
-            data = config_v9_update(data)
         if data['version'] == 9:
-            data = config_v9_update_to_v12(data)
+            data = config_v9_update_to_v13(data)
         if data['version'] == 10:
             data = config_v10_update(data)
         if data['version'] == 11:
