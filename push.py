@@ -51,7 +51,8 @@ class PushHandler:
             self.cfg.read(file_path, encoding='utf-8')
             return True
         else:
-            log.warning(f"配置文件 {file_path} 不存在！")
+            if self.config_name != "push.ini":
+                log.warning(f"配置文件 {file_path} 不存在！")
             return False
 
     # 推送消息中屏蔽关键词
