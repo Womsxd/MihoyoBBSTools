@@ -1,3 +1,6 @@
+import random
+import time
+
 import tools
 import config
 import setting
@@ -22,13 +25,27 @@ class CloudGenshin:
         ret_msg = "云原神:\r\n"
         req = http.get(url=setting.cloud_genshin_sgin, headers=self.headers)
         data = req.json()
+
         if data['retcode'] == 0:
-            if int(data["data"]["free_time"]["send_freetime"]) > 0:
-                log.info(f'签到成功，已获得{data["data"]["free_time"]["send_freetime"]}分钟免费时长')
-                ret_msg += f'签到成功，已获得{data["data"]["free_time"]["send_freetime"]}分钟免费时长\n'
+            free_time_data = data["data"]["free_time"]
+            free_time = int(free_time_data["free_time"])
+            send_free_time = int(free_time_data["send_freetime"])
+
+            if send_free_time > 0:
+                log.info(f'签到成功，已获得{send_free_time}分钟免费时长')
+                ret_msg += f'签到成功，已获得{send_free_time}分钟免费时长\n'
             else:
-                log.info('签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上限')
-                ret_msg += '签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上限\n'
+                if free_time < 600:
+                    time.sleep(random.randint(3, 6))
+                    data2 = http.get(url=setting.cloud_genshin_sgin, headers=self.headers).json()
+                    free_time2 = int(data2["data"]["free_time"]["free_time"])
+                    if free_time2 > free_time:
+                        get_free_time = free_time2 - free_time
+                        log.info(f'签到成功，已获得{get_free_time}分钟免费时长')
+                        ret_msg += f'签到成功，已获得{get_free_time}分钟免费时长\n'
+                    else:
+                        log.info('签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上限')
+                        ret_msg += '签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上限\n'
             ret_msg += f'你当前拥有免费时长 {tools.time_conversion(int(data["data"]["free_time"]["free_time"]))} ,' \
                        f'畅玩卡状态为 {data["data"]["play_card"]["short_msg"]}，拥有米云币 {data["data"]["coin"]["coin_num"]} 枚'
             log.info(ret_msg)
