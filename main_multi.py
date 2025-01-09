@@ -85,7 +85,6 @@ def main_multi(autorun: bool):
         status = 2
     elif len(results["captcha"]) != 0:
         status = 3
-    push.push(status, push_message)
     return status, push_message
 
 
