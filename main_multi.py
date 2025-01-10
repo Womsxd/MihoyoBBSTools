@@ -85,7 +85,6 @@ def main_multi(autorun: bool):
         status = 2
     elif len(results["captcha"]) != 0:
         status = 3
-    push.push(status, push_message)
     return status, push_message
 
 
@@ -94,5 +93,6 @@ if __name__ == "__main__":
         autorun_flag = True
     else:
         autorun_flag = False
-    main_multi(autorun_flag)
+    status, push_message = main_multi(autorun_flag)
+    push.push(status, push_message)
     exit(0)
