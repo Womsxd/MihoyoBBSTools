@@ -85,6 +85,11 @@ def main_multi(autorun: bool):
         status = 2
     elif len(results["captcha"]) != 0:
         status = 3
+
+    auto_push_project = os.getenv("AutoMihoyoBBS_push_project")
+    if auto_push_project is None:
+        push.push(status, push_message)
+    
     return status, push_message
 
 
