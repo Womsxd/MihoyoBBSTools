@@ -13,9 +13,9 @@ class CloudGenshin:
             'x-rpc-combo_token': token,
             'Accept-Encoding': 'gzip, deflate',
             'User-Agent': 'okhttp/4.10.0',
-            'x-rpc-client_type': 3,
+            'x-rpc-client_type': '3',
             'x-rpc-cg_game_biz': 'hk4e_global',
-            'x-rpc-channel_id': 1,
+            'x-rpc-channel_id': '1',
             'x-rpc-language': lang
 
         }

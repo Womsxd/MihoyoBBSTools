@@ -303,8 +303,7 @@ class PushHandler:
         send_title = urllib.parse.quote_plus(get_push_title(status_id))
         push_message = urllib.parse.quote_plus(push_message)
         rep = self.http.get(
-            url=f'{self.cfg.get("bark", "api_url")}/{self.cfg.get("bark", "token")}/{send_title}/{push_message}?'
-                f'icon=https://cdn.jsdelivr.net/gh/tanmx/pic@main/mihoyo/{self.cfg.get("bark", "icon")}.png'
+            url=f'{self.cfg.get("bark", "api_url")}/{self.cfg.get("bark", "token")}/{send_title}/{push_message}?icon=https://cdn.jsdelivr.net/gh/tanmx/pic@main/mihoyo/{self.cfg.get("bark", "icon")}.png'
         ).json()
         log.info(f"推送结果：{rep.get('message')}")
 

@@ -1,14 +1,16 @@
-version: "3"
-
 services:
   mihoyo-bbs:
-    image: womsxd/mihoyo-bbs
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: miHoYo-BBS-Tools
     restart: always
     environment:
       - CRON_SIGNIN=30 9 * * *
       - MULTI=TRUE
+      - TZ=Asia/Shanghai
     volumes:
-      - .:/var/app
+      - ./config:/app/config
     logging:
       driver: "json-file"
       options:
