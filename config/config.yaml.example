@@ -1,7 +1,7 @@
 #这里控制整个config文件是否启用
 enable: true
 #config的版本
-version: 13
+version: 14
 # todo功能
 push: ""
 account:
@@ -10,11 +10,12 @@ account:
   stuid: ""
   stoken: ""
   mid: ""
+  verify_key: ""
 device:
   name: "Xiaomi MI 6"
   model: "Mi 6"
-  # 此处脚本随机生成
   id: ""
+  fp: ""
 mihoyobbs:
   #控制bbs功能是否启用
   enable: true
