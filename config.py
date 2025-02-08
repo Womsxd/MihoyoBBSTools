@@ -160,12 +160,7 @@ def config_v13_update_to_v14(data: dict):
     # 确保版本号更新为14
     new_config['version'] = 14
 
-    # 检查并添加新的verify_key字段
-    if 'account' in new_config:
-        if 'verify_key' not in new_config['account']:
-            new_config['account']['verify_key'] = ""
-    else:
-        new_config['account'] = {'verify_key': ""}
+    # 检查并添加新的fp字段
     if 'device' in new_config:
         if 'id' not in new_config['device']:
             new_config['device']['fp'] = ""

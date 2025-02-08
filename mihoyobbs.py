@@ -38,7 +38,7 @@ class Mihoyobbs:
             "x-rpc-device_model": config.config["device"]["model"],
             "x-rpc-h265_supported": "1",
             "Referer": "https://app.mihoyo.com",
-            "x-rpc-verify_key": config.config["account"]["verify_key"],
+            "x-rpc-verify_key": setting.mihoyobbs_verify_key,
             "x-rpc-csm_source": "discussion",
             "Content-Type": "application/json; charset=UTF-8",
             "Content-Length": "12",

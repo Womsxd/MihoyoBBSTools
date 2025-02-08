@@ -10,7 +10,6 @@ account:
   stuid: ""
   stoken: ""
   mid: ""
-  verify_key: ""
 device:
   name: "Xiaomi MI 6"
   model: "Mi 6"
