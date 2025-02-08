@@ -33,10 +33,18 @@ class Mihoyobbs:
             "x-rpc-sys_version": "12",
             "x-rpc-channel": "miyousheluodi",
             "x-rpc-device_id": config.config["device"]["id"],
+            "x-rpc-device_fp": config.config["device"]["fp"],
             "x-rpc-device_name": config.config["device"]["name"],
             "x-rpc-device_model": config.config["device"]["model"],
+            "x-rpc-h265_supported": "1",
             "Referer": "https://app.mihoyo.com",
-            "Host": "bbs-api.mihoyo.com",
+            "x-rpc-verify_key": config.config["account"]["verify_key"],
+            "x-rpc-csm_source": "discussion",
+            "Content-Type": "application/json; charset=UTF-8",
+            "Content-Length": "12",
+            "Host": "bbs-api.miyoushe.com",
+            "Connection": "Keep-Alive",
+            "Accept-Encoding": "gzip",
             "User-Agent": "okhttp/4.9.3"
         }
         self.task_do = {
