@@ -1,3 +1,4 @@
+
 import collections
 import os
 import yaml
@@ -149,6 +150,30 @@ def config_v12_update(data: dict):
     data['cloud_games']['cn']['zzz'] = {'enable': False, 'token': ""}
     log.info("config已升级到: 13")
     return data
+
+
+def config_v13_update_to_v14(data: dict):
+    global update_config_need
+    update_config_need = True
+    new_config = deepcopy(data)
+
+    # 确保版本号更新为14
+    new_config['version'] = 14
+
+    # 检查并添加新的verify_key字段
+    if 'account' in new_config:
+        if 'verify_key' not in new_config['account']:
+            new_config['account']['verify_key'] = ""
+    else:
+        new_config['account'] = {'verify_key': ""}
+    if 'device' in new_config:
+        if 'id' not in new_config['device']:
+            new_config['device']['fp'] = ""
+    else:
+        new_config['device'] = {'fp': ""}
+
+    log.info("config已升级到: 14")
+    return new_config
 
 
 def load_config(p_path=None):
