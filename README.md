@@ -311,6 +311,104 @@ cp /ql/data/repo/Womsxd_MihoyoBBSTools/config/config.yaml.example /ql/data/confi
 
 ***注：通知配置为青龙 config.sh 中配置**
 
+## 使用 Nix Home Manager 运行
+
+可以通过 Nix Home Manager 配置 Systemd 用户服务，每日在本机自动运行。
+Home Manager 支持 Linux 和 macOS 系统。
+
+示例配置如下（macOS 用户需要使用 [`darwinConfigurations`](https://nix-community.github.io/home-manager/index.xhtml#sec-flakes-nix-darwin-module)）：
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    mihoyo-bbs-tools.url = "github:https://github.com/Womsxd/MihoyoBBSTools";
+  };
+
+  outputs = inputs@{ nixpkgs, home-manager, ... }: {
+    # macOS 用户请使用 `darwinConfigurations`
+    nixosConfigurations = {
+      "<你的 hostname>" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.users."<你的用户>" =
+              { inputs, ... }: {
+               
+                imports = [ inputs.mihoyo-bbs-tools.homeModules.default ];
+
+                services.mihoyo-bbs-tools = {
+                  enable = true;
+
+                  # 具体配置项，请参考 `config/config.yaml.example`
+                  # 每一项对于单独配置文件，如此处 `config` 对应单用户 `config.yaml`
+                  # 多用户请自行添加更多项
+                  settings.config = {
+                    enable = true;
+                    version = 13;
+                    push = "";
+                    account = {
+                      cookie = "<你的 Cookie>";
+                      stuid = "";
+                      stoken = "";
+                      mid = "";
+                    };
+                    device = {
+                      name = "Xiaomi MI 6";
+                      model = "Mi 6";
+                      id = "";
+                    };
+                    # 关闭 bbs
+                    mihoyobbs.enable = false;
+                    # 游戏签到
+                    games = {
+                      cn = {
+                        enable = true;
+                        useragent = "Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36";
+                        retries = 3;
+                        # 以星铁为例，为需要的游戏设置 checkin 和 black_list
+                        honkai_sr = {
+                          checkin = true;
+                          black_list = [ ];
+                        };
+                        genshin.checkin = false;
+                        honkai2.checkin = false;
+                        honkai3rd.checkin = false;
+                        tears_of_themis.checkin = false;
+                        zzz.checkin = false;
+                      };
+                      os.enable = false;
+                    };
+                    cloud_games = {
+                      cn.enable = false;
+                      os.enable = false;
+                    };
+                    competition.enable = false;
+                  };
+                  # 定时器时间
+                  # 默认为 09:30
+                  # 在此基础上有 1200 秒的随机延时
+                  onCalendar = "04:00";
+                  # 需要额外设定的环境变量
+                  extraEnvironments = {
+                    # 比如，使用多用户
+                    # AutoMihoyoBBS_config_multi = 1;
+                  };
+                  # 更多配置选项请察看 `flake.nix`
+                };
+              };
+          }
+        ];
+      };
+    };
+  };
+```
+
 ## 使用的第三方库
 
 ~~requests~~: [GitHub](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/)
