@@ -33,7 +33,6 @@ class Mihoyobbs:
             "x-rpc-sys_version": "12",
             "x-rpc-channel": "miyousheluodi",
             "x-rpc-device_id": config.config["device"]["id"],
-            "x-rpc-device_fp": config.config["device"]["fp"],
             "x-rpc-device_name": config.config["device"]["name"],
             "x-rpc-device_model": config.config["device"]["model"],
             "x-rpc-h265_supported": "1",
@@ -47,6 +46,8 @@ class Mihoyobbs:
             "Accept-Encoding": "gzip",
             "User-Agent": "okhttp/4.9.3"
         }
+        if config.config["device"]["fp"] != "":
+            self.headers["x-rpc-device_fp"] = config.config["device"]["fp"]
         self.task_do = {
             "sign": False,
             "read": False,
