@@ -13,7 +13,9 @@ account:
 device:
   name: "Xiaomi MI 6"
   model: "Mi 6"
+  # 此处留空则脚本随机生成
   id: ""
+  # 手动获取
   fp: ""
 mihoyobbs:
   #控制bbs功能是否启用

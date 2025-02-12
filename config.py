@@ -1,10 +1,8 @@
-
 import collections
 import os
 import yaml
 from copy import deepcopy
 
-import tools
 from loghelper import log
 
 # 这个字段现在还没找好塞什么地方好，就先塞config这里了
@@ -74,43 +72,6 @@ def copy_config():
     return config_raw
 
 
-def config_v9_update_to_v13(data: dict):
-    global update_config_need
-    update_config_need = True
-    base_config = deepcopy(config_raw)
-
-    base_config["enable"] = data["enable"]
-    base_config['account'].update({key: value for key, value in data['account'].items()
-                                   if key in base_config['account'].keys()})
-    base_config['device']['id'] = tools.get_device_id(data['account']['cookie'])
-
-    base_config['mihoyobbs'].update({
-        'enable': data['mihoyobbs']['enable'],
-        'checkin': data['mihoyobbs']['checkin'],
-        'read': data['mihoyobbs']['read_posts'],
-        'like': data['mihoyobbs']['like_posts'],
-        'cancel_like': data['mihoyobbs']['cancel_like_posts'],
-        'share': data['mihoyobbs']['share_post']
-    })
-    if data['mihoyobbs']['checkin_multi']:
-        base_config['mihoyobbs']['checkin_list'] = data['mihoyobbs']['checkin_multi_list']
-    else:
-        base_config['mihoyobbs']['checkin_list'] = [5]
-
-    for region, region_data in data['games'].items():
-        region_config = base_config['games'][region]
-        for item, item_data in region_data.items():
-            if item not in ['enable', 'useragent', 'cookie', 'lang']:
-                region_config[item] = {'checkin': item_data['auto_checkin'], 'black_list': item_data['black_list']}
-            else:
-                region_config[item] = item_data
-    base_config['cloud_games']['cn']['enable'] = data['cloud_games']['genshin']['enable']
-    base_config['cloud_games']['cn']['genshin']['enable'] = data['cloud_games']['genshin']['enable']
-    base_config['cloud_games']['cn']['genshin']['token'] = data['cloud_games']['genshin']['token']
-    log.info("config已升级到: 13")
-    return base_config
-
-
 def config_v10_update(data: dict):
     global update_config_need
     update_config_need = True
@@ -152,7 +113,7 @@ def config_v12_update(data: dict):
     return data
 
 
-def config_v13_update_to_v14(data: dict):
+def config_v13_update(data: dict):
     global update_config_need
     update_config_need = True
     new_config = deepcopy(data)
@@ -178,14 +139,14 @@ def load_config(p_path=None):
     with open(p_path, "r", encoding='utf-8') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
     if data['version'] != config_raw['version']:
-        if data['version'] == 9:
-            data = config_v9_update_to_v13(data)
         if data['version'] == 10:
             data = config_v10_update(data)
         if data['version'] == 11:
             data = config_v11_update(data)
         if data['version'] == 12:
             data = config_v12_update(data)
+        if data['version'] == 13:
+            data = config_v13_update(data)
         save_config(p_config=data)
     # 去除cookie最末尾的空格
     data["account"]["cookie"] = str(data["account"]["cookie"]).rstrip(' ')
