@@ -40,7 +40,6 @@ class Mihoyobbs:
             "x-rpc-verify_key": setting.mihoyobbs_verify_key,
             "x-rpc-csm_source": "discussion",
             "Content-Type": "application/json; charset=UTF-8",
-            "Content-Length": "12",
             "Host": "bbs-api.miyoushe.com",
             "Connection": "Keep-Alive",
             "Accept-Encoding": "gzip",

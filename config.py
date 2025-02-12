@@ -120,13 +120,7 @@ def config_v13_update(data: dict):
 
     # 确保版本号更新为14
     new_config['version'] = 14
-
-    # 检查并添加新的fp字段
-    if 'device' in new_config:
-        if 'id' not in new_config['device']:
-            new_config['device']['fp'] = ""
-    else:
-        new_config['device'] = {'fp': ""}
+    new_config['device']['fp'] = config['device'].get('fp', '')
 
     log.info("config已升级到: 14")
     return new_config
