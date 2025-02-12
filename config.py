@@ -11,9 +11,9 @@ serverless = False
 update_config_need = False
 
 config = {
-    'enable': True, 'version': 13, "push": "",
+    'enable': True, 'version': 14, "push": "",
     'account': {'cookie': '', 'stuid': '', 'stoken': '', 'mid': ''},
-    'device': {'name': 'Xiaomi MI 6', 'model': 'Mi 6', 'id': ''},
+    'device': {'name': 'Xiaomi MI 6', 'model': 'Mi 6', 'id': '', 'fp': ''},
     'mihoyobbs': {
         'enable': True, 'checkin': True, 'checkin_list': [5, 2],
         'read': True, 'like': True, 'cancel_like': True, 'share': True
