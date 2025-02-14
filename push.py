@@ -438,14 +438,12 @@ class PushHandler:
         if not app_token or not topic_ids:
             log.error("WxPusher 推送失败！请检查 app_token, topic_ids 是否正确配置")
             return 1
-        # 发送消息
         response = WxPusher.send_message(
             content=get_push_title(status_id) + "\r\n" + push_message,
             uids=[uid for uid in uids if uid],  # 过滤空值
-            topic_ids=[int(tid) for tid in topic_ids if tid.isdigit()],  # 过滤并转换为整数
+            topic_ids=[int(tid) for tid in topic_ids if tid.isdigit()],
             token=app_token
         )
-        # 返回结果
         if "data" in response:
             status_list = [item.get("status", "未知状态") for item in response["data"]]
             log.info(f"WxPusher 推送状态：{status_list}")
