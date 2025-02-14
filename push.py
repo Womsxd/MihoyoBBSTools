@@ -436,7 +436,7 @@ class PushHandler:
         uids = self.cfg.get('wxpusher', 'uids', fallback="").split(',')
         topic_ids = self.cfg.get('wxpusher', 'topic_ids', fallback="").split(',')
         if not app_token or not topic_ids:
-            log.error("WxPusher 推送失败！请检查 app_token, uids 或 topic_ids 是否正确配置")
+            log.error("WxPusher 推送失败！请检查 app_token, topic_ids 是否正确配置")
             return 1
         # 发送消息
         response = WxPusher.send_message(
