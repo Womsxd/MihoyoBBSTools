@@ -423,6 +423,36 @@ class PushHandler:
         except:
             log.error(f"请先pip install win11toast再使用win通知")
 
+    def wxpusher(self, status_id, push_message):
+        """
+        WxPusher
+        """
+        from wxpusher import WxPusher
+        app_token = self.cfg.get('wxpusher', 'app_token', fallback=None)
+        uids = self.cfg.get('wxpusher', 'uids', fallback="").split(',')
+        topic_ids = self.cfg.get('wxpusher', 'topic_ids', fallback="").split(',')
+        if not app_token or not topic_ids:
+            log.error("WxPusher 推送失败！请检查 app_token, uids 或 topic_ids 是否正确配置")
+            return 1
+        # 发送 WxPusher 消息
+        try:
+            response = WxPusher.send_message(
+                content=get_push_title(status_id) + "\r\n" + push_message,
+                uids=[uid for uid in uids if uid],  # 过滤空值
+                topic_ids=[int(tid) for tid in topic_ids if tid.isdigit()],  # 过滤并转换为整数
+                token=app_token
+            )
+        except:
+            log.error(f"请先pip install wxpusher再使用")
+        #返回结果
+        if "data" in response:
+            status_list = [item.get("status", "未知状态") for item in response["data"]]
+            log.info(f"WxPusher 推送状态：{status_list}")
+            return 0
+        else:
+            log.error(f"WxPusher 推送失败：{response}")
+            return 1
+
     # 其他推送方法，例如 ftqq, pushplus 等, 和 telegram 方法相似
     # 在类内部直接使用 self.cfg 读取配置
 
