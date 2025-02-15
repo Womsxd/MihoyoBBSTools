@@ -35,10 +35,18 @@ class Mihoyobbs:
             "x-rpc-device_id": config.config["device"]["id"],
             "x-rpc-device_name": config.config["device"]["name"],
             "x-rpc-device_model": config.config["device"]["model"],
+            "x-rpc-h265_supported": "1",
             "Referer": "https://app.mihoyo.com",
-            "Host": "bbs-api.mihoyo.com",
+            "x-rpc-verify_key": setting.mihoyobbs_verify_key,
+            "x-rpc-csm_source": "discussion",
+            "Content-Type": "application/json; charset=UTF-8",
+            "Host": "bbs-api.miyoushe.com",
+            "Connection": "Keep-Alive",
+            "Accept-Encoding": "gzip",
             "User-Agent": "okhttp/4.9.3"
         }
+        if config.config["device"]["fp"] != "":
+            self.headers["x-rpc-device_fp"] = config.config["device"]["fp"]
         self.task_do = {
             "sign": False,
             "read": False,
