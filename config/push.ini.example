@@ -102,9 +102,9 @@ key=你的qmsg酱key
 webhook=https://discord.com/api/webhooks/your_channel_id_xxxxxx/your_webhook_token_xxxxxx
 
 # wxpusher
-# https://wxpusher.zjiecode.com/获取所需参数
+# https://wxpusher.zjiecode.com/  获取所需参数
 [wxpusher]
 app_token = 
 uids = 
-# uid非必填，多个用逗号分隔
 topic_ids = 
+# UID 与 Topic_Id 选填，多个 UID 使用逗号分隔
