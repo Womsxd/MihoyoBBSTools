@@ -19,13 +19,13 @@ from loghelper import log
 def main():
     # 拒绝在GitHub Action运行
     if os.getenv('GITHUB_ACTIONS') == 'true':
-        print("请不要在GitHub Action运行本项目")
+        print("请不要在 GitHub Action 运行本项目")
         exit(0)
     # 初始化，加载配置
     config.load_config()
     if not config.config["enable"]:
-        log.warning("Config未启用！")
-        return 1, "Config未启用！"
+        log.warning("Config 未启用！")
+        return 1, "Config 未启用！"
     # 检测参数是否齐全，如果缺少就进行登入操作
     if any([config.config["account"]["stuid"] == "", config.config["account"]["stoken"] == "",
             login.require_mid() and config.config["account"]["mid"] == ""]):
@@ -50,7 +50,7 @@ def main():
     if config.config["mihoyobbs"]["enable"]:
         if config.config["account"]["stoken"] == "StokenError":
             raise_stoken = True
-            return_data += "米游社: \n账号Stoken异常"
+            return_data += "米游社：\n账号 Stoken 异常"
         else:
             try:
                 bbs = mihoyobbs.Mihoyobbs()
@@ -68,10 +68,10 @@ def main():
         return_data += "\n\n" + cloudgames.run_task()
     # 国际
     if config.config['games']['os']["enable"]:
-        log.info("海外版:")
+        log.info("海外版：")
         os_result = hoyo_checkin.run_task()
         if os_result != '':
-            return_data += "\n\n" + "海外版:" + os_result
+            return_data += "\n\n" + "海外版：" + os_result
     if config.config['cloud_games']['os']["enable"]:
         log.info("正在进行云游戏国际版签到")
         return_data += "\n\n" + os_cloudgames.run_task()
@@ -79,9 +79,9 @@ def main():
         log.info("正在进行米游社竞赛活动签到")
         competition_result = competition.run_task()
         if competition_result != '':
-            return_data += "\n\n" + "米游社竞赛活动:" + competition_result
+            return_data += "\n\n" + "米游社竞赛活动：" + competition_result
     if raise_stoken:
-        raise StokenError("Stoken异常")
+        raise StokenError("Stoken 异常")
     if "触发验证码" in return_data:
         ret_code = 3
     return ret_code, return_data
@@ -94,11 +94,11 @@ if __name__ == "__main__":
         status_code, message = main()
     except CookieError:
         status_code = 1
-        push_message = "账号Cookie出错！\n"
-        log.error("账号Cookie有问题！")
+        push_message = "账号 Cookie 出错！\n"
+        log.error("账号 Cookie 有问题！")
     except StokenError:
         status_code = 1
-        push_message = "账号Stoken出错！\n"
-        log.error("账号Stoken有问题！")
+        push_message = "账号 Stoken 出错！\n"
+        log.error("账号 Stoken 有问题！")
     push_message += message
     push.push(status_code, push_message)
