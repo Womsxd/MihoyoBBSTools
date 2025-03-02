@@ -56,7 +56,7 @@ def hoyo_checkin(event_base_url: str, act_id: str) -> str:
 
     awards = awards_data.get("data", {}).get("awards")
 
-    log.info(f"准备签到: {today} ")
+    log.info(f"准备签到：{today} ")
 
     # a normal human can't instantly click, so we wait a bit
     sleep_time = random.uniform(2.0, 10.0)
@@ -81,43 +81,43 @@ def hoyo_checkin(event_base_url: str, act_id: str) -> str:
     reward = awards[total_sign_in_day - 1]
 
     log.info("签到成功")
-    log.info(f"\t已连续签到{total_sign_in_day + 1}天")
-    log.info(f"\t今天获得的奖励是: {reward['cnt']}x {reward['name']}")
-    ret_msg = f"\t今天获得的奖励是: {reward['cnt']}x {reward['name']}"
+    log.info(f"\t已连续签到 {total_sign_in_day + 1} 天")
+    log.info(f"\t今天获得的奖励是：{reward['cnt']}x 「{reward['name']}」")
+    ret_msg = f"\t今天获得的奖励是：{reward['cnt']}x 「{reward['name']}」"
     return ret_msg
     # logging.info(f"\tMessage: {response['message']}")
 
 
 def genshin():
-    log.info(f"正在进行原神签到")
-    ret_msg = '原神:\n' + hoyo_checkin("https://sg-hk4e-api.hoyolab.com/event/sol",
+    log.info(f"正在进行「原神」签到")
+    ret_msg = '原神：\n' + hoyo_checkin("https://sg-hk4e-api.hoyolab.com/event/sol",
                                      setting.os_genshin_act_id)
     return ret_msg
 
 
 def honkai_sr():
-    log.info(f"正在进行崩坏:星穹铁道签到")
-    ret_msg = '崩坏:星穹铁道:\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os",
+    log.info(f"正在进行「崩坏：星穹铁道」签到")
+    ret_msg = '崩坏：星穹铁道：\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os",
                                           setting.os_honkai_sr_act_id)
     return ret_msg
 
 
 def honkai3rd():
-    log.info(f"正在进行崩坏3签到")
-    ret_msg = '崩坏3:\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/mani",
+    log.info(f"正在进行「崩坏3」签到")
+    ret_msg = '崩坏3：\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/mani",
                                       setting.os_honkai3rd_act_id)
     return ret_msg
 
 
 def tears_of_themis():
-    log.info(f"正在进行未定事件簿签到")
-    ret_msg = '未定事件簿:\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os",
+    log.info(f"正在进行「未定事件簿」签到")
+    ret_msg = '未定事件簿：\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os",
                                         setting.os_tearsofthemis_act_id)
     return ret_msg
 
 def zzz():
-    log.info(f"正在进行绝区零签到")
-    ret_msg = '绝区零:\n' + hoyo_checkin("https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os",
+    log.info(f"正在进行「绝区零」签到")
+    ret_msg = '绝区零：\n' + hoyo_checkin("https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os",
                                       setting.os_zzz_act_id)
     return ret_msg
 
@@ -127,7 +127,7 @@ def run_task():
     games = config.config['games']['os']
 
     if games['cookie'] == '':
-        log.warning("国际服未配置Cookie!")
+        log.warning("国际服未配置 Cookie！")
         games['enable'] = False
         config.save_config()
         return ''

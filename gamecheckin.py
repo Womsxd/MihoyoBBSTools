@@ -72,7 +72,7 @@ class GameCheckin:
             data = req.json()
             if data["retcode"] == 0:
                 return data["data"]["awards"]
-            log.warning(f"获取签到奖励列表失败，重试次数: {i + 1}")
+            log.warning(f"获取签到奖励列表失败，重试次数：{i + 1}")
             time.sleep(5)  # 等待5秒后重试
         log.warning("获取签到奖励列表失败")
         return []
@@ -103,7 +103,7 @@ class GameCheckin:
                                  json={'act_id': self.act_id, 'region': account[2], 'uid': account[1]})
             if req.status_code == 429:
                 time.sleep(10)  # 429同ip请求次数过多，尝试sleep10s进行解决
-                log.warning('429 Too Many Requests ，即将进入下一次请求')
+                log.warning('429 Too Many Requests，即将进入下一次请求')
                 continue
             data = req.json()
             if data["retcode"] == 0 and data["data"]["success"] == 1 and i < retries:
@@ -128,15 +128,15 @@ class GameCheckin:
         for account in self.account_list:
             if account[1] in config.config["games"]["cn"][self.game_mid]["black_list"]:
                 continue
-            log.info(f"正在为{self.player_name}{account[0]}进行签到...")
+            log.info(f"正在为{self.player_name}「{account[0]}」进行签到...")
             time.sleep(random.randint(2, 8))
             is_data = self.is_sign(region=account[2], uid=account[1])
             if is_data.get("first_bind", False):
-                log.warning(f"{self.player_name}{account[0]}是第一次绑定米游社，请先手动签到一次")
+                log.warning(f"{self.player_name}「{account[0]}」是第一次绑定米游社，请先手动签到一次")
                 continue
             sign_days = is_data["total_sign_day"] - 1
             if is_data["is_sign"]:
-                log.info(f"{self.player_name}{account[0]}今天已经签到过了~\r\n今天获得的奖"
+                log.info(f"{self.player_name}「{account[0]}」今天已经签到过了~\r\n今天获得的奖"
                          f"励是{tools.get_item(self.checkin_rewards[sign_days])}")
                 sign_days += 1
             else:
@@ -146,7 +146,7 @@ class GameCheckin:
                     data = req.json()
                     if data["retcode"] == 0 and data["data"]["success"] == 0:
                         log.info(
-                            f"{self.player_name}{account[0]}签到成功~\r\n今天获得的奖励是"
+                            f"{self.player_name}「{account[0]}」签到成功~\r\n今天获得的奖励是"
                             f"{tools.get_item(self.checkin_rewards[0 if sign_days == 0 else sign_days + 1])}")
                         sign_days += 2
                     elif data["retcode"] == -5003:
@@ -156,7 +156,7 @@ class GameCheckin:
                     else:
                         s = "账号签到失败！"
                         if data["data"] != "" and data.get("data").get("success", -1):
-                            s += "原因: 验证码\njson信息:" + req.text
+                            s += "原因：验证码\njson 信息：" + req.text
                         log.warning(s)
                         return_data += f"\n{account[0]}，触发验证码，本次签到失败"
                         continue
@@ -205,7 +205,7 @@ class Genshin(GameCheckin):
 
 class Honkaisr(GameCheckin):
     def __init__(self):
-        super().__init__("hkrpg_cn", "honkai_sr", "崩坏: 星穹铁道", setting.honkai_sr_act_id, "开拓者")
+        super().__init__("hkrpg_cn", "honkai_sr", "崩坏：星穹铁道", setting.honkai_sr_act_id, "开拓者")
         self.headers["Origin"] = "https://act.mihoyo.com"
         self.init()
 
@@ -227,7 +227,7 @@ def checkin_game(game_name, game_module, game_print_name=""):
         time.sleep(random.randint(2, 8))
         if game_print_name == "":
             game_print_name = game_name
-        log.info(f"正在进行{game_print_name}签到")
+        log.info(f"正在进行「{game_print_name}」签到")
         return_data = f"\n\n{game_module().sign_account()}"
         return return_data
     return ''
@@ -239,7 +239,7 @@ def run_task():
         ("崩坏3rd", "honkai3rd", Honkai3rd),
         ("未定事件簿", "tears_of_themis", TearsOfThemis),
         ("原神", "genshin", Genshin),
-        ("崩坏: 星穹铁道", "honkai_sr", Honkaisr),
+        ("崩坏：星穹铁道", "honkai_sr", Honkaisr),
         ("绝区零", "zzz", ZZZ)
     ]
     return_data = ''

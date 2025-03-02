@@ -81,7 +81,7 @@ def config_v10_update(data: dict):
     new_keys = ['enable', 'account', 'checkin', 'weekly']
     data['competition']['genius_invokation'] = dict(collections.OrderedDict(
         (key, genius.get(key, False) if key != 'account' else []) for key in new_keys))
-    log.info("config已升级到: 11")
+    log.info("config 已升级到：11")
     return data
 
 
@@ -100,7 +100,7 @@ def config_v11_update(data: dict):
     new_config['cloud_games']['cn']['enable'] = data['cloud_games']['genshin']['enable']
     new_config['cloud_games']['cn']['genshin']['enable'] = data['cloud_games']['genshin']['enable']
     new_config['cloud_games']['cn']['genshin']['token'] = data['cloud_games']['genshin']['token']
-    log.info("config已升级到: 13")
+    log.info("config 已升级到：13")
     return new_config
 
 
@@ -109,7 +109,7 @@ def config_v12_update(data: dict):
     update_config_need = True
     data['version'] = 13
     data['cloud_games']['cn']['zzz'] = {'enable': False, 'token': ""}
-    log.info("config已升级到: 13")
+    log.info("config 已升级到: 13")
     return data
 
 
@@ -122,7 +122,7 @@ def config_v13_update(data: dict):
     new_config['version'] = 14
     new_config['device']['fp'] = config['device'].get('fp', '')
 
-    log.info("config已升级到: 14")
+    log.info("config 已升级到：14")
     return new_config
 
 
@@ -145,7 +145,7 @@ def load_config(p_path=None):
     # 去除cookie最末尾的空格
     data["account"]["cookie"] = str(data["account"]["cookie"]).rstrip(' ')
     config = data
-    log.info("Config加载完毕")
+    log.info("Config 加载完毕")
     return data
 
 
@@ -166,9 +166,9 @@ def save_config(p_path=None, p_config=None):
             f.flush()
         except OSError:
             serverless = True
-            log.info("Cookie保存失败")
+            log.info("Cookie 保存失败")
         else:
-            log.info("Config保存完毕")
+            log.info("Config 保存完毕")
 
 
 def clear_stoken():
@@ -179,7 +179,7 @@ def clear_stoken():
     config["account"]["mid"] = ""
     config["account"]["stuid"] = ""
     config["account"]["stoken"] = "StokenError"
-    log.info("Stoken已删除")
+    log.info("Stoken 已删除")
     save_config()
 
 
@@ -189,7 +189,7 @@ def clear_cookie():
         log.info("云函数执行，无法保存")
         return None
     config["account"]["cookie"] = "CookieError"
-    log.info(f"Cookie已删除")
+    log.info(f"Cookie 已删除")
     save_config()
 
 
@@ -199,7 +199,7 @@ def disable_games(region: str = "cn"):
         log.info("云函数执行，无法保存")
         return None
     config['games'][region]['enable'] = False
-    log.info(f"游戏签到({region})已关闭")
+    log.info(f"游戏签到（{region}）已关闭")
     save_config()
 
 
@@ -210,7 +210,7 @@ def clear_cookie_cloudgame_genshin():
         return None
     config['cloud_games']['cn']['genshin']["enable"] = False
     config['cloud_games']['cn']['genshin']['token'] = ""
-    log.info("国服云原神Cookie删除完毕")
+    log.info("国服云原神 Cookie 删除完毕")
     save_config()
 
 
@@ -221,7 +221,7 @@ def clear_cookie_cloudgame_genshin_os():
         return None
     config['cloud_games']['os']['genshin']["enable"] = False
     config['cloud_games']['os']['genshin']['token'] = ""
-    log.info("国际服云原神Cookie删除完毕")
+    log.info("国际服云原神 Cookie 删除完毕")
     save_config()
 
 
@@ -232,7 +232,7 @@ def clear_cookie_cloudgame_zzz():
         return None
     config['cloud_games']['cn']['zzz']["enable"] = False
     config['cloud_games']['cn']['zzz']['token'] = ""
-    log.info("国服云绝区零Cookie删除完毕")
+    log.info("国服云绝区零 Cookie 删除完毕")
     save_config()
 
 

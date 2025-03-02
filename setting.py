@@ -29,7 +29,7 @@ game_id2name = {
     "bh3_cn": "崩坏3",
     "nxx_cn": "未定事件簿",
     "hk4e_cn": "原神",
-    "hkrpg_cn": "崩坏： 星穹铁道",
+    "hkrpg_cn": "崩坏：星穹铁道",
     "nap_cn": "绝区零"
 }
 

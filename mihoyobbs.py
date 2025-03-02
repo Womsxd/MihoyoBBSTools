@@ -90,7 +90,7 @@ class Mihoyobbs:
         req = http.get(url=setting.bbs_tasks_list, headers=self.headers)
         data = req.json()
         if "err" in data["message"] or data["retcode"] == -100:
-            log.error("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
+            log.error("获取任务列表失败，你的 cookie 可能已过期，请重新设置 cookie。")
             config.clear_stoken()
             raise StokenError('Stoken expires')
         self.today_get_coins = data["data"]["can_get_points"]
@@ -120,7 +120,7 @@ class Mihoyobbs:
         if data['data']['can_get_points'] != 0:
             new_day = data['data']['states'][0]['mission_id'] >= 62
             log.info(f"{'新的一天，今天可以获得' if new_day else '似乎还有任务没完成，今天还能获得'}"
-                     f"{self.today_get_coins}个米游币")
+                     f" {self.today_get_coins} 个米游币")
 
     # 获取要帖子列表
     def get_list(self) -> list:
@@ -137,7 +137,7 @@ class Mihoyobbs:
             post = random.choice(data)
             if post["post"]["subject"] not in [x[1] for x in choice_post_list]:
                 choice_post_list.append([post["post"]["post_id"], post["post"]["subject"]])
-        log.info(f"已获取{len(choice_post_list)}个帖子")
+        log.info(f"已获取 {len(choice_post_list)} 个帖子")
         return choice_post_list
 
     # 进行签到操作
@@ -166,11 +166,11 @@ class Mihoyobbs:
                     wait()
                     break
                 elif data["retcode"] == -100:
-                    log.error("签到失败，你的cookie可能已过期，请重新设置cookie。")
+                    log.error("签到失败，你的 cookie 可能已过期，请重新设置 cookie。")
                     config.clear_stoken()
                     raise StokenError('Stoken expires')
                 else:
-                    log.error(f'未知错误: {req.text}')
+                    log.error(f'未知错误：{req.text}')
             if challenge is not None:
                 header.pop("x-rpc-challenge")
 
@@ -229,13 +229,13 @@ class Mihoyobbs:
             if data["message"] == "OK":
                 log.debug(f"分享：{post_info[1]} 成功")
                 break
-            log.debug(f"分享任务执行失败，正在执行第{i + 2}次，共3次")
+            log.debug(f"分享任务执行失败，正在执行第 {i + 2} 次，共 3 次")
             wait()
 
     def post_task(self):
-        log.info("正在执行帖子相关任务(看帖/点赞/分享)......")
+        log.info("正在执行帖子相关任务（看帖/点赞/分享）......")
         if self.task_do["read"] and self.task_do["like"] and self.task_do["share"]:
-            log.info("帖子相关任务(看帖/点赞/分享)已全部完成!")
+            log.info("帖子相关任务（看帖/点赞/分享）已全部完成!")
             return
         # 执行帖子的阅读 点赞 和 分享，其中阅读是必完成的
         for post in self.postsList:
@@ -255,8 +255,8 @@ class Mihoyobbs:
         if self.task_do["sign"] and self.task_do["read"] and self.task_do["like"] and \
                 self.task_do["share"]:
             return_data += "\n" + f"今天已经全部完成了！\n" \
-                                  f"一共获得{self.today_have_get_coins}个米游币\n目前有{self.have_coins}个米游币"
-            log.info(f"今天已经全部完成了！一共获得{self.today_have_get_coins}个米游币，目前有{self.have_coins}个米游币")
+                                  f"一共获得 {self.today_have_get_coins} 个米游币\n目前有 {self.have_coins} 个米游币"
+            log.info(f"今天已经全部完成了！一共获得 {self.today_have_get_coins} 个米游币，目前有 {self.have_coins} 个米游币")
             return return_data
         i = 0
         while self.today_get_coins != 0 and i < 3:
@@ -268,9 +268,9 @@ class Mihoyobbs:
             self.post_task()
             self.get_tasks_list()
             i += 1
-        return_data += "\n" + f"今天已经获得{self.today_have_get_coins}个米游币\n" \
-                              f"还能获得{self.today_get_coins}个米游币\n目前有{self.have_coins}个米游币"
-        log.info(f"今天已经获得{self.today_have_get_coins}个米游币，"
-                 f"还能获得{self.today_get_coins}个米游币，目前有{self.have_coins}个米游币")
+        return_data += "\n" + f"今天已经获得 {self.today_have_get_coins} 个米游币\n" \
+                              f"还能获得 {self.today_get_coins} 个米游币\n目前有 {self.have_coins} 个米游币"
+        log.info(f"今天已经获得 {self.today_have_get_coins} 个米游币，"
+                 f"还能获得 {self.today_get_coins} 个米游币，目前有 {self.have_coins} 个米游币")
         wait()
         return return_data
