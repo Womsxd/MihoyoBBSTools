@@ -120,15 +120,15 @@ Docker 的运行脚本基于 Linux 平台编写，暂未在 Win 平台测试。
 将本项目 Clone 至本地后，请先按照上述步骤添加或修改配置文件。随后执行
 
 ```text
-docker-compose up -d
+docker compose up -d
 ```
 
-启动 docker 容器。  
-&nbsp;  
+启动 Docker 容器。  
+
 容器运行成功后可用
 
 ```text
-docker-compose logs -f
+docker compose logs -f
 ```
 
 命令来查看程序输出。
@@ -137,11 +137,11 @@ docker-compose logs -f
 
 每次运行 Docker 容器后，容器内将自动按照参数执行签到活动，签到完成后容器将默认在每天上午 9:30 运行一次，如果想自行修改时间可自行编辑`docker-compose.yml`文件中的`CRON_SIGNIN`，将其修改成想运行的时间。
 
-若想要更新容器镜像，可以参考以下命令
+若想要更新容器镜像，可以参考以下命令。
 
 ```text
-docker-compose stop
-docker-compose pull && docker-compose up -d
+git pull
+docker compose up -d
 ```
 
 ## 使用 kubernetes 运行
