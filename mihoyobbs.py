@@ -1,6 +1,7 @@
 import json
 import random
 import time
+from copy import deepcopy
 
 import captcha
 import config
@@ -21,7 +22,8 @@ class Mihoyobbs:
         self.today_get_coins = 0
         self.today_have_get_coins = 0
         self.have_coins = 0
-        self.bbs_list = [setting.mihoyobbs_List.get(i) for i in config.config["mihoyobbs"]["checkin_list"]
+        self.bbs_config = config.config["mihoyobbs"]
+        self.bbs_list = [setting.mihoyobbs_List.get(i) for i in self.bbs_config["checkin_list"]
                          if setting.mihoyobbs_List.get(i) is not None]
         self.headers = {
             "DS": tools.get_ds(web=False),
@@ -33,10 +35,29 @@ class Mihoyobbs:
             "x-rpc-device_id": config.config["device"]["id"],
             "x-rpc-device_name": config.config["device"]["name"],
             "x-rpc-device_model": config.config["device"]["model"],
+            "x-rpc-h265_supported": "1",
             "Referer": "https://app.mihoyo.com",
-            "Host": "bbs-api.mihoyo.com",
+            "x-rpc-verify_key": setting.mihoyobbs_verify_key,
+            "x-rpc-csm_source": "discussion",
+            "Content-Type": "application/json; charset=UTF-8",
+            "Host": "bbs-api.miyoushe.com",
+            "Connection": "Keep-Alive",
+            "Accept-Encoding": "gzip",
             "User-Agent": "okhttp/4.9.3"
         }
+        self.task_header = {
+            'Accept': 'application/json, text/plain, */*',
+            'Origin': 'https://webstatic.mihoyo.com',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) '
+                          f'Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36 miHoYoBBS/{setting.mihoyobbs_version}',
+            'Referer': 'https://webstatic.mihoyo.com',
+            'Accept-Encoding': 'gzip, deflate',
+            'Accept-Language': 'zh-CN,en-US;q=0.8',
+            'X-Requested-With': 'com.mihoyo.hyperion',
+            "Cookie": config.config.get("account", {}).get("cookie", ""),
+        }
+        if config.config["device"]["fp"] != "":
+            self.headers["x-rpc-device_fp"] = config.config["device"]["fp"]
         self.task_do = {
             "sign": False,
             "read": False,
@@ -55,6 +76,9 @@ class Mihoyobbs:
     def refresh_list(self) -> None:
         self.postsList = self.get_list()
 
+    def get_max_req_post_num(self):
+        return max(self.task_do['read_num'], self.task_do['like_num'])
+
     def get_pass_challenge(self):
         req = http.get(url=setting.bbs_get_captcha, headers=self.headers)
         data = req.json()
@@ -72,14 +96,18 @@ class Mihoyobbs:
         return None
 
     # 获取任务列表，用来判断做了哪些任务
-    def get_tasks_list(self):
+    def get_tasks_list(self, update=False):
         log.info("正在获取任务列表")
-        req = http.get(url=setting.bbs_tasks_list, headers=self.headers)
+        req = http.get(url=setting.bbs_tasks_list, params={"point_sn": "myb"}, headers=self.task_header)
         data = req.json()
         if "err" in data["message"] or data["retcode"] == -100:
-            log.error("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
-            config.clear_stoken()
-            raise StokenError('Stoken expires')
+            if not update and login.update_cookie_token():
+                self.task_header['Cookie'] = config.config['account']['cookie']
+                return self.get_tasks_list(True)
+            else:
+                log.error("获取任务列表失败，你的cookie可能已过期，请重新设置cookie。")
+                config.clear_cookie()
+                raise StokenError('Cookie expires')
         self.today_get_coins = data["data"]["can_get_points"]
         self.today_have_get_coins = data["data"]["already_received_points"]
         self.have_coins = data["data"]["total_points"]
@@ -95,8 +123,9 @@ class Mihoyobbs:
             self.task_do.like = True
             self.task_do.share = True
         else:
+            missions = data["data"]["states"]
             for task in tasks.keys():
-                mission_state = next((x for x in data["data"]["states"] if x["mission_id"] == task), None)
+                mission_state = next((x for x in missions if x["mission_id"] == task), None)
                 if mission_state is None:
                     continue
                 do = tasks[task]
@@ -111,7 +140,7 @@ class Mihoyobbs:
 
     # 获取要帖子列表
     def get_list(self) -> list:
-        temp_list = []
+        choice_post_list = []
         log.info("正在获取帖子列表......")
         req = http.get(url=setting.bbs_post_list_url,
                        params={"forum_id": self.bbs_list[0]["forumId"],
@@ -120,12 +149,12 @@ class Mihoyobbs:
                        headers=self.headers)
         log.debug(req.text)
         data = req.json()["data"]["list"]
-        while len(temp_list) < 5:
+        while len(choice_post_list) < self.get_max_req_post_num():
             post = random.choice(data)
-            if post["post"]["subject"] not in [x[1] for x in temp_list]:
-                temp_list.append([post["post"]["post_id"], post["post"]["subject"]])
-        log.info(f"已获取{len(temp_list)}个帖子")
-        return temp_list
+            if post["post"]["subject"] not in [x[1] for x in choice_post_list]:
+                choice_post_list.append([post["post"]["post_id"], post["post"]["subject"]])
+        log.info(f"已获取{len(choice_post_list)}个帖子")
+        return choice_post_list
 
     # 进行签到操作
     def signing(self):
@@ -162,71 +191,80 @@ class Mihoyobbs:
                 header.pop("x-rpc-challenge")
 
     # 看帖子
-    def read_posts(self):
-        if self.task_do["read"]:
-            log.info("看帖任务已经完成过了~")
-            return
-        log.info("正在看帖......")
-        for i in range(self.task_do["read_num"]):
-            req = http.get(url=setting.bbs_detail_url, params={"post_id": self.postsList[i][0]}, headers=self.headers)
-            log.debug(req.text)
-            data = req.json()
-            if data["message"] == "OK":
-                log.debug("看帖：{} 成功".format(self.postsList[i][1]))
-            wait()
+    def read_posts(self, post_info):
+        req = http.get(url=setting.bbs_detail_url, params={"post_id": post_info[0]}, headers=self.headers)
+        log.debug(req.text)
+        data = req.json()
+        if data["message"] == "OK":
+            log.debug(f"看帖：{post_info[1]} 成功")
 
     # 点赞
-    def like_posts(self):
-        header = self.headers.copy()
-        challenge = None
-        if self.task_do["like"]:
-            log.info("点赞任务已经完成过了~")
-            return
-        log.info("正在点赞......")
-        for i in range(self.task_do["like_num"]):
-            req = http.post(url=setting.bbs_like_url, headers=header,
-                            json={"post_id": self.postsList[i][0], "is_cancel": False})
+    def like_posts(self, post_info, captcha_try: bool = False):
+        header = deepcopy(self.headers)
+        if captcha_try:
+            challenge = self.get_pass_challenge()
+            if challenge is not None:
+                header["x-rpc-challenge"] = challenge
+            else:
+                # 验证码没通过
+                wait()
+        req = http.post(url=setting.bbs_like_url, headers=header,
+                        json={"post_id": post_info[0], "is_cancel": False})
+        log.debug(req.text)
+        data = req.json()
+        if data["message"] == "OK":
+            log.debug("点赞：{} 成功".format(post_info[1]))
+            # 判断取消点赞是否打开
+            if self.bbs_config["cancel_like"]:
+                wait()
+                self.cancel_like_post(post_info)
+            return True
+        elif data["retcode"] == 1034 and not captcha_try:
+            log.warning("点赞触发验证码")
+            return self.like_posts(post_info, True)
+        else:
+            log.error(f"点赞失败：{req.text}")
+        return False
+
+    # 取消点赞
+    def cancel_like_post(self, post_info):
+        req = http.post(url=setting.bbs_like_url, headers=self.headers,
+                        json={"post_id": post_info[0], "is_cancel": True})
+        if req.json()["message"] == "OK":
+            log.debug("取消点赞：{} 成功".format(post_info[1]))
+            return True
+        return False
+
+    # 分享操作
+    def share_post(self, post_info):
+        for i in range(3):
+            req = http.get(url=setting.bbs_share_url, params={"entity_id": post_info[0], "entity_type": 1},
+                           headers=self.headers)
             log.debug(req.text)
             data = req.json()
             if data["message"] == "OK":
-                log.debug("点赞：{} 成功".format(self.postsList[i][1]))
-                if challenge is not None:
-                    challenge = None
-                    header.pop("x-rpc-challenge")
-                # 判断取消点赞是否打开
-                if not config.config["mihoyobbs"]["cancel_like"]:
-                    wait()
-                    continue
-                wait()
-                req = http.post(url=setting.bbs_like_url, headers=self.headers,
-                                json={"post_id": self.postsList[i][0], "is_cancel": True})
-                if req.json()["message"] == "OK":
-                    log.debug("取消点赞：{} 成功".format(self.postsList[i][1]))
-            elif data["retcode"] == 1034:
-                log.warning("点赞触发验证码")
-                challenge = self.get_pass_challenge()
-                if challenge is not None:
-                    header["x-rpc-challenge"] = challenge
+                log.debug(f"分享：{post_info[1]} 成功")
+                break
+            log.debug(f"分享任务执行失败，正在执行第{i + 2}次，共3次")
             wait()
 
-    # 分享操作
-    def share_post(self):
-        if self.task_do.get("share"):
-            log.info("分享任务已经完成过了~")
-        else:
-            log.info("正在执行分享任务......")
-            for i in range(3):
-                req = http.get(url=setting.bbs_share_url, params={"entity_id": self.postsList[0][0], "entity_type": 1},
-                               headers=self.headers)
-                log.debug(req.text)
-                data = req.json()
-                if data["message"] == "OK":
-                    log.debug(f"分享：{self.postsList[0][1]} 成功")
-                    log.info("分享任务执行成功......")
-                    break
-                log.debug(f"分享任务执行失败，正在执行第{i + 2}次，共3次")
-                wait()
+    def post_task(self):
+        log.info("正在执行帖子相关任务(看帖/点赞/分享)......")
+        if self.task_do["read"] and self.task_do["like"] and self.task_do["share"]:
+            log.info("帖子相关任务(看帖/点赞/分享)已全部完成!")
+            return
+        # 执行帖子的阅读 点赞 和 分享，其中阅读是必完成的
+        for post in self.postsList:
+            self.read_posts(post)
             wait()
+            if self.bbs_config["like"] and not self.task_do["like"] and self.task_do["like_num"] > 0:
+                self.like_posts(post)
+                self.task_do["like_num"] -= 1
+                wait()
+            if self.bbs_config["share"] and not self.task_do["share"]:
+                self.share_post(post)
+                self.task_do["share"] = True
+                wait()
 
     def run_task(self):
         return_data = "米游社: "
@@ -235,24 +273,20 @@ class Mihoyobbs:
             return_data += "\n" + f"今天已经全部完成了！\n" \
                                   f"一共获得{self.today_have_get_coins}个米游币\n目前有{self.have_coins}个米游币"
             log.info(f"今天已经全部完成了！一共获得{self.today_have_get_coins}个米游币，目前有{self.have_coins}个米游币")
-        else:
-            i = 0
-            while self.today_get_coins != 0 and i < 3:
-                if i > 0:
-                    self.refresh_list()
-                if config.config["mihoyobbs"]["checkin"]:
-                    self.signing()
-                if config.config["mihoyobbs"]["read"]:
-                    self.read_posts()
-                if config.config["mihoyobbs"]["like"]:
-                    self.like_posts()
-                if config.config["mihoyobbs"]["share"]:
-                    self.share_post()
-                self.get_tasks_list()
-                i += 1
-            return_data += "\n" + f"今天已经获得{self.today_have_get_coins}个米游币\n" \
-                                  f"还能获得{self.today_get_coins}个米游币\n目前有{self.have_coins}个米游币"
-            log.info(f"今天已经获得{self.today_have_get_coins}个米游币，"
-                     f"还能获得{self.today_get_coins}个米游币，目前有{self.have_coins}个米游币")
-            time.sleep(random.randint(2, 8))
+            return return_data
+        i = 0
+        while self.today_get_coins != 0 and i < 3:
+            if i > 0:
+                wait()
+                self.refresh_list()
+            if self.bbs_config["checkin"]:
+                self.signing()
+            self.post_task()
+            self.get_tasks_list()
+            i += 1
+        return_data += "\n" + f"今天已经获得{self.today_have_get_coins}个米游币\n" \
+                              f"还能获得{self.today_get_coins}个米游币\n目前有{self.have_coins}个米游币"
+        log.info(f"今天已经获得{self.today_have_get_coins}个米游币，"
+                 f"还能获得{self.today_get_coins}个米游币，目前有{self.have_coins}个米游币")
+        wait()
         return return_data

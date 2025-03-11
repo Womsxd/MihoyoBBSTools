@@ -134,6 +134,9 @@ dmypy.json
 # idea
 .idea/
 
+# vs
+.vs/
+
 # 避免上传配置文件
 config/*.json
 config/*.yaml
@@ -146,3 +149,6 @@ yaml/
 
 # 日志文件
 *.log
+
+# Nix 编译输出
+result/
