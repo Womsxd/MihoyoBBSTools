@@ -16,7 +16,7 @@ def stop_me(_signo, _stack):
 
 def main():
     signal.signal(signal.SIGINT, stop_me)
-    log.info("使用DOCKER运行米游社签到")
+    log.info("使用 DOCKER 运行米游社签到")
     env = os.environ
     cron_signin = env["CRON_SIGNIN"]
     cron = CronTab(cron_signin, loop=True, random_seconds=True)

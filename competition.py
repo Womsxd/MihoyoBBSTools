@@ -87,7 +87,7 @@ class GeniusInvokation:
         try:
             account_list = account.get_account_list('hk4e_cn', headers)
         except CookieError:
-            log.warning('cookie过期')
+            log.warning('cookie 过期')
             raise CookieError("BBS Cookie Error")
         return account_list
 
@@ -108,7 +108,7 @@ class GeniusInvokation:
             return None
         data = response.json()
         if data['retcode'] == 0:
-            log.info('获取hk4e token成功')
+            log.info('获取 hk4e token 成功')
             self.set_hk4e_token(cookie_get_hk4e_token(''.join(response.headers['Set-Cookie'])))
             user_data = data['data']
             return {"nickname": user_data['nickname'], "game_uid": user_data['game_uid'],
@@ -177,10 +177,10 @@ class GeniusInvokation:
             if task_info['reward']:
                 return ''  # 领取后了应该不需要提示了
             if not task_info['finish']:
-                return f'每周任务:{task_info["task_name"]} 还未完成'
+                return f'每周任务：{task_info["task_name"]} 还未完成'
             if self.get_award(task_info['task_id']):
                 task_info['reward'] = True
-                return f'成功领取每周任务:{task_info["task_name"]} 奖励'
+                return f'成功领取每周任务：{task_info["task_name"]} 奖励'
             return f'无法领取 {task_info["task_name"]} 奖励'
 
         results = ""
@@ -197,7 +197,7 @@ class GeniusInvokation:
         """
         time.sleep(random.randint(3, 8))
         log.info("七圣召唤赛事任务开始")
-        result = '\n七圣召唤比赛: '
+        result = '\n七圣召唤比赛：'
         if not self.user_info:
             log.warning("账号没有绑定任何原神账号！")
             result += "账号没有绑定任何原神账号！"

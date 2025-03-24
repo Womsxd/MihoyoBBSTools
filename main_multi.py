@@ -37,7 +37,7 @@ def get_config_list() -> list:
         if os.getenv("QL_DIR") is not None:
             config_list = ql_config(config_list)
     if len(config_list) == 0:
-        log.warning("未检测到配置文件，请确认config文件夹存在.yaml/.yml后缀名的配置文件！")
+        log.warning("未检测到配置文件，请确认 config 文件夹存在 .yaml/.yml 后缀名的配置文件！")
         exit(1)
     return config_list
 
@@ -47,16 +47,16 @@ def main_multi(autorun: bool):
     log.info("正在搜索配置文件！")
     config_list = get_config_list()
     if autorun:
-        log.info(f"已搜索到{len(config_list)}个配置文件，正在开始执行！")
+        log.info(f"已搜索到 {len(config_list)} 个配置文件，正在开始执行！")
     else:
-        log.info(f"已搜索到{len(config_list)}个配置文件，请确认是否无多余文件！\r\n{config_list}")
+        log.info(f"已搜索到 {len(config_list)} 个配置文件，请确认是否无多余文件！\r\n{config_list}")
         try:
-            input("请输入回车继续，需要重新搜索配置文件请Ctrl+C退出脚本")
+            input("请输入回车继续，需要重新搜索配置文件请 Ctrl+C 退出脚本")
         except KeyboardInterrupt:
             exit(0)
     results = {"ok": [], "close": [], "error": [], "captcha": []}
     for i in iter(config_list):
-        log.info(f"正在执行{i}")
+        log.info(f"正在执行 {i}")
         setting.mihoyobbs_List_Use = []
         config.config_Path = f"{config.path}/{i}"
         try:
@@ -70,13 +70,13 @@ def main_multi(autorun: bool):
                 results["captcha"].append(i)
             else:
                 results["close"].append(i)
-        log.info(f"{i}执行完毕")
+        log.info(f"{i} 执行完毕")
         time.sleep(random.randint(3, 10))
     print("")
     push_message = f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，' \
                    f'没执行{len(results["close"])}个，失败{len(results["error"])}个' \
-                   f'\r\n没执行的配置文件: {results["close"]}\r\n执行失败的配置文件: {results["error"]}\r\n' \
-                   f'触发游戏签到验证码的配置文件: {results["captcha"]} '
+                   f'\r\n没执行的配置文件：{results["close"]}\r\n执行失败的配置文件：{results["error"]}\r\n' \
+                   f'触发游戏签到验证码的配置文件：{results["captcha"]}'
     log.info(push_message)
     status = 0
     if len(results["error"]) == len(config_list):

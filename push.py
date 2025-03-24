@@ -159,7 +159,7 @@ class PushHandler:
                 _image_url = self.http.get("https://api.iw233.cn/api.php?sort=random&type=json").json()["pic"][0]
             except:
                 _image_url = "unable to get the image"
-                log.warning("获取随机背景图失败，请检查图片api")
+                log.warning("获取随机背景图失败，请检查图片 api")
             return _image_url
 
         def get_background_img_html(background_url):
