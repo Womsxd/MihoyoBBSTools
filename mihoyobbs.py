@@ -117,7 +117,7 @@ class Mihoyobbs:
             60: {"attr": "like", "done": "is_get_award", "num_attr": "like_num"},
             61: {"attr": "share", "done": "is_get_award"}
         }
-        if self.today_get_coins == -1:
+        if self.today_get_coins == 0:
             self.task_do.sign = True
             self.task_do.read = True
             self.task_do.like = True
