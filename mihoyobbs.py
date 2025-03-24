@@ -45,6 +45,17 @@ class Mihoyobbs:
             "Accept-Encoding": "gzip",
             "User-Agent": "okhttp/4.9.3"
         }
+        self.task_header = {
+            'Accept': 'application/json, text/plain, */*',
+            'Origin': 'https://webstatic.mihoyo.com',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) '
+                          f'Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36 miHoYoBBS/{setting.mihoyobbs_version}',
+            'Referer': 'https://webstatic.mihoyo.com',
+            'Accept-Encoding': 'gzip, deflate',
+            'Accept-Language': 'zh-CN,en-US;q=0.8',
+            'X-Requested-With': 'com.mihoyo.hyperion',
+            "Cookie": config.config.get("account", {}).get("cookie", ""),
+        }
         if config.config["device"]["fp"] != "":
             self.headers["x-rpc-device_fp"] = config.config["device"]["fp"]
         self.task_do = {
@@ -85,14 +96,18 @@ class Mihoyobbs:
         return None
 
     # 获取任务列表，用来判断做了哪些任务
-    def get_tasks_list(self):
+    def get_tasks_list(self, update=False):
         log.info("正在获取任务列表")
-        req = http.get(url=setting.bbs_tasks_list, headers=self.headers)
+        req = http.get(url=setting.bbs_tasks_list, params={"point_sn": "myb"}, headers=self.task_header)
         data = req.json()
         if "err" in data["message"] or data["retcode"] == -100:
-            log.error("获取任务列表失败，你的 cookie 可能已过期，请重新设置 cookie。")
-            config.clear_stoken()
-            raise StokenError('Stoken expires')
+            if not update and login.update_cookie_token():
+                self.task_header['Cookie'] = config.config['account']['cookie']
+                return self.get_tasks_list(True)
+            else:
+                log.error("获取任务列表失败，你的 cookie 可能已过期，请重新设置 cookie。")
+                config.clear_cookie()
+                raise StokenError('Cookie expires')
         self.today_get_coins = data["data"]["can_get_points"]
         self.today_have_get_coins = data["data"]["already_received_points"]
         self.have_coins = data["data"]["total_points"]
@@ -102,14 +117,15 @@ class Mihoyobbs:
             60: {"attr": "like", "done": "is_get_award", "num_attr": "like_num"},
             61: {"attr": "share", "done": "is_get_award"}
         }
-        if self.today_get_coins == -1:
+        if self.today_get_coins == 0:
             self.task_do.sign = True
             self.task_do.read = True
             self.task_do.like = True
             self.task_do.share = True
         else:
+            missions = data["data"]["states"]
             for task in tasks.keys():
-                mission_state = next((x for x in data["data"]["states"] if x["mission_id"] == task), None)
+                mission_state = next((x for x in missions if x["mission_id"] == task), None)
                 if mission_state is None:
                     continue
                 do = tasks[task]
