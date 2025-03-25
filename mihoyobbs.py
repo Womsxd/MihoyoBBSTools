@@ -118,10 +118,10 @@ class Mihoyobbs:
             61: {"attr": "share", "done": "is_get_award"}
         }
         if self.today_get_coins == 0:
-            self.task_do.sign = True
-            self.task_do.read = True
-            self.task_do.like = True
-            self.task_do.share = True
+            self.task_do["sign"] = True
+            self.task_do["read"] = True
+            self.task_do["like"] = True
+            self.task_do["share"] = True
         else:
             missions = data["data"]["states"]
             for task in tasks.keys():
