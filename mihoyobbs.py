@@ -14,7 +14,7 @@ from request import http
 
 
 def wait():
-    time.sleep(random.randint(2, 8))
+    time.sleep(random.randint(3, 8))
 
 
 class Mihoyobbs:
@@ -255,8 +255,10 @@ class Mihoyobbs:
             return
         # 执行帖子的阅读 点赞 和 分享，其中阅读是必完成的
         for post in self.postsList:
-            self.read_posts(post)
-            wait()
+            if self.bbs_config["read"] and not self.task_do["read"] and self.task_do["read_num"] > 0:
+                self.read_posts(post)
+                self.task_do["read_num"] -= 1
+                wait()
             if self.bbs_config["like"] and not self.task_do["like"] and self.task_do["like_num"] > 0:
                 self.like_posts(post)
                 self.task_do["like_num"] -= 1
