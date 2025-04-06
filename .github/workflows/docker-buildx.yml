@@ -47,8 +47,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get commit hash
-          id: commitHash
-          run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+        id: commitHash
+        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build and push
         uses: docker/build-push-action@v6
