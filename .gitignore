@@ -152,3 +152,7 @@ yaml/
 
 # Nix 编译输出
 result/
+# 自定义忽略文件
+push.py
+captcha.py
+# 自定义忽略文件
