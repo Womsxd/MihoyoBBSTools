@@ -46,7 +46,17 @@ class PushHandler:
         return os.path.join(file_path, file_name)
 
     def load_config(self):
-        file_path = self.get_config_path()
+        path = os.path.dirname(os.path.realpath(__file__)) + "/config"
+        if os.getenv("AutoMihoyoBBS_config_path") is not None:
+            path = os.getenv("AutoMihoyoBBS_config_path")
+        config_prefix = os.getenv("AutoMihoyoBBS_config_prefix")
+        if config_prefix is None:
+            config_prefix = ""
+        config_path = f"{path}/{config_prefix}push.ini"
+        log.warning(f"config_path：{config_path}")
+        #config_path = os.path.join(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config'), 'push.ini')
+        #file_path = self.get_config_path()作者写的，不用他的不然推送不了,下面改成我自己的
+        file_path = config_path
         if os.path.exists(file_path):
             self.cfg.read(file_path, encoding='utf-8')
             return True
