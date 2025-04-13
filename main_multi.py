@@ -61,8 +61,16 @@ def main_multi(autorun: bool):
         config.config_Path = f"{config.path}/{i}"
         try:
             run_code, run_message = main.main()
-        except (CookieError, StokenError):
+        except CookieError:
             results["error"].append(i)
+            if config.config.get("push", "") != "":
+                push_handler = push.PushHandler(config.config["push"])
+                push_handler.push(1, "账号 Cookie 出错！")
+        except StokenError:
+            results["error"].append(i)
+            if config.config.get("push", "") != "":
+                push_handler = push.PushHandler(config.config["push"])
+                push_handler.push(1, "账号 Stoken 有问题！")
         else:
             if run_code == 0:
                 results["ok"].append(i)
