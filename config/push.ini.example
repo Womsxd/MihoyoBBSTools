@@ -1,6 +1,8 @@
 [setting]
 enable=true
-# 共有 cqhttp ftqq(sever酱) pushplus pushme telegram wecom dingrobot feishubot bark pushdeer gotify smtp(邮件推送) webhook qmsg(qq消息推送) WinToast(Win11通知)
+# 共有 cqhttp ftqq(sever酱) pushplus pushme telegram wecom dingrobot feishubot
+# bark pushdeer gotify smtp(邮件推送) webhook qmsg(qq消息推送) WinToast(Win11通知)
+# serverchan3
 push_server=pushplus
 # server酱 pushplus dingrobot 的推送token
 push_token=XXXXXX
@@ -108,3 +110,8 @@ app_token =
 uids = 
 topic_ids = 
 # UID 与 Topic_Id 选填，多个 UID 使用逗号分隔
+
+[serverchan3]
+sendkey =
+# "tag1 | tag2"
+tags =
