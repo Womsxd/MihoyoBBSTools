@@ -12,6 +12,7 @@ import gamecheckin
 import hoyo_checkin
 import cloudgames
 import os_cloudgames
+import web_activity
 from error import *
 from loghelper import log
 
@@ -80,6 +81,9 @@ def main():
         competition_result = competition.run_task()
         if competition_result != '':
             return_data += "\n\n" + "米游社竞赛活动：" + competition_result
+    if config.config['web_activity']['enable']:
+        log.info("正在进行米游社网页活动任务")
+        web_activity.run_task()
     if raise_stoken:
         raise StokenError("Stoken 异常")
     if "触发验证码" in return_data:

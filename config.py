@@ -11,7 +11,7 @@ serverless = False
 update_config_need = False
 
 config = {
-    'enable': True, 'version': 14, "push": "",
+    'enable': True, 'version': 15, "push": "",
     'account': {'cookie': '', 'stuid': '', 'stoken': '', 'mid': ''},
     'device': {'name': 'Xiaomi MI 6', 'model': 'Mi 6', 'id': '', 'fp': ''},
     'mihoyobbs': {
@@ -51,11 +51,11 @@ config = {
             "genshin": {'enable': False, 'token': ""}
         }
     },
-
     'competition': {
         'enable': False,
         'genius_invokation': {'enable': False, 'account': [], 'checkin': False, 'weekly': False}
-    }
+    },
+    'web_activity': {'enable': False, 'activities': []}
 }
 config_raw = deepcopy(config)
 
@@ -69,20 +69,7 @@ config_Path = f"{path}/{config_prefix}config.yaml"
 
 
 def copy_config():
-    return config_raw
-
-
-def config_v10_update(data: dict):
-    global update_config_need
-    update_config_need = True
-    data['version'] = 11
-    data['account']['mid'] = ""
-    genius = data['competition']['genius_invokation']
-    new_keys = ['enable', 'account', 'checkin', 'weekly']
-    data['competition']['genius_invokation'] = dict(collections.OrderedDict(
-        (key, genius.get(key, False) if key != 'account' else []) for key in new_keys))
-    log.info("config 已升级到：11")
-    return data
+    return deepcopy(config_raw)
 
 
 def config_v11_update(data: dict):
@@ -126,6 +113,16 @@ def config_v13_update(data: dict):
     return new_config
 
 
+def update_v14_update(data: dict):
+    global update_config_need
+    update_config_need = True
+    new_config = deepcopy(data)
+    new_config['version'] = 15
+    new_config['web_activity'] = {'enable': False, 'activities': []}
+    log.info("config 已升级到：15")
+    return new_config
+
+
 def load_config(p_path=None):
     global config
     if not p_path:
@@ -133,14 +130,14 @@ def load_config(p_path=None):
     with open(p_path, "r", encoding='utf-8') as f:
         data = yaml.load(f, Loader=yaml.FullLoader)
     if data['version'] != config_raw['version']:
-        if data['version'] == 10:
-            data = config_v10_update(data)
         if data['version'] == 11:
             data = config_v11_update(data)
         if data['version'] == 12:
             data = config_v12_update(data)
         if data['version'] == 13:
             data = config_v13_update(data)
+        if data['version'] == 14:
+            data = update_v14_update(data)
         save_config(p_config=data)
     # 去除cookie最末尾的空格
     data["account"]["cookie"] = str(data["account"]["cookie"]).rstrip(' ')

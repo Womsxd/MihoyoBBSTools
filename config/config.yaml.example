@@ -1,7 +1,7 @@
 #这里控制整个config文件是否启用
 enable: true
 #config的版本
-version: 14
+version: 15
 # todo功能
 push: ""
 account:
@@ -115,8 +115,14 @@ cloud_games:
       token: ""
 competition:
   enable: false
+  # 功能已经移除
   genius_invokation:
     enable: false
     account: []
     checkin: false
     weekly: false
+# 网页活动
+web_activity:
+  enable: false
+  # 需要激活的活动名称["xx1","xx2"]
+  activities: []
