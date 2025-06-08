@@ -6,8 +6,6 @@ import os
 import push
 from loghelper import log
 from error import CookieError
-from main import main
-from main_multi import main_multi
 
 
 def ql_push(status_code, title, message):
@@ -15,6 +13,13 @@ def ql_push(status_code, title, message):
         push.push(status_code, message)
     else:
         notify.send(title, message)
+
+
+try:
+    from main import main
+    from main_multi import main_multi
+except (ImportError, NameError):
+    ql_push(-99, "「米游社脚本」依赖缺失", "脚本加入新模块，请更新青龙拉取范围")
 
 
 def single():

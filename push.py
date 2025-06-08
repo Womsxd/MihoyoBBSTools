@@ -12,6 +12,7 @@ from loghelper import log
 from configparser import ConfigParser, NoOptionError
 
 title = {
+    -99: "「米游社脚本」依赖缺失",
     -2: "「米游社脚本」StatusID 错误",
     -1: "「米游社脚本」Config版本已更新",
     0: "「米游社脚本」执行成功!",
