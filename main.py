@@ -78,7 +78,7 @@ def main():
     return ret_code, return_data
 
 
-if __name__ == "__main__":
+def task_run():
     push_message = ""
     message = ""
     try:
@@ -93,3 +93,7 @@ if __name__ == "__main__":
         log.error("账号 Stoken 有问题！")
     push_message += message
     push.push(status_code, push_message)
+
+
+if __name__ == "__main__":
+    task_run()

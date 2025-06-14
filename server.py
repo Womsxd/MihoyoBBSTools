@@ -1,7 +1,7 @@
 # Server Mod
 import os
-#import json
 import time
+import push
 import config
 import threading
 import main as single
@@ -24,13 +24,13 @@ def control(time_interval, mod, event, detal):
             last_time = runingtime()
             if mod == 1:
                 try:
-                    single.main()
+                    single.task_run()
                 except:
                     log.info("single_user start failed")
-
             else:
                 try:
-                    multi.main_multi(True)
+                    status, push_message = multi.main_multi(True)
+                    push.push(status, push_message)
                 except:
                     log.info("multi_user start failed")
         if event.is_set():
@@ -45,8 +45,8 @@ def command(detal):
     global mod
     global time_interval
     global show
-    #show = False  # 显示倒计时信息
-    #if show:
+    # show = False  # 显示倒计时信息
+    # if show:
     #    detal.set()
     help = "command windows\nstop:stop server\nreload:reload config and refish tiem\nsingle:test single " \
            "config\nmulit:test mulit conifg\nmod x:x is refer single or multi, 1 is single, 2 is multi\nadd " \
@@ -64,7 +64,7 @@ def command(detal):
         if command == "reload":
             return True
         if command == "test":
-            if mod==1:
+            if mod == 1:
                 try:
                     single.main()
                 except:
@@ -117,7 +117,7 @@ def command(detal):
                     log.info("Error Command")
             if command[i] == "add":
                 cookie = ""
-                for m in range(i+1, len(command)):
+                for m in range(i + 1, len(command)):
                     cookie += command[m]
                 log.info("adding")
                 if mod == 1:
@@ -126,17 +126,17 @@ def command(detal):
                     log.info("Plase input your config name(*.yaml):")
                     name = input()
                 new_config = config.copy_config()
-                new_config['account']['cookie']=cookie
+                new_config['account']['cookie'] = cookie
                 file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/" + name + ".yaml"
                 try:
-                    config.save_config(file_path,new_config)
+                    config.save_config(file_path, new_config)
                     log.info("Saving OK")
                 except:
                     log.info('Saving failed,plase check your file system')
-                #file = open(file_path, 'w')
-                #file.write(json.dumps(config))
-                #file.close()
-                
+                # file = open(file_path, 'w')
+                # file.write(json.dumps(config))
+                # file.close()
+
             if command[i] == "set":
                 if len(command) == 4:
                     file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/" + command[1] + ".yaml"
@@ -144,7 +144,7 @@ def command(detal):
                         log.info("User is not exist")
                     else:
                         new_config = config.load_config(file_path)
-                        #json.load(f)
+                        # json.load(f)
                         value = command[3]
                         if command[3] == "true":
                             value = True
@@ -154,20 +154,20 @@ def command(detal):
                             value = int(command[3])
                         new_config[command[2]] = value
                         try:
-                            config.save_config(file_path,new_config)
+                            config.save_config(file_path, new_config)
                             log.info("Saving OK")
                         except:
                             log.info('Saving failed,plase check your file system')
-                        #file = open(file_path, 'w')
-                        #file.write(json.dumps(new_conifg))
-                        #file.close()
+                        # file = open(file_path, 'w')
+                        # file.write(json.dumps(new_conifg))
+                        # file.close()
     return True
 
 
 if __name__ == '__main__':
     log.info('Running in Server Mod')
     file_path = os.path.dirname(os.path.realpath(__file__)) + "/config/config.yaml"
-    
+
     if os.path.exists(file_path):
         mod = 1
     else:
