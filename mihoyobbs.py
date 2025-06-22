@@ -277,7 +277,7 @@ class Mihoyobbs:
             log.info(f"今天已经全部完成了！一共获得 {self.today_have_get_coins} 个米游币，目前有 {self.have_coins} 个米游币")
             return return_data
         i = 0
-        while self.today_get_coins != 0 and i < 3:
+        while self.today_get_coins != 0 and i < 2:
             if i > 0:
                 wait()
                 self.refresh_list()
