@@ -101,6 +101,6 @@ if __name__ == "__main__":
         autorun_flag = True
     else:
         autorun_flag = False
-    status, push_message = main_multi(autorun_flag)
-    push.push(status, push_message)
+    task_status, task_push_message = main_multi(autorun_flag)
+    push.push(task_status, task_push_message)
     exit(0)

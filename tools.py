@@ -154,7 +154,7 @@ def get_openssl_version() -> int:
     try:
         import ssl
     except ImportError:
-        sys.exit("Openssl Lib Error !!")
+        raise ImportError("Openssl Lib Error !!")
         # return -99
         # 建议直接更新Python的版本，有特殊情况请提交issues
     temp_list = ssl.OPENSSL_VERSION_INFO

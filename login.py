@@ -21,19 +21,12 @@ def login():
     if config.config['account']['stoken'] == "":
         log.error("无 Stoken 请手动填入 stoken！")
         raise StokenError('no stoken')
-    # # 判断Cookie里面是否有login_ticket 没有的话直接退了
-    # login_ticket = get_login_ticket()
-    # if login_ticket is None:
-    #     log.error("cookie中没有'login_ticket'字段,请重新登录米游社，重新抓取cookie!")
-    #     config.clear_cookies()
-    #     raise CookieError('Cookie lost login_ticket')
     uid = get_uid()
     if uid is None:
         log.error("cookie 缺少 UID，请重新抓取 bbs 的 cookie")
         config.clear_cookie()
         raise CookieError('Cookie expires')
     config.config["account"]["stuid"] = uid
-    # config.config["account"]["stoken"] = get_stoken(login_ticket, uid)
     if require_mid():
         config.config["account"]["mid"] = get_mid()
     log.info("登录成功！")
@@ -56,12 +49,6 @@ def get_uid():
     uid_match = re.search(r"(account_id|ltuid|login_uid|ltuid_v2|account_id_v2)=(\d+)",
                           config.config["account"]["cookie"])
     if uid_match is None:
-        # stuid就是uid，先搜索cookie里面的，搜不到再用api获取
-        # data = http.get(url=setting.bbs_account_info,
-        #                 params={"login_ticket": config.config["account"]["login_ticket"]},
-        #                 headers=headers).json()
-        # if "成功" in data["data"]["msg"]:
-        #     uid = str(data["data"]["cookie_info"]["account_id"])
         return uid
     uid = uid_match.group(2)
     return uid
@@ -133,25 +120,3 @@ def get_stoken_cookie() -> str:
             log.error(f"v2_stoken 需要 mid 参数")
             raise CookieError(f"cookie require mid parament")
     return cookie
-
-
-def update_stoken_v2():
-    if config.config["account"]["stoken"].startswith("v2_"):
-        return
-    log.info("stoken 版本为 v1，尝试升级为 v2")
-    header = deepcopy(headers)
-    header["cookie"] = get_stoken_cookie()
-    header["x-rpc-app_id"] = "bll8iq97cem8"
-    data = http.post(url=setting.get_token_by_stoken, headers=header).json()
-    if data["retcode"] == 0:
-        stoken_v2 = data["data"]["token"]["token"]
-        config.config["account"]["stoken"] = stoken_v2
-        config.config["account"]["mid"] = data["data"]["user_info"]["mid"]
-        config.save_config()
-        log.info("升级 stoken 成功")
-    elif data["retcode"] == -100:
-        log.error("stoken 已失效，请重新抓取 cookie")
-        config.clear_stoken()
-        raise StokenError('Stoken expires')
-    else:
-        log.error("其他异常")
