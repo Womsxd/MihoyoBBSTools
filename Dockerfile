@@ -1,5 +1,4 @@
 FROM python:3-alpine
-LABEL maintainer="x.yangtze.river@gmail.com"
 
 ENV CRON_SIGNIN='30 9 * * *'
 ENV MULTI=TRUE

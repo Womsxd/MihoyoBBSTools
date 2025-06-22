@@ -8,7 +8,7 @@ services:
       - CRON_SIGNIN=30 9 * * *
       - MULTI=TRUE
     volumes:
-      - .:/var/app
+      - ./config:/var/app/config
     logging:
       driver: "json-file"
       options:

@@ -1,6 +1,5 @@
 FROM arm64v8/python:3-alpine
 COPY qemu-arm-static /usr/bin/
-LABEL maintainer="x.yangtze.river@gmail.com"
 
 ENV CRON_SIGNIN='30 9 * * *'
 ENV MULTI=TRUE
