@@ -1,97 +1,160 @@
 import os
 import time
 import random
+from typing import Tuple, Optional
+from enum import Enum, auto
 
 import push
 import login
 import tools
 import config
 import mihoyobbs
+import cloudgames
 import gamecheckin
 import hoyo_checkin
-import cloudgames
-import os_cloudgames
 import web_activity
-from error import *
+import os_cloudgames
 from loghelper import log
+from error import CookieError, StokenError
 
 
-def main():
-    # 拒绝在GitHub Action运行
+class StatusCode(Enum):
+    SUCCESS = 0
+    FAILURE = 1
+    PARTIAL_FAILURE = 2
+    CAPTCHA_TRIGGERED = 3
+
+
+def check_github_actions() -> None:
+    """检查是否在GitHub Actions环境运行"""
     if os.getenv('GITHUB_ACTIONS') == 'true':
-        print("请不要在 GitHub Action 运行本项目")
+        log.error("请不要在 GitHub Action 运行本项目")
         exit(0)
-    # 初始化，加载配置
+
+
+def initialize_config() -> Tuple[bool, Optional[str]]:
+    """初始化配置"""
     config.load_config()
     if not config.config["enable"]:
         log.warning("Config 未启用！")
-        return 1, "Config 未启用！"
-    # 检测参数是否齐全，如果缺少就进行登入操作
-    if any([config.config["account"]["stuid"] == "", config.config["account"]["stoken"] == "",
-            login.require_mid() and config.config["account"]["mid"] == ""]):
-        # 登入，如果没开启bbs全局没打开就无需进行登入操作 (实际上也可以登录)
+        return False, "Config 未启用！"
+    return True, None
+
+
+def handle_login() -> None:
+    """处理登录逻辑"""
+    account_cfg = config.config["account"]
+    if any([
+        account_cfg["stuid"] == "",
+        account_cfg["stoken"] == "",
+        account_cfg["mid"] == ""
+    ]):
         if config.config["mihoyobbs"]["enable"]:
             login.login()
-            time.sleep(random.randint(2, 8))
-        # 整理 cookie，在字段重复时优先使用最后出现的值
-        config.config["account"]["cookie"] = tools.tidy_cookie(config.config["account"]["cookie"])
-    # 米游社签到
-    ret_code = 0
-    return_data = "\n"
+            time.sleep(random.randint(3, 8))
+        account_cfg["cookie"] = tools.tidy_cookie(account_cfg["cookie"])
+
+
+def run_mihoyobbs() -> Tuple[str, bool]:
+    """执行米游社签到任务"""
+    return_data = ""
     raise_stoken = False
 
     if config.config["mihoyobbs"]["enable"]:
         if config.config["account"]["stoken"] == "StokenError":
+            return_data = "米游社：\n账号 Stoken 异常"
             raise_stoken = True
-            return_data += "米游社：\n账号 Stoken 异常"
         else:
             try:
                 bbs = mihoyobbs.Mihoyobbs()
-                return_data += bbs.run_task()
+                return_data = bbs.run_task()
             except StokenError:
                 raise_stoken = True
-    # 国服
-    if config.config["account"]["cookie"] == "CookieError":
-        raise CookieError('Cookie expires')
-    if config.config['games']['cn']["enable"]:
-        return_data += gamecheckin.run_task()
-    # 云游戏
-    if config.config['cloud_games']['cn']["enable"]:
+    return return_data, raise_stoken
+
+
+def run_cn_tasks() -> str:
+    """执行国服任务"""
+    result = []
+    if config.config["games"]['cn']["enable"]:
+        result.append(gamecheckin.run_task())
+    if config.config["cloud_games"]['cn']["enable"]:
         log.info("正在进行云游戏签到")
-        return_data += "\n\n" + cloudgames.run_task()
-    # 国际
-    if config.config['games']['os']["enable"]:
+        result.append(cloudgames.run_task())
+    return "\n\n".join(filter(None, result))
+
+
+def run_os_tasks() -> str:
+    """执行国际服任务"""
+    result = []
+    if config.config["games"]['os']["enable"]:
         log.info("海外版：")
         os_result = hoyo_checkin.run_task()
-        if os_result != '':
-            return_data += "\n\n" + "海外版：" + os_result
-    if config.config['cloud_games']['os']["enable"]:
+        if os_result:
+            result.append(f"海外版：{os_result}")
+    if config.config["cloud_games"]['os']["enable"]:
         log.info("正在进行云游戏国际版签到")
-        return_data += "\n\n" + os_cloudgames.run_task()
-    if config.config['web_activity']['enable']:
+        result.append(os_cloudgames.run_task())
+    return "\n\n".join(filter(None, result))
+
+
+def run_web_activity() -> None:
+    """执行网页活动任务"""
+    if config.config["web_activity"]['enable']:
         log.info("正在进行米游社网页活动任务")
         web_activity.run_task()
+
+
+def main() -> Tuple[int, str]:
+    """主执行函数"""
+    check_github_actions()
+
+    success, msg = initialize_config()
+    if not success:
+        return StatusCode.FAILURE.value, msg
+
+    handle_login()
+
+    if config.config["account"]["cookie"] == "CookieError":
+        raise CookieError('Cookie expires')
+
+    return_data = []
+    status_code = StatusCode.SUCCESS.value
+
+    # 执行各模块任务
+    mihoyo_result, raise_stoken = run_mihoyobbs()
+    return_data.append(mihoyo_result)
+
+    return_data.append(run_cn_tasks())
+    return_data.append(run_os_tasks())
+
+    run_web_activity()
+
     if raise_stoken:
         raise StokenError("Stoken 异常")
-    if "触发验证码" in return_data:
-        ret_code = 3
-    return ret_code, return_data
+
+    result_msg = "\n".join(filter(None, return_data))
+    if "触发验证码" in result_msg:
+        status_code = StatusCode.CAPTCHA_TRIGGERED.value
+
+    return status_code, result_msg
 
 
-def task_run():
-    push_message = ""
-    message = ""
+def task_run() -> None:
+    """任务运行入口"""
+
     try:
         status_code, message = main()
+        push_message = message
     except CookieError:
-        status_code = 1
-        push_message = "账号 Cookie 出错！\n"
+        status_code = StatusCode.FAILURE.value
+        push_message = f"账号 Cookie 出错！\n{message}"
         log.error("账号 Cookie 有问题！")
     except StokenError:
-        status_code = 1
-        push_message = "账号 Stoken 出错！\n"
+        status_code = StatusCode.FAILURE.value
+        push_message = f"账号 Stoken 出错！\n{message}"
         log.error("账号 Stoken 有问题！")
-    push_message += message
+
     push.push(status_code, push_message)
 
 
