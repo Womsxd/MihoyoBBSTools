@@ -427,7 +427,6 @@ PyYAML: [GitHub](https://github.com/yaml/pyyaml) [pypi](https://pypi.org/project
 
 也**不会**处理使用`Github Actions`执行有关的 issues！
 
-
 ## Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/Womsxd/MihoyoBBSTools.svg)](https://starchart.cc/Womsxd/MihoyoBBSTools)
@@ -436,8 +435,11 @@ PyYAML: [GitHub](https://github.com/yaml/pyyaml) [pypi](https://pypi.org/project
 
 [MIT License](https://github.com/Womsxd/MihoyoBBSTools/blob/master/LICENSE)
 
-
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FWomsxd%2FMihoyoBBSTools.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FWomsxd%2FMihoyoBBSTools?ref=badge_large)
+
+## DeepWiki
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com//Womsxd/MihoyoBBSTools)
 
 ## 鸣谢
 
