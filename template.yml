@@ -1,0 +1,314 @@
+Project:
+  General:
+    _Base:
+      work_dir:
+        value: "./repos/MihoyoBBSTools"
+      background:
+        value: true
+
+    账号配置:
+      _help:
+        value: "米游社账号相关配置，Cookie是必填项"
+      米游社Cookie:
+        type: input
+        value: ""
+        help: "米游社Cookie，必填项。获取方法请参考项目文档"
+      stuid:
+        type: input
+        value: ""
+        help: "用户ID，通常会自动获取"
+      stoken:
+        type: input
+        value: ""
+        help: "Stoken，用于米游社签到。获取方法请参考项目文档"
+      mid:
+        type: input
+        value: ""
+        help: "用户Mid，通常会自动获取"
+
+    设备信息:
+      _help:
+        value: "设备信息配置，用于模拟设备访问"
+      设备名称:
+        type: input
+        value: "Xiaomi MI 6"
+        help: "设备名称，用于模拟手机设备"
+      设备型号:
+        type: input
+        value: "Mi 6"
+        help: "设备型号"
+      设备ID:
+        type: input
+        value: ""
+        help: "设备ID，留空则自动生成"
+      设备指纹:
+        type: input
+        value: ""
+        help: "设备指纹，用于风控识别"
+
+    推送设置:
+      启用推送:
+        type: checkbox
+        value: false
+        help: "是否启用推送功能"
+      推送服务:
+        type: select
+        value: "pushplus"
+        option:
+          [
+            "pushplus",
+            "ftqq",
+            "telegram",
+            "wecom",
+            "dingrobot",
+            "feishubot",
+            "bark",
+            "pushdeer",
+            "gotify",
+            "smtp",
+            "webhook",
+            "qmsg",
+            "discord",
+            "wintoast",
+            "wxpusher",
+            "serverchan3",
+          ]
+        help: "选择推送服务类型"
+      推送Token:
+        type: input
+        value: ""
+        help: "推送服务的Token或密钥"
+      仅错误时推送:
+        type: checkbox
+        value: false
+        help: "是否仅在出现错误时推送"
+      推送群组:
+        type: input
+        value: ""
+        help: "PushPlus等服务的群组标识（可选）"
+      屏蔽关键词:
+        type: input
+        value: ""
+        help: "推送消息中需要屏蔽的关键词，用逗号分隔"
+
+  Update:
+    _Base:
+      env_name:
+        value: "mys"
+      deps_path:
+        value: "requirements.txt"
+        disabled: true
+      python_version:
+        value: "3.13"
+
+日常:
+  米游社:
+    _Base:
+      command:
+        value: "py dacapo_main.py"
+
+    米游社BBS:
+      _help:
+        value: "米游社论坛相关功能配置，需要获取Stoken"
+      启用米游社签到:
+        type: checkbox
+        value: true
+        help: "是否启用米游社BBS功能"
+      启用版块签到:
+        type: checkbox
+        value: true
+        help: "是否启用版块签到功能"
+      签到版块列表:
+        type: input
+        value: ""
+        help: "签到的版块ID，用逗号分隔\n1-崩坏3，2-原神，3-崩坏学园2，4-未定事件簿\n5-大别野，6-崩坏：星穹铁道，8-绝区零"
+      启用看帖:
+        type: checkbox
+        value: true
+        help: "是否启用看帖功能"
+      启用点赞:
+        type: checkbox
+        value: true
+        help: "是否启用点赞功能"
+      启用取消点赞:
+        type: checkbox
+        value: true
+        help: "点赞后是否自动取消点赞"
+      启用分享:
+        type: checkbox
+        value: true
+        help: "是否启用分享功能"
+
+    国服游戏:
+      _help:
+        value: "国服游戏签到配置"
+      启用国服签到:
+        type: checkbox
+        value: true
+        help: "是否启用国服游戏签到"
+      User Agent:
+        type: input
+        value: "Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36"
+        help: "浏览器标识，用于模拟访问"
+      重试次数:
+        type: input
+        value: "3"
+        help: "签到失败时的重试次数"
+      原神签到:
+        type: checkbox
+        value: true
+        help: "是否启用原神签到"
+      原神黑名单:
+        type: input
+        value: ""
+        help: "原神签到黑名单，用逗号分隔账号ID"
+      崩坏2签到:
+        type: checkbox
+        value: false
+        help: "是否启用崩坏学园2签到"
+      崩坏2黑名单:
+        type: input
+        value: ""
+        help: "崩坏2签到黑名单，用逗号分隔账号ID"
+      崩坏3签到:
+        type: checkbox
+        value: false
+        help: "是否启用崩坏3签到"
+      崩坏3黑名单:
+        type: input
+        value: ""
+        help: "崩坏3签到黑名单，用逗号分隔账号ID"
+      未定事件簿签到:
+        type: checkbox
+        value: false
+        help: "是否启用未定事件簿签到"
+      未定事件簿黑名单:
+        type: input
+        value: ""
+        help: "未定事件簿签到黑名单，用逗号分隔账号ID"
+      星穹铁道签到:
+        type: checkbox
+        value: false
+        help: "是否启用崩坏：星穹铁道签到"
+      星穹铁道黑名单:
+        type: input
+        value: ""
+        help: "星穹铁道签到黑名单，用逗号分隔账号ID"
+      绝区零签到:
+        type: checkbox
+        value: false
+        help: "是否启用绝区零签到"
+      绝区零黑名单:
+        type: input
+        value: ""
+        help: "绝区零签到黑名单，用逗号分隔账号ID"
+
+    国际服游戏:
+      _help:
+        value: "国际服游戏签到配置"
+      启用国际服签到:
+        type: checkbox
+        value: false
+        help: "是否启用国际服游戏签到"
+      国际服Cookie:
+        type: input
+        value: ""
+        help: "国际服专用Cookie"
+      语言设置:
+        type: select
+        value: "zh-cn"
+        option: ["zh-cn", "en-us", "ja-jp", "ko-kr"]
+        help: "国际服语言设置"
+      国际服原神签到:
+        type: checkbox
+        value: false
+        help: "是否启用国际服原神签到"
+      国际服原神黑名单:
+        type: input
+        value: ""
+        help: "国际服原神签到黑名单，用逗号分隔账号ID"
+      国际服崩坏3签到:
+        type: checkbox
+        value: false
+        help: "是否启用国际服崩坏3签到"
+      国际服崩坏3黑名单:
+        type: input
+        value: ""
+        help: "国际服崩坏3签到黑名单，用逗号分隔账号ID"
+      国际服未定事件簿签到:
+        type: checkbox
+        value: false
+        help: "是否启用国际服未定事件簿签到"
+      国际服未定事件簿黑名单:
+        type: input
+        value: ""
+        help: "国际服未定事件簿签到黑名单，用逗号分隔账号ID"
+      国际服星穹铁道签到:
+        type: checkbox
+        value: false
+        help: "是否启用国际服星穹铁道签到"
+      国际服星穹铁道黑名单:
+        type: input
+        value: ""
+        help: "国际服星穹铁道签到黑名单，用逗号分隔账号ID"
+      国际服绝区零签到:
+        type: checkbox
+        value: false
+        help: "是否启用国际服绝区零签到"
+      国际服绝区零黑名单:
+        type: input
+        value: ""
+        help: "国际服绝区零签到黑名单，用逗号分隔账号ID"
+
+    云游戏:
+      _help:
+        value: "云游戏签到配置"
+      启用云游戏签到:
+        type: checkbox
+        value: false
+        help: "是否启用云游戏签到功能"
+      启用云原神:
+        type: checkbox
+        value: false
+        help: "是否启用云原神签到"
+      云原神Token:
+        type: input
+        value: ""
+        help: "云原神Token，需要抓包获取"
+      启用云绝区零:
+        type: checkbox
+        value: false
+        help: "是否启用云绝区零签到"
+      云绝区零Token:
+        type: input
+        value: ""
+        help: "云绝区零Token，需要抓包获取"
+      启用国际服云游戏:
+        type: checkbox
+        value: false
+        help: "是否启用国际服云游戏签到"
+      国际服云游戏语言:
+        type: select
+        value: "zh-cn"
+        option: ["zh-cn", "en-us", "ja-jp", "ko-kr"]
+        help: "国际服云游戏语言设置"
+      启用国际服云原神:
+        type: checkbox
+        value: false
+        help: "是否启用国际服云原神签到"
+      国际服云原神Token:
+        type: input
+        value: ""
+        help: "国际服云原神Token，需要抓包获取"
+
+    网页活动:
+      _help:
+        value: "米游社网页活动配置"
+      启用网页活动:
+        type: checkbox
+        value: false
+        help: "是否启用网页活动功能"
+      活动列表:
+        type: input
+        value: ""
+        help: "需要参与的活动名称，用逗号分隔"
