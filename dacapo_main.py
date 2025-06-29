@@ -3,49 +3,38 @@ import sys
 import json
 import yaml
 import tempfile
-import logging
-from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, List
 from configparser import ConfigParser
 
+
+def setup_logging():
+    config_dir = Path(__file__).parent / "config"
+    logging_ini = config_dir / "logging.ini"
+    logging_example = config_dir / "logging.ini.example"
+    
+    if not logging_ini.exists() and logging_example.exists():
+        config_parser = ConfigParser(interpolation=None)
+        config_parser.read(logging_example, encoding='utf-8')
+        
+        if config_parser.has_section('formatter_simpleFormatter'):
+            config_parser.set('formatter_simpleFormatter', 'format', '%(asctime)s - %(levelname)s - %(message)s')
+            config_parser.set('formatter_simpleFormatter', 'datefmt', '%Y-%m-%d %H:%M:%S')
+        
+        with open(logging_ini, 'w', encoding='utf-8') as f:
+            config_parser.write(f)
+        
+        print(f"已创建日志配置文件: {logging_ini}")
+    
+    elif not logging_ini.exists():
+        print("未找到 logging.ini.example，将使用默认日志配置")
+
+
+setup_logging()
+
 import config
 import main
-
-
-def setup_dacapo_logger():
-    """设置 DaCapo 专用日志器，同时输出到控制台和文件"""
-    log_dir = Path(__file__).parent / "logs"
-    log_dir.mkdir(exist_ok=True)
-    
-    log_filename = log_dir / f"dacapo_{datetime.now().strftime('%Y%m%d')}.log"
-    
-    logger = logging.getLogger("DaCapo")
-    logger.setLevel(logging.INFO)
-    logger.handlers.clear()
-    
-    # 控制台处理器
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_handler.setLevel(logging.INFO)
-    console_handler.setFormatter(logging.Formatter(
-        '%(asctime)s - %(levelname)s - %(message)s',
-        datefmt='%H:%M:%S'
-    ))
-    logger.addHandler(console_handler)
-    
-    # 文件处理器
-    file_handler = logging.FileHandler(log_filename, encoding='utf-8')
-    file_handler.setLevel(logging.INFO)
-    file_handler.setFormatter(logging.Formatter(
-        '%(asctime)s - %(levelname)s - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    ))
-    logger.addHandler(file_handler)
-    
-    return logger
-
-
-log = setup_dacapo_logger()
+from loghelper import log
 
 
 class DaCapoAdapter:
@@ -155,7 +144,7 @@ class DaCapoAdapter:
                 "useragent": cn_games_group.get("User Agent", 
                     "Mozilla/5.0 (Linux; Android 12; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) "
                     "Version/4.0 Chrome/103.0.5060.129 Mobile Safari/537.36"),
-                "retries": cn_games_group.get("重试次数", 3),
+                "retries": int(cn_games_group.get("重试次数", 3)),
                 "genshin": {
                     "checkin": cn_games_group.get("原神签到", True),
                     "black_list": self._convert_black_list(cn_games_group.get("原神黑名单", ""))
@@ -471,7 +460,6 @@ class DaCapoAdapter:
                 import push
                 push.push(status_code, message)
 
-            log.info("任务执行完成")
             log.info("=" * 50)
             log.info("任务执行完成!")
             log.info(f"状态码: {status_code}")
