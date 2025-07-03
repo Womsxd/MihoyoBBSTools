@@ -1,12 +1,12 @@
-$:
-  vscode:
-    - runner:
-        cpus: 2
-      docker:
-        image: 3.12-bookworm
-      services:
-        - vscode
-        - docker
+# $:
+#   vscode:
+#     - runner:
+#         cpus: 2
+#       docker:
+#         image: python:3.12-bookworm
+#       services:
+#         - vscode
+#         - docker
 
 master:
   "crontab: 0 6 * * *":
