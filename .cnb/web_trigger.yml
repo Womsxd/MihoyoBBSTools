@@ -1,0 +1,10 @@
+branch:
+  - reg: "^master$"
+    buttons:
+      - name: 手动同步
+        description: 点击立即同步 GitHub 项目
+        event: web_trigger_sync
+        permissions:
+          roles:
+            - owner
+            - developer

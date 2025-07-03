@@ -1,0 +1,27 @@
+master:
+  "crontab: 0 6 * * *":
+    - name: sync-github
+      runner:
+        cpus: 1
+      stages:
+        - name: git-clone
+          script: |
+            rm -rf repo || true
+            git clone https://github.com/Womsxd/MihoyoBBSTools.git repo
+        - name: push-to-cnb
+          script: |
+            cd repo
+            git push https://cnb.cool/womsxd/MihoyoBBSTools.git HEAD:master
+  web_trigger_sync:
+    - name: manual-sync
+      runner:
+        cpus: 1
+      stages:
+        - name: git-clone
+          script: |
+            rm -rf repo || true
+            git clone https://github.com/Womsxd/MihoyoBBSTools.git repo
+        - name: push-to-cnb
+          script: |
+            cd repo
+            git push https://cnb.cool/womsxd/MihoyoBBSTools.git HEAD:master
