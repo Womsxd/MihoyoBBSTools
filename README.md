@@ -409,6 +409,23 @@ Home Manager 支持 Linux 和 macOS 系统。
   };
 ```
 
+## 使用DaCapo运行
+
+1. 下载[DaCapo](https://github.com/Aues6uen11Z/DaCapo)发布版并安装
+2. 点击左下角齿轮图标，在“创建新实例”一栏选择从远程创建，填写以下内容并点击创建：
+   - 实例名称：随意
+   - 模板名称：随意
+   - 仓库地址：`https://github.com/Womsxd/MihoyoBBSTools`
+   - 本地路径：`repos`
+   - 分支：留空不填
+   - 模板路径：`.`
+3. 进入更新页面，点击右上角检查更新
+4. 进入通用页面，配置路径填写`./repos/MihoyoBBSTools/xxx.json`，xxx表示实例名自行修改
+5. 进入米游社页面，任务设置-命令填写`py dacapo_main.py xxx.json`，xxx和上一步保持一致
+6. 填写cookies等信息后即可开始运行
+
+> 多用户只需从已有模板创建新实例，使用不同的实例名重复4、5、6步的操作
+
 ## 使用的第三方库
 
 ~~requests~~: [GitHub](https://github.com/psf/requests) [pypi](https://pypi.org/project/requests/)
