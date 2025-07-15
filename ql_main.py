@@ -18,8 +18,10 @@ def ql_push(status_code, title, message):
 try:
     from main import main
     from main_multi import main_multi
-except (ImportError, NameError):
+except (ImportError, NameError) as e:
     ql_push(-99, "「米游社脚本」依赖缺失", "脚本加入新模块，请更新青龙拉取范围")
+    print("依赖缺失", e)
+    exit(-1)
 
 
 def single():
