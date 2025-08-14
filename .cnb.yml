@@ -14,10 +14,10 @@ $:
   stages:
     - name: sync
       script: |
-        git remote add github "${GITHUB_REPO}" || git remote set-url github "${GITHUB_REPO}"
-        git fetch github --prune --tags --force
-        git push origin --all --force
-        git push origin --tags --force
+        git remote set-url origin "${GITHUB_REPO}"
+        git fetch origin --prune --tags --force
+        git remote set-url origin "${CNB_REPO_URL_HTTPS}"
+        git push --mirror origin --force
 
 
 master:
