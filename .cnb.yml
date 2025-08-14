@@ -1,37 +1,27 @@
-# $:
-#   vscode:
-#     - runner:
-#         cpus: 2
-#       docker:
-#         image: python:3.12-bookworm
-#       services:
-#         - vscode
-#         - docker
+$:
+  vscode:
+    - runner:
+        cpus: 1
+      services:
+        - vscode
+        - docker
+
+.github-sync: &github-sync
+  runner:
+    cpus: 1
+  env:
+    GITHUB_REPO: https://github.com/Womsxd/MihoyoBBSTools.git
+  stages:
+    - name: sync
+      script: |
+        git remote add github "${GITHUB_REPO}" || git remote set-url github "${GITHUB_REPO}"
+        git fetch github --prune --tags --force
+        git push origin --all --force
+        git push origin --tags --force
+
 
 master:
-  "crontab: 0 6 * * *":
-    - name: sync-github
-      runner:
-        cpus: 1
-      stages:
-        - name: git-clone
-          script: |
-            rm -rf repo || true
-            git clone https://github.com/Womsxd/MihoyoBBSTools.git repo
-        - name: push-to-cnb
-          script: |
-            cd repo
-            git push https://cnb.cool/womsxd/MihoyoBBSTools.git HEAD:master
-  web_trigger_sync:
-    - name: manual-sync
-      runner:
-        cpus: 1
-      stages:
-        - name: git-clone
-          script: |
-            rm -rf repo || true
-            git clone https://github.com/Womsxd/MihoyoBBSTools.git repo
-        - name: push-to-cnb
-          script: |
-            cd repo
-            git push https://cnb.cool/womsxd/MihoyoBBSTools.git HEAD:master
+  "crontab: 0 6 * * *": 
+    - *github-sync
+  web_trigger_sync: 
+    - *github-sync
