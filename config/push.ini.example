@@ -19,9 +19,10 @@ url = https://push.i-i.me/
 
 [cqhttp]
 #cqhttp的服务端地址
-cqhttp_url=http://127.0.0.1:5000/send_private_msg
-#推送给谁
+cqhttp_url=http://127.0.0.1:5000/send_msg
+#推送给QQ号/群号（二选一，勿同时配置）
 cqhttp_qq=10001
+cqhttp_group=10002
 
 [telegram]
 api_url=api.telegram.org

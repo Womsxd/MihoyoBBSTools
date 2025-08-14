@@ -391,8 +391,9 @@ class DaCapoAdapter:
                 "cqhttp": {
                     "section": "cqhttp",
                     "config": {
-                        "cqhttp_url": "http://127.0.0.1:5000/send_private_msg",
-                        "cqhttp_qq": "10001"
+                        "cqhttp_url": "http://127.0.0.1:5000/send_msg",
+                        "cqhttp_qq": "10001",
+                        "cqhttp_group": "10002"
                     }
                 }
             }
