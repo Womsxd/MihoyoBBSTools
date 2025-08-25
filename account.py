@@ -2,11 +2,21 @@ import login
 import config
 import setting
 from error import CookieError
-from request import http
 from loghelper import log
+from request import get_new_session
 
 
 def get_account_list(game_id: str, headers: dict, update: bool = False) -> list:
+    '''
+    获取账号列表
+
+    :param game_id: 游戏ID
+    :param headers: 请求头
+    :param update: 是否已尝试更新Cookie
+
+    :return: 账号列表
+    '''
+    http = get_new_session()
     game_name = setting.game_id2name.get(game_id, game_id)
 
     if update and login.update_cookie_token():

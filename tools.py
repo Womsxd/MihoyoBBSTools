@@ -1,7 +1,6 @@
 import hashlib
 import random
 import string
-import sys
 import time
 import uuid
 
@@ -107,6 +106,7 @@ def get_next_day_timestamp() -> int:
 def time_conversion(minute: int) -> str:
     """
     将分钟转换为小时和分钟
+
     :param minute: 分钟
     :return: 小时和分钟
     """
@@ -118,6 +118,7 @@ def time_conversion(minute: int) -> str:
 def tidy_cookie(cookies: str) -> str:
     """
     整理cookie
+
     :param cookies: cookie
     :return: 整理后的cookie
     """
@@ -134,8 +135,13 @@ def tidy_cookie(cookies: str) -> str:
     return "; ".join([f"{key}={value}" for key, value in cookie_dict.items()])
 
 
-# 获取ua 防止出现多个miHoYoBBS
 def get_useragent(useragent: str) -> str:
+    """
+    获取用户代理
+
+    :param useragent: 自定义ua
+    :return: 包含单个mihoyobbs的ua
+    """
     if useragent == "":  # 没设置自定义ua就返回默认ua
         return setting.headers['User-Agent']
     if "miHoYoBBS" in useragent:  # 防止出现多个miHoYoBBS
@@ -149,6 +155,7 @@ def get_useragent(useragent: str) -> str:
 def get_openssl_version() -> int:
     """
     获取openssl版本号
+
     :return: OpenSSL 的版本号。
     """
     try:

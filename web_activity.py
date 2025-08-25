@@ -7,6 +7,7 @@ from datetime import datetime
 
 
 def genshin_mizone():
+    """原神脉动联动活动"""
     client = get_new_session()
     base_url = 'https://act-hk4e-api.mihoyo.com/event/e20250430linkdrink/'
     task_url = f'{base_url}index'
@@ -22,6 +23,7 @@ def genshin_mizone():
     }
 
     def get_task_data() -> dict:
+        """获取任务数据"""
         resp = client.get(task_url, params={"lang": "zh-cn", "game_biz": "hk4e_cn"}, headers=headers)
         if resp.status_code != 200:
             raise Exception(f'获取任务数据失败: {resp.status_code}')
@@ -30,7 +32,12 @@ def genshin_mizone():
             raise Exception(f'获取任务数据失败: {data["message"]}')
         return data['data']
 
-    def done_task(task_id: int):
+    def done_task(task_id: int) -> bool:
+        """
+        完成任务
+
+        :param task_id: 任务id
+        """
         resp = client.post(task_done_url, json={"task_id": task_id}, headers=headers)
         if resp.status_code != 200:
             raise Exception(f'完成任务失败: {resp.status_code}')
