@@ -14,11 +14,9 @@ $:
   stages:
     - name: sync
       script: |
-        git remote set-url origin "${GITHUB_REPO}"
-        git fetch origin --prune --tags --force
-        git remote set-url origin "${CNB_REPO_URL_HTTPS}"
-        git push --mirror origin --force
-
+        git clone --bare ${GITHUB_REPO} syncRepo
+        cd syncRepo
+        git push --prune ${CNB_REPO_URL_HTTPS} '+refs/heads/*:refs/heads/*' '+refs/tags/*:refs/tags/*'
 
 master:
   "crontab: 0 6 * * *": 
