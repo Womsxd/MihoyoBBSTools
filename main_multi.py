@@ -5,7 +5,6 @@ import time
 import push
 import config
 import random
-import setting
 from loghelper import log
 from error import CookieError, StokenError
 
@@ -104,9 +103,6 @@ def main_multi(autorun: bool) -> tuple:
     results = {"ok": [], "close": [], "error": [], "captcha": []}
     for i in config_list:
         log.info(f"正在执行 {i}")
-        # 保存原始列表状态，避免影响其他配置
-        original_list = setting.mihoyobbs_List_Use.copy()
-        setting.mihoyobbs_List_Use = []
         config.config_Path = os.path.join(config.path, i)
         try:
             run_code, run_message = main.main()
@@ -129,8 +125,6 @@ def main_multi(autorun: bool) -> tuple:
                 # 其他未知状态归类为未执行
                 results["close"].append(i)
         log.info(f"{i} 执行完毕")
-        # 恢复原始列表状态
-        setting.mihoyobbs_List_Use = original_list
         
         time.sleep(random.randint(3, 10))
     print("")
