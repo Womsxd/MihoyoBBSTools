@@ -140,8 +140,8 @@ class PushHandler:
         """
         OneBot V11(CqHttp)协议推送
         """
-        qq = self.cfg.get('cqhttp', 'cqhttp_qq')
-        group = self.cfg.get('cqhttp', 'cqhttp_group')
+        qq = self.cfg.get('cqhttp', 'cqhttp_qq', fallback=None)
+        group = self.cfg.get('cqhttp', 'cqhttp_group', fallback=None)
 
         if qq and group:
             log.error("请只填写 cqhttp_qq 或 cqhttp_group 的其中一个，不要同时填写！")
