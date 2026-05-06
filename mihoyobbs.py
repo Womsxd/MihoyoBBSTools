@@ -169,9 +169,6 @@ class Mihoyobbs:
             return return_data
         i = 0
         while self.today_get_coins != 0 and i < 2:
-            if i > 0:
-                wait()
-                self.refresh_list()
             if self.bbs_config["checkin"]:
                 self.signing()
             self.get_tasks_list()
