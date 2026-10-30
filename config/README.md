@@ -22,7 +22,7 @@
 
 ## push.ini配置教程
 
-* push_server 可选范围 cqhttp ftqq(sever酱) pushplus telegram dingrobot bark
+* push_server 可选范围 cqhttp ftqq(sever酱) pushplus telegram dingrobot bark qbot
 
 ### Wecom
 
@@ -93,4 +93,27 @@ push_server=bark
 [bark]
 api_url=https://api.day.app
 token=XXX
+```
+
+### qbot
+
+QQ 机器人单聊推送，需要在 [QQ 开放平台](https://q.qq.com/) 创建机器人并开通单聊权限。
+
+**appid** / **secret** 在开放平台「开发设置」中获取
+
+**openid** 是单聊用户的 OpenID，可运行 `python qbot_get_openid.py`，按提示获取 APPID、AppSecret 后，用手机 QQ 向机器人发送一条消息即可自动获取，并自动写入 `config/push.ini`
+
+注意：机器人发送的是主动消息，如果用户在 QQ 客户端关闭了「允许主动发送」，推送会失败。
+
+填写示例
+
+```ini
+[setting]
+enable=true
+push_server=qbot
+
+[qbot]
+appid=102000001
+secret=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+openid=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
