@@ -12,13 +12,13 @@ from loghelper import log
 from configparser import ConfigParser, NoOptionError
 
 title = {
-    -99: "「米游社脚本」依赖缺失",
-    -2: "「米游社脚本」StatusID 错误",
-    -1: "「米游社脚本」Config版本已更新",
-    0: "「米游社脚本」执行成功!",
-    1: "「米游社脚本」执行失败!",
-    2: "「米游社脚本」部分账号执行失败！",
-    3: "「米游社脚本」社区/游戏道具签到触发验证码！"
+    -99: "「米游社签到」依赖缺失",
+    -2: "「米游社签到」StatusID 错误",
+    -1: "「米游社签到」Config版本已更新",
+    0: "「米游社签到」执行成功!",
+    1: "「米游社签到」执行失败!",
+    2: "「米游社签到」部分账号执行失败！",
+    3: "「米游社签到」社区/游戏道具签到触发验证码！"
 }
 
 
@@ -159,6 +159,44 @@ class PushHandler:
             url=self.cfg.get('cqhttp', 'cqhttp_url'),
             json=data
         )
+
+    def qbot(self, status_id, push_message):
+        """
+        QQ机器人单聊推送
+        """
+        appid = self.cfg.get('qbot', 'appid', fallback='').strip()
+        secret = self.cfg.get('qbot', 'secret', fallback='').strip()
+        openid = self.cfg.get('qbot', 'openid', fallback='').strip()
+        if not appid or not secret or not openid:
+            log.error("QQ机器人 推送失败！请检查 appid、secret、openid 配置")
+            return
+
+        token_rep = self.http.post(
+            url="https://api.bot.qq.com/app/getAppAccessToken",
+            json={"appId": appid, "clientSecret": secret}
+        ).json()
+        access_token = token_rep.get("access_token")
+        if not access_token:
+            log.error(f"QQ机器人 获取 access_token 失败：{token_rep}")
+            return
+
+        rep = self.http.post(
+            url=f"https://api.bot.qq.com/v2/users/{openid}/messages",
+            headers={"Authorization": f"QQBot {access_token}"},
+            json={
+                "content": get_push_title(status_id) + "\r\n" + push_message,
+                "msg_type": 0
+            }
+        )
+        try:
+            rep_json = rep.json()
+        except ValueError:
+            log.error(f"QQ机器人 推送失败！{rep.status_code} {rep.text}")
+            return
+        if rep.status_code == 200 and rep_json.get("id"):
+            log.info("QQ机器人 推送成功！")
+        else:
+            log.error(f"QQ机器人 推送失败！{rep.status_code} {rep.text}")
 
     # 感谢 @islandwind 提供的随机壁纸api 个人主页：https://space.bilibili.com/7600422
     def smtp(self, status_id, push_message):

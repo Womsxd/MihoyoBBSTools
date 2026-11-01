@@ -2,7 +2,7 @@
 enable=true
 # 共有 cqhttp ftqq(sever酱) pushplus pushme telegram wecom dingrobot feishubot
 # bark pushdeer gotify smtp(邮件推送) webhook qmsg(qq消息推送) WinToast(Win11通知)
-# serverchan3
+# serverchan3 qbot(QQ机器人单聊推送)
 push_server=pushplus
 # server酱 pushplus dingrobot 的推送token
 push_token=XXXXXX
@@ -23,6 +23,14 @@ cqhttp_url=http://127.0.0.1:5000/send_msg
 #推送给QQ号/群号（二选一，勿同时配置）
 cqhttp_qq=10001
 cqhttp_group=10002
+
+# QQ机器人单聊推送
+# APPID 和 appsecret 在 QQ 开放平台 https://q.qq.com/ 的「开发设置」中获取
+# openid 是单聊用户的 OpenID，可运行 python qbot_get_openid.py 按提示自动获取并写入本文件
+[qbot]
+appid=
+secret=
+openid=
 
 [telegram]
 api_url=api.telegram.org
