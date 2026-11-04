@@ -11,12 +11,11 @@ serverless = False
 update_config_need = False
 
 config = {
-    'enable': True, 'version': 15, "push": "",
+    'enable': True, 'version': 16, "push": "",
     'account': {'cookie': '', 'stuid': '', 'stoken': '', 'mid': ''},
     'device': {'name': 'Xiaomi MI 6', 'model': 'Mi 6', 'id': '', 'fp': ''},
     'mihoyobbs': {
-        'enable': True, 'checkin': True, 'checkin_list': [5, 2],
-        'read': True, 'like': True, 'cancel_like': True, 'share': True
+        'enable': True, 'checkin': True, 'checkin_list': [5, 2]
     },
     'games': {
         'cn': {
@@ -123,6 +122,19 @@ def update_v14_update(data: dict):
     return new_config
 
 
+def update_v15_update(data: dict):
+    global update_config_need
+    update_config_need = True
+    new_config = deepcopy(data)
+    new_config['version'] = 16
+    new_config['mihoyobbs'].pop('read', None)
+    new_config['mihoyobbs'].pop('like', None)
+    new_config['mihoyobbs'].pop('cancel_like', None)
+    new_config['mihoyobbs'].pop('share', None)
+    log.info("config 已升级到：16")
+    return new_config
+
+
 def load_config(p_path=None):
     global config
     if not p_path:
@@ -138,6 +150,8 @@ def load_config(p_path=None):
             data = config_v13_update(data)
         if data['version'] == 14:
             data = update_v14_update(data)
+        if data['version'] == 15:
+            data = update_v15_update(data)
         save_config(p_config=data)
     # 去除cookie最末尾的空格
     data["account"]["cookie"] = str(data["account"]["cookie"]).rstrip(' ')
