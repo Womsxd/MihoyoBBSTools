@@ -6,6 +6,7 @@ import uuid
 
 import setting
 
+_lifecycle_id = ""
 
 def md5(text: str) -> str:
     """
@@ -37,6 +38,24 @@ def timestamp() -> int:
     :return: 当前时间戳。
     """
     return int(time.time())
+
+
+def refresh_lifecycle_id():
+    """
+    刷新本 lifecycle_id
+    :return:
+    """
+    global _lifecycle_id
+    _lifecycle_id = str(uuid.uuid4())
+
+
+def get_lifecycle_id() -> str:
+    """
+    获取本次进程的 lifecycle_id，对应 x-rpc-lifecycle_id。
+
+    :return: 进程启动时生成一次的 UUID。
+    """
+    return _lifecycle_id
 
 
 def get_ds(web: bool) -> str:

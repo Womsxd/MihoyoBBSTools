@@ -2,7 +2,7 @@ import os
 import time
 import random
 from typing import Tuple, Optional
-from enum import Enum, auto
+from enum import Enum
 
 import push
 import login
@@ -53,6 +53,14 @@ def handle_login() -> None:
             login.login()
             time.sleep(random.randint(3, 8))
         account_cfg["cookie"] = tools.tidy_cookie(account_cfg["cookie"])
+
+    # 用 SToken 走 V2 换票，补齐 ltoken_v2 / cookie_token_v2 等字段
+    if account_cfg["stoken"] and account_cfg["stoken"] != "StokenError" and account_cfg["mid"]:
+        try:
+            account_cfg["cookie"] = login.build_account_cookie()
+        except CookieError as e:
+            log.warning(f"凭据补齐失败：{e}")
+
 
 
 def run_mihoyobbs() -> Tuple[str, bool]:
@@ -112,6 +120,7 @@ def main() -> Tuple[int, str]:
     success, msg = initialize_config()
     if not success:
         return StatusCode.FAILURE.value, msg
+    tools.refresh_lifecycle_id()
 
     handle_login()
 

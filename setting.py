@@ -5,10 +5,14 @@ mihoyobbs_salt_web = "4751cb5557bfad5e249e58462c39fb0a"
 # so提取 一般不会变
 mihoyobbs_salt_x4 = "xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs"
 mihoyobbs_salt_x6 = "t0qEgfub6cvueAPgR5m9aQWWVciEer7v"
+#passport 需要的salt，一般不变
+mihoyobbs_salt_passport = "JwYDpKvLj6MrMqqYU6jTKF17KNO2PXoS"
 # 部分接口要带
-mihoyobbs_verify_key = "bll8iq97cem8"
+mihoyobbs_app_id = "bll8iq97cem8"
+mihoyobbs_verify_key = mihoyobbs_app_id
 # 米游社的版本
 mihoyobbs_version = "2.117.0"  # Salt和Version相互对应
+mihoyobbs_passport_version = "2.44.0"
 # 米游社的客户端类型
 mihoyobbs_Client_type = "2"  # 1为ios 2为安卓
 mihoyobbs_Client_type_web = "5"  # 4为pc web 5为mobile web
@@ -71,6 +75,7 @@ passport_api = "https://passport-api.mihoyo.com"
 
 account_Info_url = web_api + "/binding/api/getUserGameRolesByCookie"
 get_token_by_stoken = f"{passport_api}/account/ma-cn-session/app/getTokenBySToken"
+passport_exchange_url = f"{passport_api}/account/ma-cn-session/app/exchange"
 
 # 米游社的API列表
 bbs_account_info = "https://webapi.account.mihoyo.com/Api/cookie_accountinfo_by_loginticket"
