@@ -464,10 +464,6 @@ class DaCapoAdapter:
             log.info("=" * 50)
             log.info("任务执行完成!")
             log.info(f"状态码: {status_code}")
-            log.info("执行结果:")
-            for line in message.split('\n'):
-                if line.strip():
-                    log.info(line)
             log.info("=" * 50)
             return status_code
 

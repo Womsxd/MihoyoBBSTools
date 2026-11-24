@@ -188,7 +188,7 @@ class Mihoyobbs:
                     if challenge is not None:
                         header["x-rpc-challenge"] = challenge
                 elif "err" not in data["message"] and data["retcode"] == 0:
-                    log.info(str(forum["name"] + data["message"]))
+                    log.info(f'{forum["name"]}{data["message"]}')
                     wait()
                     break
                 elif data["retcode"] == -100:
@@ -223,7 +223,7 @@ class Mihoyobbs:
         log.debug(req.text)
         data = req.json()
         if data["message"] == "OK":
-            log.debug("点赞：{} 成功".format(post_info[1]))
+            log.debug(f"点赞：{post_info[1]} 成功")
             # 判断取消点赞是否打开
             if self.bbs_config["cancel_like"]:
                 wait()
@@ -241,7 +241,7 @@ class Mihoyobbs:
         req = http.post(url=setting.bbs_like_url, headers=self.headers,
                         json={"post_id": post_info[0], "is_cancel": True})
         if req.json()["message"] == "OK":
-            log.debug("取消点赞：{} 成功".format(post_info[1]))
+            log.debug(f"取消点赞：{post_info[1]} 成功")
             return True
         return False
 
@@ -279,13 +279,13 @@ class Mihoyobbs:
                 wait()
 
     def run_task(self):
-        return_data = "米游社: "
+        log.push("米游社：")
         if self.task_do["sign"] and self.task_do["read"] and self.task_do["like"] and \
                 self.task_do["share"]:
-            return_data += "\n" + f"今天已经全部完成了！\n" \
-                                  f"一共获得 {self.today_have_get_coins} 个米游币\n目前有 {self.have_coins} 个米游币"
-            log.info(f"今天已经全部完成了！一共获得 {self.today_have_get_coins} 个米游币，目前有 {self.have_coins} 个米游币")
-            return return_data
+            log.push("今天已经全部完成了！")
+            log.push(f"一共获得 {self.today_have_get_coins} 个米游币")
+            log.push(f"目前有 {self.have_coins} 个米游币")
+            return
         i = 0
         while self.today_get_coins != 0 and i < 2:
             if i > 0:
@@ -296,9 +296,7 @@ class Mihoyobbs:
             self.post_task()
             self.get_tasks_list()
             i += 1
-        return_data += "\n" + f"今天已经获得 {self.today_have_get_coins} 个米游币\n" \
-                              f"还能获得 {self.today_get_coins} 个米游币\n目前有 {self.have_coins} 个米游币"
-        log.info(f"今天已经获得 {self.today_have_get_coins} 个米游币，"
-                 f"还能获得 {self.today_get_coins} 个米游币，目前有 {self.have_coins} 个米游币")
+        log.push(f"今天已经获得 {self.today_have_get_coins} 个米游币")
+        log.push(f"还能获得 {self.today_get_coins} 个米游币")
+        log.push(f"目前有 {self.have_coins} 个米游币")
         wait()
-        return return_data

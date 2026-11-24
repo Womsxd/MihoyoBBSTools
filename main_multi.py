@@ -5,7 +5,7 @@ import time
 import push
 import config
 import random
-from loghelper import log
+from loghelper import log, collect_push_message, drain_push_message
 from error import CookieError, StokenError
 
 
@@ -101,6 +101,7 @@ def main_multi(autorun: bool) -> tuple:
         except KeyboardInterrupt:
             exit(0)
     results = {"ok": [], "close": [], "error": [], "captcha": []}
+    details = []
     for i in config_list:
         log.info(f"正在执行 {i}")
         config.config_Path = os.path.join(config.path, i)
@@ -108,11 +109,14 @@ def main_multi(autorun: bool) -> tuple:
             run_code, run_message = main.main()
         except (CookieError, StokenError) as e:
             results["error"].append(i)
+            error_msg = "账号 Cookie 出错！" if isinstance(e, CookieError) else "账号 Stoken 有问题！"
+            details.append("\n".join(filter(None, [drain_push_message(), f"{i}：{error_msg}"])))
             if config.config.get("push", "") != "":
                 push_handler = push.PushHandler(config.config["push"])
-                error_msg = "账号 Cookie 出错！" if isinstance(e, CookieError) else "账号 Stoken 有问题！"
                 push_handler.push(1, error_msg)
         else:
+            if run_message:
+                details.append(f"{i}：\n{run_message}")
             # 增强对返回值的处理，确保所有可能的情况都被考虑到
             if run_code == 0:
                 results["ok"].append(i)
@@ -127,12 +131,17 @@ def main_multi(autorun: bool) -> tuple:
         log.info(f"{i} 执行完毕")
         
         time.sleep(random.randint(3, 10))
-    print("")
-    push_message = f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，' \
-                   f'没执行{len(results["close"])}个，失败{len(results["error"])}个' \
-                   f'\r\n没执行的配置文件：{results["close"]}\r\n执行失败的配置文件：{results["error"]}\r\n' \
-                   f'触发游戏签到验证码的配置文件：{results["captcha"]}'
-    log.info(push_message)
+    for detail in details:
+        collect_push_message(detail)
+    log.push(f'脚本执行完毕，共执行{len(config_list)}个配置文件，成功{len(results["ok"])}个，'
+             f'没执行{len(results["close"])}个，失败{len(results["error"])}个')
+    if results["close"]:
+        log.push(f'没执行的配置文件：{results["close"]}')
+    if results["error"]:
+        log.push(f'执行失败的配置文件：{results["error"]}')
+    if results["captcha"]:
+        log.push(f'触发游戏签到验证码的配置文件：{results["captcha"]}')
+    push_message = drain_push_message()
     # 更清晰的状态码逻辑
     status = 0  # 默认成功
     if len(results["error"]) == len(config_list):

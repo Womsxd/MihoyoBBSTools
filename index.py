@@ -2,6 +2,7 @@ import main
 import push
 import config
 import main_multi
+from loghelper import drain_push_message
 from error import CookieError
 
 
@@ -11,6 +12,7 @@ def main_handler(event: dict, context: dict):
         status_code, push_message = main.main()
     except CookieError:
         status_code = 0
+        push_message = drain_push_message()
     push.push(status_code, push_message)
     print("云函数测试支持！")
     return 0

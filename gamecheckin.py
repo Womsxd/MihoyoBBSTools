@@ -1,4 +1,5 @@
 import time
+import logging
 import login
 import tools
 import config
@@ -87,7 +88,7 @@ class GameCheckin:
                 self.set_headers()
                 return self.is_sign(region, uid, True)
             log.warning("获取账号签到信息失败！")
-            print(req.text)
+            log.debug(req.text)
             config.config["games"]["cn"][self.game_mid]["auto_checkin"] = False
             config.save_config()
             raise CookieError("BBS Cookie Errror")
@@ -126,12 +127,11 @@ class GameCheckin:
                 break
         return result
 
-    def sign_account(self) -> str:
-        return_data = f"{self.game_name}: "
+    def sign_account(self) -> None:
         if not self.account_list:
-            log.warning(f"账号没有绑定任何{self.game_name}账号！")
-            return_data += f"\n并没有绑定任何{self.game_name}账号"
-            return return_data
+            log.push(f"{self.game_name}：并没有绑定任何{self.game_name}账号")
+            return
+        log.push(f"{self.game_name}：")
         for account in self.account_list:
             if account[1] in config.config["games"]["cn"][self.game_mid]["black_list"]:
                 continue
@@ -139,7 +139,8 @@ class GameCheckin:
             time.sleep(random.randint(2, 8))
             is_data = self.is_sign(region=account[2], uid=account[1])
             if is_data.get("first_bind", False):
-                log.warning(f"{self.player_name}「{account[0]}」是第一次绑定米游社，请先手动签到一次")
+                log.push(f"{self.player_name}「{account[0]}」是第一次绑定米游社，请先手动签到一次",
+                         level=logging.WARNING)
                 continue
             sign_days = is_data["total_sign_day"] - 1
             if is_data["is_sign"]:
@@ -150,33 +151,24 @@ class GameCheckin:
                 time.sleep(random.randint(2, 8))
                 req = self.check_in(account)
                 if req is None:
-                    log.warning("签到失败！")
-                    return_data += f"\n{account[0]}，本次签到失败"
+                    log.push(f"{account[0]}：本次签到失败", level=logging.WARNING)
                     continue
                 if req.status_code != 429:
                     data = req.json()
                     if data["retcode"] == 0 and data["data"]["success"] == 0:
-                        log.info(
-                            f"{self.player_name}「{account[0]}」签到成功~\r\n今天获得的奖励是"
-                            f"{tools.get_item(self.checkin_rewards[0 if sign_days == 0 else sign_days + 1])}")
+                        log.info(f"{self.player_name}「{account[0]}」签到成功~")
                         sign_days += 2
                     elif data["retcode"] == -5003:
-                        log.info(
-                            f"{self.player_name}{account[0]}今天已经签到过了~\r\n今天获得的奖励是"
-                            f"{tools.get_item(self.checkin_rewards[sign_days])}")
+                        log.info(f"{self.player_name}{account[0]}今天已经签到过了~")
                     else:
-                        s = "账号签到失败！"
-                        if data["data"] != "" and data.get("data").get("success", -1):
-                            s += "原因：验证码\njson 信息：" + req.text
-                        log.warning(s)
-                        return_data += f"\n{account[0]}，触发验证码，本次签到失败"
+                        log.debug(f"账号签到失败！原因：验证码，json 信息：{req.text}")
+                        log.push(f"{account[0]}：触发验证码，本次签到失败", level=logging.WARNING)
                         continue
                 else:
-                    return_data += f"\n{account[0]}，本次签到失败"
+                    log.push(f"{account[0]}：本次签到失败", level=logging.WARNING)
                     continue
-            return_data += f"\n{account[0]}已连续签到{sign_days}天\n" \
-                           f"今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days - 1])}"
-        return return_data
+            log.push(f"{account[0]}已连续签到{sign_days}天")
+            log.push(f"今天获得的奖励是{tools.get_item(self.checkin_rewards[sign_days - 1])}")
 
 
 class Honkai2(GameCheckin):
@@ -239,9 +231,7 @@ def checkin_game(game_name, game_module, game_print_name=""):
         if game_print_name == "":
             game_print_name = game_name
         log.info(f"正在进行「{game_print_name}」签到")
-        return_data = f"\n\n{game_module().sign_account()}"
-        return return_data
-    return ''
+        game_module().sign_account()
 
 
 def run_task():
@@ -253,7 +243,5 @@ def run_task():
         ("崩坏：星穹铁道", "honkai_sr", Honkaisr),
         ("绝区零", "zzz", ZZZ)
     ]
-    return_data = ''
     for game_print_name, game_name, game_module in games:
-        return_data += checkin_game(game_name, game_module, game_print_name)
-    return return_data
+        checkin_game(game_name, game_module, game_print_name)

@@ -1,5 +1,6 @@
 import random
 import time
+import logging
 
 import tools
 import config
@@ -16,10 +17,9 @@ class CloudGameBase:
         self.coin_name = coin_name
         self.clear_cookie_func = clear_cookie_func
 
-    def sign_account(self) -> str:
-        log.info(f"{self.game_name}:")
-        ret_msg = f"{self.game_name}:\r\n"
-        
+    def sign_account(self) -> None:
+        log.push(f"{self.game_name}：")
+
         try:
             req = http.get(url=self.sign_url, headers=self.headers)
             data = req.json()
@@ -30,35 +30,26 @@ class CloudGameBase:
                 send_free_time = int(free_time_data["send_freetime"])
 
                 if send_free_time > 0:
-                    log.info(f'签到成功，已获得 {send_free_time} 分钟免费时长')
-                    ret_msg += f'签到成功，已获得 {send_free_time} 分钟免费时长\n'
-                else:
-                    if free_time < 600:
-                        time.sleep(random.randint(3, 6))
-                        data2 = http.get(url=self.sign_url, headers=self.headers).json()
-                        free_time2 = int(data2["data"]["free_time"]["free_time"])
-                        if free_time2 > free_time:
-                            get_free_time = free_time2 - free_time
-                            log.info(f'签到成功，已获得 {get_free_time} 分钟免费时长')
-                            ret_msg += f'签到成功，已获得 {get_free_time} 分钟免费时长\n'
-                        else:
-                            log.info('签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上限')
-                            ret_msg += '签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上限\n'
-                ret_msg += f'你当前拥有免费时长 {tools.time_conversion(int(data["data"]["free_time"]["free_time"]))}，' \
-                           f'畅玩卡状态为 {data["data"]["play_card"]["short_msg"]}，拥有{self.coin_name} {data["data"]["coin"]["coin_num"]} 枚'
-                log.info(ret_msg)
+                    log.push(f'签到成功，已获得 {send_free_time} 分钟免费时长')
+                elif free_time < 600:
+                    time.sleep(random.randint(3, 6))
+                    data2 = http.get(url=self.sign_url, headers=self.headers).json()
+                    free_time2 = int(data2["data"]["free_time"]["free_time"])
+                    if free_time2 > free_time:
+                        log.push(f'签到成功，已获得 {free_time2 - free_time} 分钟免费时长')
+                    else:
+                        log.push('签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上限')
+                log.push(f'你当前拥有免费时长 {tools.time_conversion(free_time)}，'
+                         f'畅玩卡状态为 {data["data"]["play_card"]["short_msg"]}，'
+                         f'拥有{self.coin_name} {data["data"]["coin"]["coin_num"]} 枚')
             elif data['retcode'] == -100:
-                ret_msg += f"token 失效/防沉迷"
-                log.warning(ret_msg)
+                log.push("token 失效/防沉迷", level=logging.WARNING)
                 self.clear_cookie_func()
             else:
-                ret_msg += f'脚本签到失败，json 文本：{req.text}'
-                log.warning(ret_msg)
+                log.push(f'脚本签到失败，json 文本：{req.text}', level=logging.WARNING)
         except Exception as e:
             log.error(f'{self.game_name} 签到异常：{str(e)}')
-            ret_msg += '脚本签到发生异常，请查看日志'
-        
-        return ret_msg
+            log.push('脚本签到发生异常，请查看日志', level=logging.WARNING)
 
 
 class CloudGenshin(CloudGameBase):
@@ -88,20 +79,16 @@ class CloudZZZ(CloudGameBase):
         }
 
 
-def run_task() -> str:
-    ret_msg = ""
+def run_task() -> None:
     cg_cn = config.config['cloud_games']['cn']
     if not cg_cn['enable']:
-        return ""
+        return
     # 云原神签到
     if cg_cn['genshin']['enable'] and cg_cn['genshin']['token'] != "":
-        cg_genshin = CloudGenshin(cg_cn['genshin']['token'])
-        ret_msg += cg_genshin.sign_account() + "\n\n"
+        CloudGenshin(cg_cn['genshin']['token']).sign_account()
     # 云绝区零签到
     if cg_cn['zzz']['enable'] and cg_cn['zzz']['token'] != "":
-        cg_zzz = CloudZZZ(cg_cn['zzz']['token'])
-        ret_msg += cg_zzz.sign_account() + "\n\n"
-    return ret_msg
+        CloudZZZ(cg_cn['zzz']['token']).sign_account()
 
 
 if __name__ == '__main__':

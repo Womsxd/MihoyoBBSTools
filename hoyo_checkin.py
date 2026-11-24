@@ -1,5 +1,6 @@
 import time
 import random
+import logging
 import setting
 import config
 from request import get_new_session
@@ -8,13 +9,12 @@ from loghelper import log
 RET_CODE_ALREADY_SIGNED_IN = -5003
 
 
-def hoyo_checkin(event_base_url: str, act_id: str) -> str:
+def hoyo_checkin(event_base_url: str, act_id: str) -> None:
     """
     国际服游戏签到
 
     :param event_base_url: 基础Url
     :param act_id: 活动id
-    :return: 签到结果
     """
     os_lang = config.config["games"]["os"]["lang"]
     reward_url = f"{event_base_url}/home?lang={os_lang}" \
@@ -43,14 +43,12 @@ def hoyo_checkin(event_base_url: str, act_id: str) -> str:
     first_bind = info_list.get("data", {}).get("first_bind")
 
     if already_signed_in:
-        log.info("今天已经签到过")
-        ret_msg = "今天已经签到过"
-        return ret_msg
+        log.push("今天已经签到过")
+        return
 
     if first_bind:
-        log.info("请手动签到一次")
-        ret_msg = "请手动签到一次"
-        return ret_msg
+        log.push("请手动签到一次")
+        return
 
     awards_data = http.get(reward_url, headers=headers).json()
 
@@ -70,73 +68,65 @@ def hoyo_checkin(event_base_url: str, act_id: str) -> str:
     log.debug(f"return code {code}")
 
     if code == RET_CODE_ALREADY_SIGNED_IN:
-        log.info("今天已经签到过")
-        ret_msg = "今天已经签到过"
-        return ret_msg
+        log.push("今天已经签到过")
+        return
     elif code != 0:
-        log.error(response['message'])
-        ret_msg = response['message']
-        return ret_msg
+        log.push(response['message'], level=logging.ERROR)
+        return
 
     reward = awards[total_sign_in_day - 1]
 
-    log.info("签到成功")
-    log.info(f"\t已连续签到 {total_sign_in_day + 1} 天")
-    log.info(f"\t今天获得的奖励是：{reward['cnt']}x 「{reward['name']}」")
-    ret_msg = f"\t今天获得的奖励是：{reward['cnt']}x 「{reward['name']}」"
-    return ret_msg
-    # logging.info(f"\tMessage: {response['message']}")
+    log.push("签到成功")
+    log.push(f"\t已连续签到 {total_sign_in_day + 1} 天")
+    log.push(f"\t今天获得的奖励是：{reward['cnt']}x 「{reward['name']}」")
 
 
 def genshin():
-    log.info(f"正在进行「原神」签到")
-    ret_msg = '原神：\n' + hoyo_checkin("https://sg-hk4e-api.hoyolab.com/event/sol",
-                                     setting.os_genshin_act_id)
-    return ret_msg
+    log.info("正在进行「原神」签到")
+    log.push('原神：')
+    hoyo_checkin("https://sg-hk4e-api.hoyolab.com/event/sol", setting.os_genshin_act_id)
 
 
 def honkai_sr():
-    log.info(f"正在进行「崩坏：星穹铁道」签到")
-    ret_msg = '崩坏：星穹铁道：\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os",
-                                          setting.os_honkai_sr_act_id)
-    return ret_msg
+    log.info("正在进行「崩坏：星穹铁道」签到")
+    log.push('崩坏：星穹铁道：')
+    hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os", setting.os_honkai_sr_act_id)
 
 
 def honkai3rd():
-    log.info(f"正在进行「崩坏3」签到")
-    ret_msg = '崩坏3：\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/mani",
-                                      setting.os_honkai3rd_act_id)
-    return ret_msg
+    log.info("正在进行「崩坏3」签到")
+    log.push('崩坏3：')
+    hoyo_checkin("https://sg-public-api.hoyolab.com/event/mani", setting.os_honkai3rd_act_id)
 
 
 def tears_of_themis():
-    log.info(f"正在进行「未定事件簿」签到")
-    ret_msg = '未定事件簿：\n' + hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os",
-                                        setting.os_tearsofthemis_act_id)
-    return ret_msg
+    log.info("正在进行「未定事件簿」签到")
+    log.push('未定事件簿：')
+    hoyo_checkin("https://sg-public-api.hoyolab.com/event/luna/os", setting.os_tearsofthemis_act_id)
+
 
 def zzz():
-    log.info(f"正在进行「绝区零」签到")
-    ret_msg = '绝区零：\n' + hoyo_checkin("https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os",
-                                      setting.os_zzz_act_id)
-    return ret_msg
+    log.info("正在进行「绝区零」签到")
+    log.push('绝区零：')
+    hoyo_checkin("https://sg-act-nap-api.hoyolab.com/event/luna/zzz/os", setting.os_zzz_act_id)
 
 
-def run_task():
-    ret_msg = ''
+def run_task() -> None:
     games = config.config['games']['os']
 
     if games['cookie'] == '':
         log.warning("国际服未配置 Cookie！")
         games['enable'] = False
         config.save_config()
-        return ''
+        return
 
-    for game, data in games.items():
-        if isinstance(data, dict) and data.get('checkin', False):
-            try:
-                ret_msg += f"\n\n{globals()[game]()}"
-            except KeyError:
-                pass
+    game_funcs = [
+        globals()[game] for game, data in games.items()
+        if isinstance(data, dict) and data.get('checkin', False) and game in globals()
+    ]
+    if not game_funcs:
+        return
 
-    return ret_msg
+    log.push("海外版：")
+    for game_func in game_funcs:
+        game_func()

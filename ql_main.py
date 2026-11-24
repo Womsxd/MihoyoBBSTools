@@ -4,7 +4,7 @@ new Env('米游社');
 import notify
 import os
 import push
-from loghelper import log
+from loghelper import log, drain_push_message
 from error import CookieError
 
 
@@ -32,7 +32,7 @@ def single():
             title = "米游社-触发验证码"
     except CookieError:
         title = "米游社-Cookie错误"
-        message = "账号Cookie出错！"
+        message = "\n".join(filter(None, [drain_push_message(), "账号Cookie出错！"]))
         log.error("账号Cookie有问题！")
     ql_push(status_code, title, message)
 
