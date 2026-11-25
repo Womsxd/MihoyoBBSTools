@@ -15,30 +15,34 @@ class CloudGenshin:
             'x-rpc-combo_token': token,
             'Accept-Encoding': 'gzip, deflate',
             'User-Agent': 'okhttp/4.10.0',
-            'x-rpc-client_type': 3,
+            'x-rpc-client_type': '3',
             'x-rpc-cg_game_biz': 'hk4e_global',
-            'x-rpc-channel_id': 1,
+            'x-rpc-channel_id': '1',
             'x-rpc-language': lang
 
         }
 
     def sign_account(self) -> None:
         log.push("云原神：")
-        req = self.http.get(url=setting.cloud_genshin_sgin_os, headers=self.headers)
-        data = req.json()
-        if data['retcode'] == 0:
-            if int(data["data"]["free_time"]["send_freetime"]) > 0:
-                log.push(f'签到成功，已获得 {data["data"]["free_time"]["send_freetime"]} 分钟免费时长')
+        try:
+            req = self.http.get(url=setting.cloud_genshin_sgin_os, headers=self.headers)
+            data = req.json()
+            if data['retcode'] == 0:
+                if int(data["data"]["free_time"]["send_freetime"]) > 0:
+                    log.push(f'签到成功，已获得 {data["data"]["free_time"]["send_freetime"]} 分钟免费时长')
+                else:
+                    log.push('签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上限')
+                log.push(f'你当前拥有免费时长 {tools.time_conversion(int(data["data"]["free_time"]["free_time"]))}，'
+                         f'畅玩卡状态为 {data["data"]["play_card"]["short_msg"]}，'
+                         f'拥有米云币 {data["data"]["coin"]["coin_num"]} 枚')
+            elif data['retcode'] == -100:
+                log.push("云原神 token 失效", level=logging.WARNING)
+                config.clear_cookie_cloudgame_genshin_os()
             else:
-                log.push('签到失败，未获得免费时长，可能是已经签到过了或者超出免费时长上限')
-            log.push(f'你当前拥有免费时长 {tools.time_conversion(int(data["data"]["free_time"]["free_time"]))}，'
-                     f'畅玩卡状态为 {data["data"]["play_card"]["short_msg"]}，'
-                     f'拥有米云币 {data["data"]["coin"]["coin_num"]} 枚')
-        elif data['retcode'] == -100:
-            log.push("云原神 token 失效", level=logging.WARNING)
-            config.clear_cookie_cloudgame_genshin_os()
-        else:
-            log.push(f'脚本签到失败，json 文本：{req.text}', level=logging.WARNING)
+                log.push(f'脚本签到失败，json 文本：{req.text}', level=logging.WARNING)
+        except Exception as e:
+            log.error(f'云原神 签到异常：{str(e)}')
+            log.push('脚本签到发生异常，请查看日志', level=logging.WARNING)
 
 
 def run_task() -> None:
