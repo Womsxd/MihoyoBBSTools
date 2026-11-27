@@ -205,6 +205,8 @@ class PushHandler:
         """
         import smtplib
         from email.mime.text import MIMEText
+        from email.header import Header
+        from email.utils import formataddr
 
         def get_background_url():
             try:
@@ -236,9 +238,11 @@ class PushHandler:
                                         background_info=get_background_img_info(image_url))
         smtp_info = self.cfg["smtp"]
         message = MIMEText(message, "html", "utf-8")
-        message['Subject'] = smtp_info["subject"]
+        message['Subject'] = Header(smtp_info["subject"], "utf-8").encode()
         message['To'] = smtp_info["toaddr"]
-        message['From'] = f"{smtp_info['subject']}<{smtp_info['fromaddr']}>"
+        # 显示名（这里沿用邮件主题）必须单独按 RFC2047 编码，不能把 "显示名<地址>" 整串
+        # 交给 email 库编码，否则地址会被一并 base64 编码，addr-spec 非法，QQ 邮箱会回 550 拒收
+        message['From'] = formataddr((str(Header(smtp_info["subject"], "utf-8")), smtp_info['fromaddr']))
         if self.cfg.getboolean("smtp", "ssl_enable"):
             server = smtplib.SMTP_SSL(smtp_info["mailhost"], self.cfg.getint("smtp", "port"))
         else:
