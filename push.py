@@ -415,13 +415,14 @@ class PushHandler:
         qmsg
         """
         rep = self.http.post(
-            url=f'https://qmsg.zendee.cn/send/{self.cfg.get("qmsg", "key")}',
+            url=f'https://qmsg.zendee.cn/v3/send/{self.cfg.get("qmsg", "key")}',
             headers={"Content-Type": "application/x-www-form-urlencoded"},
             data={
-                "msg": get_push_title(status_id) + "\n" + push_message
+                "msg": get_push_title(status_id) + "\n" + push_message,
+                "group": self.cfg.get("qmsg", "group", fallback="")
             }
         ).json()
-        log.info(f"推送结果：{rep['reason']}")
+        log.info(f"推送结果：{rep['message']}")
 
     def discord(self, status_id, push_message):
         import pytz
